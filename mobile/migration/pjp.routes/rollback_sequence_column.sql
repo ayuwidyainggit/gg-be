@@ -1,0 +1,1 @@
+ALTER TABLE pjp.routes DROP COLUMN IF EXISTS sequence;

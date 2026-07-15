@@ -1,0 +1,2 @@
+ALTER TABLE pjp.outlet_visit_list
+ADD COLUMN IF NOT EXISTS skip_reason VARCHAR(125) DEFAULT NULL;

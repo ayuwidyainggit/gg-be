@@ -1,0 +1,15 @@
+ALTER TABLE pjp_principles.outlet_visit_list
+ADD COLUMN photo_path VARCHAR(500),
+ADD COLUMN latitude VARCHAR(50),
+ADD COLUMN longitude VARCHAR(50),
+ADD COLUMN is_update_location BOOLEAN NOT NULL DEFAULT FALSE,
+ADD COLUMN folder VARCHAR(255),
+ADD COLUMN file_base64 TEXT,
+ADD COLUMN file_name VARCHAR(255),
+ADD COLUMN file_type VARCHAR(50),
+ADD COLUMN media_category VARCHAR(20),
+ADD COLUMN file_url TEXT,
+ADD COLUMN file_size INT,
+ADD COLUMN distance_meter INT,
+ADD COLUMN allowed_radius INT DEFAULT 100,
+ADD COLUMN location_status INT;

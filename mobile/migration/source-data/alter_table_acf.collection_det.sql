@@ -1,0 +1,2 @@
+ALTER TABLE acf.collection_det 
+ADD COLUMN IF NOT EXISTS source VARCHAR(20) DEFAULT NULL;

@@ -1,0 +1,1 @@
+DROP TABLE pjp_principles.route_pop_dailies;

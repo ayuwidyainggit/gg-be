@@ -1,0 +1,2 @@
+ALTER TABLE tms.shipment_invoices
+ADD COLUMN IF NOT EXISTS item_cdn_name VARCHAR(125) DEFAULT NULL;

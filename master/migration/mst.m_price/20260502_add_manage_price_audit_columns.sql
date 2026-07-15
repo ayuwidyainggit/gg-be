@@ -1,0 +1,3 @@
+ALTER TABLE mst.m_price
+    ADD COLUMN IF NOT EXISTS created_by_id BIGINT NULL,
+    ADD COLUMN IF NOT EXISTS updated_by_id BIGINT NULL;

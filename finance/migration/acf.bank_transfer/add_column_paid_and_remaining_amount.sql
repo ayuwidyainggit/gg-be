@@ -1,0 +1,7 @@
+BEGIN;
+
+ALTER TABLE acf.bank_transfer
+ADD COLUMN remaining_amount NUMERIC(20, 4) DEFAULT 0 NOT NULL,
+ADD COLUMN paid_amount NUMERIC(20, 4) DEFAULT 0 NOT NULL;
+
+COMMIT;

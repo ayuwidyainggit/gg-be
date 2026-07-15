@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS pjp_principles.permanent_journey_plans;

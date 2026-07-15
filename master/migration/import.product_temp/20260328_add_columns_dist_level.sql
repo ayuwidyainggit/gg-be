@@ -1,0 +1,4 @@
+ALTER TABLE import.product_temp
+ADD COLUMN parent_product_id BIGINT NULL,
+ADD COLUMN distributor_id BIGINT NULL,
+ADD COLUMN level INTEGER NOT NULL DEFAULT 0;

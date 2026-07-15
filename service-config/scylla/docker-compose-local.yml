@@ -1,0 +1,191 @@
+version: "3.9"
+
+name: scylla
+
+services:  
+  scylla-system:
+    container_name: scylla-system-app
+    image: idetama/scylla-system:latest
+    restart: unless-stopped
+    networks:
+      - scylla_default
+    ports:
+      - "9001:9001"
+    # depends_on:
+    #   - scylla-redis-primary
+    # links:
+    #   - scylla-redis-primary
+    environment:
+      DB_HOST: 103.28.219.73
+      DB_PORT: 25431
+      DB_USER: postgres
+      DB_PASS: Ar3m4n1a
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+      REDIS_HOST: 172.17.0.1
+      REDIS_PORT: 6379
+      REDIS_DEBUG: true
+
+  scylla-master:
+    container_name: scylla-master-app
+    image: idetama/scylla-master:latest
+    restart: unless-stopped
+    networks:
+      - scylla_default
+    ports:
+      - "9002:9002"
+    environment:
+      DB_HOST: 103.28.219.73
+      DB_PORT: 25431
+      DB_USER: postgres
+      DB_PASS: Ar3m4n1a
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+      DB_DEBUG: true
+      REDIS_HOST: 172.17.0.1
+      REDIS_PORT: 6379
+      REDIS_DEBUG: true
+      RABBITMQ_HOST: 172.17.0.1
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: admin
+      RABBITMQ_PASSWORD: admin
+      RABBITMQ_DEBUG: true
+
+  # scylla-inventory:
+  #   container_name: scylla-inventory-app
+  #   image: idetama/scylla-inventory
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9003:9003"
+  #   environment:
+  #     DB_HOST: 103.28.219.73
+  #     DB_PORT: 25431
+  #     DB_USER: postgres
+  #     DB_PASS: Ar3m4n1a
+  #     DB_NAME: scylla_citus_dev
+  #     DB_MAX_CONNECTIONS: 15
+  #     DB_MAX_IDLE_CONNECTIONS: 5
+  #     DB_MAX_LIFETIME_CONNECTIONS: 1
+
+  # scylla-sales:
+  #   container_name: scylla-sales-app
+  #   image: idetama/scylla-sales
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9004:9004"
+  #   environment:
+  #     DB_HOST: 103.28.219.73
+  #     DB_PORT: 25431
+  #     DB_USER: postgres
+  #     DB_PASS: Ar3m4n1a
+  #     DB_NAME: scylla_citus_dev
+  #     DB_MAX_CONNECTIONS: 15
+  #     DB_MAX_IDLE_CONNECTIONS: 5
+  #     DB_MAX_LIFETIME_CONNECTIONS: 1
+
+  # scylla-finance:
+  #   container_name: scylla-finance-app
+  #   image: idetama/scylla-finance
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9005:9005"
+  #   environment:
+  #     DB_HOST: 103.28.219.73
+  #     DB_PORT: 25431
+  #     DB_USER: postgres
+  #     DB_PASS: Ar3m4n1a
+  #     DB_NAME: scylla_citus_dev
+  #     DB_MAX_CONNECTIONS: 15
+  #     DB_MAX_IDLE_CONNECTIONS: 5
+  #     DB_MAX_LIFETIME_CONNECTIONS: 1
+
+  # scylla-mobile:
+  #   container_name: scylla-mobile-app
+  #   image: idetama/scylla-mobile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9008:9008"
+  #   environment:
+  #     DB_HOST: 103.28.219.73
+  #     DB_PORT: 25431
+  #     DB_USER: postgres
+  #     DB_PASS: Ar3m4n1a
+  #     DB_NAME: scylla_citus_dev
+  #     DB_MAX_CONNECTIONS: 15
+  #     DB_MAX_IDLE_CONNECTIONS: 5
+  #     DB_MAX_LIFETIME_CONNECTIONS: 1
+  #     REDIS_HOST: 10.10.12.11
+  #     REDIS_PORT: 6379
+  #     REDIS_DEBUG: true
+
+  loki:
+    container_name: scylla-loki
+    image: grafana/loki:latest
+    # tag: 2.0.0
+    ports:
+      - "3100:3100"
+    volumes:
+      - "./etc/loki:/mnt/config"
+    command: -config.file=/mnt/config/loki-config.yaml
+    networks:
+      - scylla_default
+
+  promtail:
+    container_name: scylla-promtail
+    # image: grafana/promtail:2.5.0
+    image: grafana/promtail:latest
+    volumes:
+      - "./etc/promtail:/mnt/config"
+      # to read container labels and logs
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/containers:/var/lib/docker/containers"
+    command: -config.file=/mnt/config/promtail-config.yaml
+    networks:
+      - scylla_default
+
+  grafana:
+    container_name: scylla-grafana
+    # image: grafana/grafana:10.4.5
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./var/grafana/grafana_data:/var/lib/grafana"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=foobar
+      - GF_USERS_ALLOW_SIGN_UP=false
+    user: "0"
+    networks:
+      - scylla_default
+
+  # scylla-redis-primary:
+  #   container_name: scylla-redis-primary
+  #   image: redis:7.2.5-alpine
+  #   restart: always
+  #   ports:
+  #     - "6378:6378"
+  #   networks:
+  #     - scylla_default
+
+#   jenkins:
+#     container_name: jenkins
+#     image: jenkins/jenkins:lts
+#     restart: unless-stopped
+#     ports:
+#       - "3111:8080"
+#     volumes:
+#       - "jenkins_home:/var/jenkins_home"
+#       - ./sock:/var/run/docker.sock
+
+# volumes:
+#   jenkins_home:
+
+networks:
+ scylla_default:
+  name: scylla_default
+  driver: bridge
+  external: true

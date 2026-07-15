@@ -1,0 +1,3 @@
+ALTER TABLE mst.m_product
+ADD COLUMN distributor_id BIGINT NULL,
+ADD COLUMN level INTEGER NOT NULL DEFAULT 0;

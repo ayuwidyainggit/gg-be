@@ -1,0 +1,1549 @@
+# @hostname = http://103.28.219.73:5001
+@hostdev = http://103.28.219.73:5001
+@hostname = http://127.0.0.1
+# @localhost = http://127.0.0.1
+
+
+# @path-system = /system
+@path-system = :9001
+
+# @path-master = /master
+@path-master = :9002
+
+# @path-sales = /sales
+@dev-path-sales = /sales
+@path-sales = :9004
+
+# @path-inventory = /inventory
+@path-inventory = :9003
+
+@host-system = {{hostname}}{{path-system}}
+@host-master = {{hostname}}{{path-master}}
+@host-sales = {{hostname}}{{path-sales}}
+@dev-host-sales = {{hostdev}}{{dev-path-sales}}
+@host-inventory = {{hostname}}{{path-inventory}}
+
+#
+@contentType = application/json
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+
+# users
+@email-principal = princ@idetama.id
+@email-distributor = dist@sda.idetama.id
+@password = admin
+
+### LOKI ###  
+GET http://localhost:3100/loki/api/v1/labels?start=1720546528666000000&end=1720550128666000000
+### END OF LOKI ###  
+
+### PING ###  
+GET http://127.0.0.1:9001/ping
+###
+
+### User Login
+# @name login
+POST {{host-system}}/v1/users/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+
+{
+  "email":"{{email-principal}}",
+  "password":"{{password}}"
+}
+###
+
+### User Login
+# @name login
+POST {{host-system}}/v1/users/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+
+{
+  "email":"{{email-distributor}}",
+  "password":"admin"
+}
+###
+
+####### MASTER ####################################################################################
+
+####### Consumer Product ########################################
+
+### Get Cons Products ### | query params filter: q=68593150
+# @name get_cons_products
+GET {{host-master}}/v1/cons-products?q=&page=1&limit=10
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Get Detail Cons Product ### | query path: /:c_pro_id
+# @name get_cons_product_detail
+GET {{host-master}}/v1/cons-products/20
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Cons Products
+# @name create_cons_products
+POST {{host-master}}/v1/cons-products
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "c_pro_code": "WED01",
+    "c_pro_name": "WED satu",
+    "is_active": true
+}
+
+### Update Cons Products
+# @name update_cons_products
+PATCH {{host-master}}/v1/cons-products/20
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "c_pro_name": "Test edit WED01",
+    "is_active": true
+}
+
+### Delete Cons Products
+# @name delete_cons_product
+DELETE  {{host-master}}/v1/cons-products/19
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+####### End Of Consumer Product ########################################
+
+### Get Detail Principal ### | query path: /:c_pro_id
+# @name get_principal_detail
+GET {{host-master}}/v1/principals/14
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Principal
+# @name create_principal
+POST {{host-master}}/v1/principals
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "principal_code": "KG",
+    "principal_name": "asdsadasd",
+    "is_active": true
+}
+
+### Update Principal
+# @name update_principal
+PATCH  {{host-master}}/v1/principals/14
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "principal_name": "Test edit"
+}
+
+### Delete Principal
+# @name delete_principal
+DELETE  {{host-master}}/v1/principals/15
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+
+### Get Sub Beat ### | query params filter: q=68593150
+# @name get_sub_beat
+GET {{host-master}}/v1/sub-beats?q=&page=1&limit=10
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Get Detail Sub Beat ### | query path: /:sbeat_id
+# @name get_cons_sbeat_detail
+GET {{host-master}}/v1/sub-beats/1
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Sub Beat
+# @name create_sub_beat
+POST {{host-master}}/v1/sub-beats
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "sbeat_code": "sSB4",
+    "sbeat_name": "asdas",
+    "beat_id": 1,
+    "district_id": 1,
+    "is_active": true
+}
+
+### Update Sub Beat
+# @name update_sub_beat
+PATCH {{host-master}}/v1/sub-beats/4
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "sbeat_code": "sSB4",
+    "sbeat_name": "Test edit"
+}
+
+### Delete Sub Beat
+# @name delete_sub_beat
+DELETE {{host-master}}/v1/sub-beats/1
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### Get Detail principals ### | query path: /:principal_id
+# @name get_principal_detail
+GET {{host-master}}/v1/principals/2
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+####### PRODUCT #######
+# @name get_product_list
+GET {{host-master}}/v1/products
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_product_detail
+GET {{host-master}}/v1/products/428
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_product_principal
+GET {{host-master}}/v1/products/principals?q=&page=1
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+
+####### END OF MASTER #############################################################################
+
+####### INVENTORY ####################################################################################
+
+####### Goods Receipt #######
+# @name get_good_receipt_list
+GET {{host-inventory}}/v1/goods-receipts
+    ?page=1
+    &limit=10
+    # &gr_no=21
+    &q=
+    # &promo_desc=Edit 2
+    &from=1704047009
+    &to=1722363809
+    &sort=created_at:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+####### End Of Goods Receipt #######
+
+####### END OF INVENTORY #############################################################################
+
+####### SALES ###########################################################################################
+
+####### PROMOTION ##########################################
+# @name create_promotion
+POST {{host-sales}}/v1/promotions
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_id": "PR0150724/005",
+    "promo_desc": "Promo Pembelian ",
+    "promo_type": 1,
+    "existing_promo_id": "",
+    "promo_status_id": 3,
+    "is_budget_reference": false,
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "budget_control_level": 1, 
+    "execution_level": 1,
+    "effective_from": "2024-06-25",
+    "effective_to": "2024-06-29",
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "max_discount_outlet_uom": 1,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123 asd promo 1% / item",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 1,
+            "slab_reward": 5,
+            "slab_reward_uom": 1 
+        }
+    ],
+    "reward_products": [
+        {
+            "pro_id": 1
+        },
+        {
+            "pro_id": 2
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1,
+            "is_mandatory": false,
+            "min_buy_type": 1,
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name update_promotion
+PATCH {{host-sales}}/v1/promotions/PR0150724005
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_desc": "Promo Pembelian edit",
+    "promo_type": 1,
+    "existing_promo_id": "",
+    "promo_status_id": 1,
+    "is_budget_reference": false,
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "budget_control_level": 1, 
+    "execution_level": 1,
+    "effective_from": "2024-06-25",
+    "effective_to": "2024-06-29",
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "max_discount_outlet_uom": 1,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 3,
+            "slab_reward": 500,
+            "slab_reward_uom": 0 
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1,
+            "is_mandatory": false,
+            "min_buy_type": 1,
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name bulk_update_status_promotion
+POST {{host-sales}}/v1/promotions/bulk-update-status
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_id": ["PR0150724005"],
+    "promo_status_id": 7,
+    "remarks": "jangan bikin promo dulu"
+}
+###
+
+# @name get_promotion_list
+GET {{host-sales}}/v1/promotions
+    ?page=1
+    &limit=10
+    &q=
+    # &promo_id=PR09
+    &promo_status_id=1
+    &promo_status_id=2
+    # &promo_desc=Edit 2
+    &effective_from=1719746414
+    &effective_to=1719832814
+    &sort=created_at:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_promotion_detail
+@getPromoID = Promo400
+GET {{host-sales}}/v1/promotions/{{getPromoID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name delete_promotion
+DELETE {{host-sales}}/v1/promotions/112
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_promotion_status
+GET {{host-sales}}/v1/promotions/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+####### END OF PROMOTION ###################################
+
+####### PROMO TEMPLATE ###################################
+# @name create_promo_template
+POST {{host-sales}}/v1/promo-templates
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_desc": "Promo Pembelian 7",
+    "promo_template_status_id": 1,
+    "is_budget_reference": false, 
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 1, 
+            "slab_reward": 5,
+            "slab_reward_uom": 1 
+        }
+    ],
+    "reward_products": [
+        {
+            "pro_id": 1
+        },
+        {
+            "pro_id": 2
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name update_promo_template
+PATCH {{host-sales}}/v1/promo-templates/cqatcaucoml41sonkk0g
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_desc": "Promo Pembelian 7",
+    "promo_template_status_id": 1,
+    "is_budget_reference": false, 
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 1, 
+            "slab_reward": 5,
+            "slab_reward_uom": 1 
+        }
+    ],
+    "reward_products": [
+        {
+            "pro_id": 1
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name get_promo_template_list
+GET {{host-sales}}/v1/promo-templates
+?page=1
+&limit=10
+&q=
+&promo_template_id=
+&promo_template_status_id=1
+&promo_desc=
+&from=1719334800
+&to=1722445199
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_promo_template_status
+GET {{host-sales}}/v1/promo-templates/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_promo_template_detail
+@getPromoTemplateID = cqatcaucoml41sonkk0g
+GET {{host-sales}}/v1/promo-templates/{{getPromoTemplateID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name delete_promo_template
+@deletePromoTemplateID = cq621aecoml544d00a00
+DELETE {{host-sales}}/v1/promo-templates/{{deletePromoTemplateID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+####### END OF PROMO TEMPLATE ############################
+
+####### END OF SALES #############################################################################
+
+# PROMO APPROVAL #
+# yg bikin promo draft role admin distributor ( principal masih ga bisa )
+# approval adalah supervisor diatasnya
+# 1. multiple submit draft & rejected yg udah di edit ( perlu flagging ketika rejected sudah di edit )
+# 2. edit reject, ada action save and submit, reason nya di replace ga perlu history
+# 3. status expired di takeout
+
+# DISCOUNT #
+
+# @name create_discount
+POST {{host-sales}}/v1/discounts
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "discount_id": "DS015/123",
+    "discount_desc": "Discount Pembelian ",
+    "discount_status_id": 1,
+    "effective_from": "2024-06-25",
+    "effective_to": "2024-06-29",
+    "discount_principals": [
+        {
+            "principal_id": 1
+        },
+        {
+            "principal_id": 2
+        }
+    ],
+    "discount_groups": [
+        {
+            "disc_grp_id": 1
+        },
+        {
+            "disc_grp_id": 2
+        }
+    ],
+    "discount_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_reward_type": 1,
+            "slab_reward": 5
+        }
+    ]
+}
+###
+
+# @name update_discount
+PATCH {{host-sales}}/v1/discounts/DS0150724001
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "discount_desc": "Discount Pembelian ",
+    "effective_from": "2024-06-25",
+    "effective_to": "2024-06-29",
+    "discount_principals": [
+        {
+            "principal_id": 1
+        }
+    ],
+    "discount_groups": [
+        {
+            "disc_grp_id": 1
+        }
+    ],
+    "discount_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_reward_type": 1,
+            "slab_reward": 5
+        }
+    ]
+}
+###
+
+# @name get_discount_list
+GET {{host-sales}}/v1/discounts
+    ?page=1
+    &limit=10
+    &q=
+    # &discount_id=PR09
+    # &discount_status_id=1
+    # &discount_status_id=2
+    # &discount_desc=Edit 2
+    &effective_from=1719158755
+    &effective_to=1722928580
+    &sort=created_at:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_discount_detail
+GET {{host-sales}}/v1/discounts/DS015%2F123
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_discount_status
+GET {{host-sales}}/v1/discounts/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_publish_status
+GET {{host-sales}}/v1/discounts/publish/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name delete_discount
+@deleteDiscountID = DS0150724001
+DELETE {{host-sales}}/v1/discounts/{{deleteDiscountID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name bulk_publish_discount
+POST {{host-sales}}/v1/discounts/publish
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "discount_id": ["DS0150724001"]
+}
+###
+
+# END OF DISCOUNT #
+
+### Report ###
+# @name secondary_sales_report
+POST {{host-sales}}/v1/reports/secondary-sales
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "from": 1735664400,
+    "to": 1748797200,
+    "distributor_ids": [],
+    "outlet_ids": [],
+    "salesman_ids": [],
+    "pro_ids": []
+}
+###
+
+### Report ###
+# @name report_list
+GET {{host-sales}}/v1/reports
+    ?page=1
+    &limit=10
+    &q=
+    &file_status=
+    # &from=1735664400
+    # &to=1752162018
+    &sort=created_at:desc
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+### Get Promotion List V2 ###
+# @name get_promotions_list_v2
+GET {{host-sales}}/v2/promotions
+    ?page=1
+    &limit=20
+    # &q=
+    # &distributor_id=67
+    # &sort=created_at:desc
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# Get Promo Status V2 ###
+# @name get_promo_status_v2
+GET {{host-sales}}/v2/promotions/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### End of Get Promo Status V2
+
+@rewardType = product
+### Create Promo V2 ###
+# @name create_promo_v2
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"PRM-{{$timestamp}}","promo_desc":"September Launch Discount","promo_type":"slab","promo_creation_type":"new","existing_promo_id":null,"slab_multiplied":false,"strata_sequential":false,"is_budget_reference":true,"budget_ref_type":"limited","budget_reference_id":101,"budget_control_level":"distributor","budget_amount":50000000,"execution_level":"distributor","coverage":"by_distributor","effective_from":"2025-09-15","effective_to":"2025-12-31","is_claimable":true,"claim_type":"full","claim_start_after_days":14,"claim_realization_pct":50,"max_total_reward_type":"amount","max_total_reward_value":1000000,"max_invoice_per_outlet":1000,"max_discount_outlet_uom":1,"remarks":"Promo kick-off for Q4","slabs":[{"ordinal":1,"description":"Base slab (multiplied)","rule_type":"quantity","range_from":1,"range_to":10,"rule_uom":"smallest","reward_type":"{{rewardType}}","reward_value":null,"reward_uom":"smallest","per_scope":null}],"minimum_sku":2,"items":[{"pro_id":482,"mandatory":true,"min_buy_type":"quantity","min_buy_qty":5},{"pro_id":476,"mandatory":false,"min_buy_type":"value","min_buy_value":250000}],"reward_products":[{"pro_id":482,"ordinal":1},{"pro_id":476,"ordinal":2}],"coverage":"by_distributor","coverage_distributors":[{"distributor_id":12345,"region_id":100,"area_id":200},{"distributor_id":67890,"region_id":101,"area_id":null},{"distributor_id":54321,"region_id":null,"area_id":201},{"distributor_id":98765,"region_id":null,"area_id":null}],"outlet_criteria":[{"selection_type":"by_attribute","outlet_type_id":1,"outlet_group_id":5,"outlet_class_id":3,"sales_team_id":10},{"selection_type":"by_outlet","outlet_type_id":3,"outlet_group_id":2,"outlet_class_id":4,"sales_team_id":8}]}
+###
+
+### Test Principal Coverage Validation - Should Fail (Principal with empty coverage)
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"PRM-{{$timestamp}}","promo_desc":"September Launch Discount","promo_type":"slab","promo_creation_type":"new","existing_promo_id":null,"slab_multiplied":false,"strata_sequential":false,"is_budget_reference":true,"budget_ref_type":"limited","budget_reference_id":101,"budget_control_level":"distributor","budget_amount":50000000,"execution_level":"distributor","coverage":"by_distributor","effective_from":"2025-09-15","effective_to":"2025-12-31","is_claimable":true,"claim_type":"full","claim_start_after_days":14,"claim_realization_pct":50,"max_total_reward_type":"amount","max_total_reward_value":1000000,"max_invoice_per_outlet":1000,"max_discount_outlet_uom":1,"remarks":"Test Principal coverage validation","slabs":[{"ordinal":1,"description":"Base slab","rule_type":"quantity","range_from":1,"range_to":10,"rule_uom":"smallest","reward_type":"percentage","reward_value":10,"reward_uom":"smallest","per_scope":null}]}
+###
+
+### Test Principal Coverage Validation - Should Pass (Principal with coverage) - by attribute
+# @name create_promo_v2_by_attribute
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"PRM-{{$timestamp}}","promo_desc":"Maximal total reward, budget amount, maximal invoice tidak disetting","promo_type":"slab","promo_creation_type":"new","existing_promo_id":null,"slab_multiplied":false,"strata_sequential":false,"is_budget_reference":true,"budget_ref_type":"limited","budget_reference_id":101,"budget_control_level":"distributor","budget_amount":50000000,"execution_level":"distributor","coverage":"by_distributor","effective_from":"2025-09-15","effective_to":"2025-12-31","is_claimable":true,"claim_type":"full","claim_start_after_days":14,"claim_realization_pct":50,"max_total_reward_type":"amount","max_total_reward_value":200000,"remarks":"Promo kick-off for Q4","slabs":[{"ordinal":1,"description":"Desc ord 1","rule_type":"value","range_from":1000000,"range_to":2000000,"rule_uom":"","reward_type":"percentage","reward_value":1,"reward_uom":"","per_scope":null},{"ordinal":2,"description":"Desc ord 2","rule_type":"value","range_from":2000001,"range_to":3000000,"rule_uom":null,"reward_type":"percentage","reward_value":2,"reward_uom":"","per_scope":null},{"ordinal":3,"description":"Desc ord 3","rule_type":"value","range_from":3000001,"range_to":9000000,"rule_uom":"","reward_type":"percentage","reward_value":3,"reward_uom":"","per_scope":null}],"minimum_sku":2,"product_criteria":[{"pro_id":482,"mandatory":true,"min_buy_type":"quantity","min_buy_qty":5,"min_buy_uom":"smallest"},{"pro_id":476,"mandatory":false,"min_buy_type":"value","min_buy_value":250000,"min_buy_uom":"smallest"}],"coverage_distributors":[{"distributor_id":51,"region_id":65,"area_id":71}],"outlet_criteria":[{"selection_type":"by_attribute","outlet_type_id":23,"outlet_group_id":21,"outlet_class_id":1,"sales_team_id":21}]}
+### End of Create Promo V2
+
+### Test Principal Coverage Validation - Should Pass (Principal with coverage) - by outlet #2
+# @name create_promo_v2_by_outlet
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"PRM-{{$timestamp}}","promo_desc":"Maximal total reward, budget amount, maximal invoice tidak disetting","promo_type":"slab","promo_creation_type":"new","existing_promo_id":null,"slab_multiplied":false,"strata_sequential":false,"is_budget_reference":true,"budget_ref_type":"limited","budget_reference_id":101,"budget_control_level":"distributor","budget_amount":50000000,"execution_level":"distributor","coverage":"by_distributor","effective_from":"2025-09-15","effective_to":"2025-12-31","is_claimable":true,"claim_type":"full","claim_start_after_days":14,"claim_realization_pct":50,"max_total_reward_type":"amount","max_total_reward_value":200000,"remarks":"Promo kick-off for Q4","slabs":[{"ordinal":1,"description":"Desc ord 1","rule_type":"value","range_from":1000000,"range_to":2000000,"rule_uom":"","reward_type":"percentage","reward_value":1,"reward_uom":"","per_scope":null},{"ordinal":2,"description":"Desc ord 2","rule_type":"value","range_from":2000001,"range_to":3000000,"rule_uom":null,"reward_type":"percentage","reward_value":2,"reward_uom":"","per_scope":null},{"ordinal":3,"description":"Desc ord 3","rule_type":"value","range_from":3000001,"range_to":9000000,"rule_uom":"","reward_type":"percentage","reward_value":3,"reward_uom":"","per_scope":null}],"minimum_sku":2,"product_criteria":[{"pro_id":482,"mandatory":true,"min_buy_type":"quantity","min_buy_qty":5,"min_buy_uom":"smallest"},{"pro_id":476,"mandatory":false,"min_buy_type":"value","min_buy_value":250000,"min_buy_uom":"smallest"}],"coverage_distributors":[{"distributor_id":51,"region_id":65,"area_id":71}],"outlet_criteria":[{"selection_type":"by_outlet","outlet_ids":[190,191,192]}]}
+###
+
+### create_promo_v2_strata_test_scenario_positive_case
+# @name create_promo_v2_strata_test_scenario_positive_case
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"PRM-{{$timestamp}}","promo_desc":"Strata per_scope","promo_type":"strata","promo_creation_type":"new","existing_promo_id":null,"slab_multiplied":false,"strata_sequential":true,"is_budget_reference":false,"budget_ref_type":"","budget_reference_id":0,"budget_control_level":"","budget_amount":0,"execution_level":"","coverage":"by_distributor","effective_from":"2025-09-15","effective_to":"2025-12-31","is_claimable":true,"claim_type":"full","claim_start_after_days":14,"claim_realization_pct":50,"max_total_reward_type":"amount","max_total_reward_value":200000,"remarks":"Promo kick-off for Q4","strata":[{"ordinal":1,"description":"Setiap Pembelian 10 produk, dapatkan diskon 100","rule_type":"quantity","range_from":20,"range_to":30,"rule_uom":"largest","reward_type":"product","reward_value":1,"reward_uom":"largest","per_scope":"","claimable":true},{"ordinal":2,"description":"Setiap Pembelian 10 produk, dapatkan diskon 100","rule_type":"quantity","range_from":30,"range_to":40,"rule_uom":"largest","reward_type":"product","reward_value":1,"reward_uom":"largest","per_scope":"","claimable":true}],"minimum_sku":2,"product_criteria":[{"pro_id":482,"mandatory":true,"min_buy_type":"quantity","min_buy_value":250000,"min_buy_uom":"smallest"},{"pro_id":476,"mandatory":false,"min_buy_type":"value","min_buy_value":250000,"min_buy_uom":"smallest"}],"reward_products":[{"ordinal":1,"pro_id":482},{"ordinal":2,"pro_id":476}],"coverage_distributors":[{"distributor_id":51,"region_id":65,"area_id":71}],"outlet_criteria":[{"selection_type":"by_attribute","outlet_type_id":23,"outlet_group_id":21,"outlet_class_id":1,"sales_team_id":21}]}
+###
+
+### End of Create Promo V2 - by outlet
+
+@promoIDDetails = PRM-1759058425
+# Get Details Promo V2 ###
+# @name get_promo_details_v2
+GET {{host-sales}}/v2/promotions/{{promoIDDetails}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### Response:
+# "outlet_criteria": [
+#       {
+#         "selection_type": "by_outlet",
+#         "selected_outlets": [
+#           {
+#             "outlet_id": 1
+#           },
+#           {
+#             "outlet_id": 2
+#           },
+#           {
+#             "outlet_id": 3
+#           },
+#           {
+#             "outlet_id": 1
+#           },
+#           {
+#             "outlet_id": 2
+#           },
+#           {
+#             "outlet_id": 3
+#           }
+#         ],
+#         "outlet_type_id": 0,
+#         "outlet_group_id": 0,
+#         "outlet_class_id": 0,
+#         "sales_team_id": 0
+#       }
+#     ]
+### End of Get Details Promo V2
+
+# Get List Promo V2 ###
+# @name get_promo_list_v2
+GET {{host-sales}}/v2/promotions?page=1&limit=10
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### End of Get List Promo V2
+
+### Test rule_uom validation for Slabs - should fail ###
+# @name test_slab_rule_uom_validation
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"TEST-RULE-UOM-{{$timestamp}}","promo_desc":"Test rule_uom validation for slabs","promo_type":"slab","promo_creation_type":"new","is_budget_reference":false,"coverage":"national","effective_from":"2025-01-01","effective_to":"2025-12-31","is_claimable":false,"minimum_sku":1,"product_criteria":[{"pro_id":1,"mandatory":true}],"outlet_criteria":[{"selection_type":"by_attribute"}],"slabs":[{"ordinal":1,"description":"Test slab without rule_uom","rule_type":"quantity","range_from":1,"range_to":10,"rule_uom":"","reward_type":"percentage","reward_value":5}]}
+###
+
+### Test rule_uom validation for Strata - should fail ###
+# @name test_strata_rule_uom_validation
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"TEST-STRATA-RULE-UOM-{{$timestamp}}","promo_desc":"Test rule_uom validation for strata","promo_type":"strata","promo_creation_type":"new","is_budget_reference":false,"coverage":"national","effective_from":"2025-01-01","effective_to":"2025-12-31","is_claimable":false,"minimum_sku":1,"product_criteria":[{"pro_id":1,"mandatory":true}],"outlet_criteria":[{"selection_type":"by_attribute"}],"strata":[{"ordinal":1,"description":"Test strata without rule_uom","rule_type":"quantity","rule_uom":"","range_from":1,"range_to":100,"reward_type":"percentage","reward_value":5,"claimable":false}]}
+
+### Test Get Promotion Detail V2 with Outlet Criteria ###
+# @name get_promo_detail_v2_with_outlet_criteria
+GET {{host-sales}}/v2/promotions/slab03
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### End of Test Get Promotion Detail V2 with Outlet Criteria
+
+### Test Positive - Reward Product - Min Buy Qty ###
+# @name test_strata_reward_type_product
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_id":"STRATA-REW-PRO-{{$timestamp}}","promo_desc":"Strata reward type product","promo_type":"strata","promo_creation_type":"new","existing_promo_id":null,"slab_multiplied":false,"strata_sequential":true,"is_budget_reference":false,"budget_ref_type":"","budget_reference_id":0,"budget_control_level":"","budget_amount":0,"execution_level":"","effective_from":"2025-09-15","effective_to":"2025-12-31","is_claimable":true,"claim_type":"full","claim_start_after_days":14,"claim_realization_pct":50,"max_total_reward_type":"amount","max_total_reward_value":200000,"remarks":"Promo kick-off for Q4","strata":[{"ordinal":1,"description":"Setiap Pembelian 10 produk, dapatkan diskon 100","rule_type":"quantity","range_from":20,"range_to":30,"rule_uom":"largest","reward_type":"product","reward_value":1,"reward_uom":"largest","per_scope":"","claimable":true},{"ordinal":2,"description":"Setiap Pembelian 10 produk, dapatkan diskon 100","rule_type":"quantity","range_from":30,"range_to":40,"rule_uom":"largest","reward_type":"product","reward_value":1,"reward_uom":"largest","per_scope":"","claimable":true}],"minimum_sku":1,"product_criteria":[{"pro_id":482,"mandatory":true,"min_buy_type":"quantity","min_buy_qty":5,"min_buy_uom":"smallest"},{"pro_id":476,"mandatory":false,"min_buy_type":"quantity","min_buy_qty":5,"min_buy_uom":"smallest"}],"reward_products":[{"ordinal":1,"pro_id":482},{"ordinal":2,"pro_id":476}],"coverage":"by_distributor","coverage_distributors":[{"distributor_id":51}],"outlet_criteria":{"selection_type":"by_outlet","outlet_ids":[191],"sales_team_ids":[21]}}
+###
+
+### Test Duplicate Promo V2 ###
+POST {{host-sales}}/v2/promotions/duplicate/stratasequential
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### End of Test Duplicate Promo V2
+
+
+### Test Negative - Reward Product - Budget Reference is not mandat ###
+# @name test_negative_budget_reference_not_mandatory
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"promo_type":"strata","promo_creation_type":"new","existing_promo_id":"","promo_id":"123","promo_desc":"123","is_budget_reference":false,"budget_ref_type":"","budget_amount":0,"budget_control_level":"","execution_level":"","effective_from":"2025-10-21","effective_to":"2025-10-28","is_claimable":true,"slab_multiplied":false,"strata_sequential":false,"claim_type":"partial","claim_realization_pct":5,"claim_start_after_days":1,"max_invoice_outlet":0,"max_total_reward_type":"qty","max_total_reward_outlet":0,"reward_products":[],"slabs":[],"strata":[{"ordinal":1,"claimable":true,"description":"1","rule_type":"value","range_from":1,"range_to":2,"rule_uom":"","reward_type":"percentage","reward_value":1,"reward_uom":"","per_scope":""},{"ordinal":2,"claimable":false,"description":"2","rule_type":"value","range_from":1,"range_to":2,"rule_uom":"","reward_type":"percentage","reward_value":2,"reward_uom":"","per_scope":""},{"ordinal":3,"claimable":false,"description":"3","rule_type":"value","range_from":3,"range_to":4,"rule_uom":"","reward_type":"percentage","reward_value":2,"reward_uom":"","per_scope":""}],"budget_reference_id":1,"minimum_sku":1,"product_criteria":[{"pro_id":644,"mandatory":true,"min_buy_type":"value","min_buy_qty":null,"min_buy_value":500000,"min_buy_uom":null},{"pro_id":645,"mandatory":false,"min_buy_type":"value","min_buy_qty":null,"min_buy_value":500000,"min_buy_uom":null},{"pro_id":642,"mandatory":false,"min_buy_type":"value","min_buy_qty":null,"min_buy_value":500000,"min_buy_uom":null},{"pro_id":641,"mandatory":false,"min_buy_type":"value","min_buy_qty":null,"min_buy_value":500000,"min_buy_uom":null}],"coverage_distributors":[{"distributor_id":67}],"coverage":"by_distributor","outlet_criteria":{"selection_type":"by_attribute","outlet_ids":[],"outlet_type_ids":[84],"outlet_group_ids":[],"outlet_class_ids":[],"sales_team_ids":[54]},"remarks":""}
+### End of Test Negative - Reward Product - Budget Reference is not mandatory
+
+
+### Test ERROR - Promotion Check 5
+# @name test_strata_reward_type_product
+POST {{host-sales}}/v2/promotions
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_type": "slab",
+    "promo_creation_type": "new",
+    "existing_promo_id": "",
+    "promo_id": "coba-coba-2",
+    "promo_desc": "coba",
+    "is_budget_reference": false,
+    "budget_ref_type": "",
+    "budget_amount": 0,
+    "budget_control_level": "",
+    "execution_level": "",
+    "effective_from": "2025-11-04",
+    "effective_to": "2025-11-11",
+    "is_claimable": false,
+    "slab_multiplied": false,
+    "strata_sequential": false,
+    "claim_type": null,
+    "claim_realization_pct": null,
+    "claim_start_after_days": null,
+    "max_invoice_per_outlet": 0,
+    "max_total_reward_type": "",
+    "max_total_reward_value": 0,
+    "reward_products": [],
+    "slabs": [
+        {
+            "ordinal": 1,
+            "description": "1",
+            "rule_type": "quantity",
+            "range_from": 1,
+            "range_to": 2,
+            "rule_uom": "smallest",
+            "reward_type": "fixed_value",
+            "reward_value": 5,
+            "reward_uom": "",
+            "per_scope": "per_product"
+        }
+    ],
+    "strata": [],
+    "budget_reference_id": 1,
+    "minimum_sku": 1,
+    "product_criteria": [
+        {
+            "pro_id": 705,
+            "mandatory": false,
+            "min_buy_type": "quantity",
+            "min_buy_qty": 6,
+            "min_buy_value": null,
+            "min_buy_uom": "smallest"
+        },
+        {
+            "pro_id": 704,
+            "mandatory": false,
+            "min_buy_type": "quantity",
+            "min_buy_qty": 6,
+            "min_buy_value": null,
+            "min_buy_uom": "smallest"
+        },
+        {
+            "pro_id": 703,
+            "mandatory": false,
+            "min_buy_type": "quantity",
+            "min_buy_qty": 6,
+            "min_buy_value": null,
+            "min_buy_uom": "smallest"
+        }
+    ],
+    "coverage_distributors": [],
+    "coverage": "national",
+    "outlet_criteria": {
+        "selection_type": "by_outlet",
+        "outlet_ids": [
+            391,
+            390,
+            246
+        ],
+        "outlet_type_ids": [],
+        "outlet_group_ids": [],
+        "outlet_class_ids": [],
+        "sales_team_ids": [
+            62,
+            57,
+            54,
+            53,
+            52
+        ]
+    },
+    "remarks": ""
+}
+### End of Test ERROR - Promotion Check 5
+
+
+# @name update_promotion_status
+@promo_id = prm-234
+@promo_status = submit
+PATCH {{host-sales}}/v2/promotions/{{promo_id}}/{{promo_status}}
+Content-Type: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "effective_to": "2025-11-28"
+}
+### End of Update Promotion Status
+
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NjcsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc2NjkyMjU3NSwiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.Jdpd9MuNdLZIHrf3_jdtleUV9KZS6xezMaUAuII86_0
+
+### Promo Consult V1
+POST {{host-sales}}/v1/promotions/consult
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{"order_date":"2025-02-17","outlet_id":190,"salesman_id":218,"details":[{"pro_id":480,"qty1":0,"qty2":0,"qty3":10,"sub_total":1200000},{"pro_id":472,"qty1":0,"qty2":0,"qty3":5,"sub_total":2169000},{"pro_id":473,"qty1":0,"qty2":0,"qty3":8,"sub_total":2534400}]}
+### End Promo Consult V1
+
+### Get Master Outlet
+GET {{host-master}}/v1/outlets?is_active=1&verification_status=1&q=&page=1&limit=10
+Content-Type: application/json
+# Authorization: Bearer {{login.response.body.data.token.access}}
+Authorization: Bearer {{access_token}}
+
+### End Get Master Outlet
+
+### User Login
+# @name login
+POST {{host-system}}/v1/users/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+
+{
+  "email":"{{email-distributor}}",
+  "password":"admin"
+}
+###
+
+### Promo Consult V2
+POST {{host-sales}}/v2/promotions/consult
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.data.token.access}}
+# Authorization: Bearer {{access_token}}
+
+{
+  "order_date": "2025-12-17",
+  "outlet_id": 1404,
+  "salesman_id": 359,
+  "wh_id": 63,
+  "details": [
+     {
+      "pro_id": 673,
+      "qty1": 10,
+      "qty2": 0,
+      "qty3": 0,
+      "sub_total": 15
+    }
+  ]
+}
+### End Promo Consult V2
+
+### User Login
+# @name login_local
+POST {{host-system}}/v1/users/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+
+{
+  "email":"{{email-distributor}}",
+  "password":"admin"
+}
+###
+
+### Promo Consult V2 - Test Case with promo_id = strata10
+# @name test_consult_v2_strata
+POST {{host-sales}}/v2/promotions/consult
+Content-Type: application/json
+Authorization: Bearer {{login_local.response.body.data.token.access}}
+
+{
+  "order_date": "2025-12-17",
+  "outlet_id": 1404,
+  "salesman_id": 359,
+  "wh_id": 63,
+  "details": [
+     {
+      "pro_id": 709,
+      "qty1": 10,
+      "qty2": 0,
+      "qty3": 0,
+      "gross_value": 1000000
+    },
+    {
+      "pro_id": 710,
+      "qty1": 5,
+      "qty2": 0,
+      "qty3": 0,
+      "gross_value": 1500000
+    },
+    {
+      "pro_id": 711,
+      "qty1": 5,
+      "qty2": 0,
+      "qty3": 0,
+      "gross_value": 1800000
+    }    
+  ]
+}
+### 
+
+### actual response
+{
+  "message": "Consulted V2 Successfully",
+  "data": [
+    {
+      "promo_id": "strata10",
+      "promo_desc": "Strata Syarat Quantity & Reward Value PerOrder Not Sequential (Quantity)",
+      "strata_id": [
+        "699b21412f5899d978016544"
+      ],
+      "strata_desc": [
+        "strata 1 quantity"
+      ],
+      "strata_reward": [
+        2000
+      ],
+      "strata_rule_type": "quantity",
+      "strata_rule_uom": "smallest",
+      "strata_reward_type": "fixed_value",
+      "strata_per_scope": "per_order",
+      "total_gross_value": 16400000,
+      "products_eligible": [
+        710
+      ],
+      "reward_value": [
+        {
+          "pro_id": 710,
+          "gross_value": 6000000,
+          "promo1": 2000,
+          "promo2": 0,
+          "promo3": 0,
+          "promo4": 0,
+          "promo5": 0,
+          "net_value": 5998000
+        }
+      ]
+    }
+  ],
+  "request_id": "77934ee1-b21a-409d-9b6c-4d45bb5b11c5"
+}
+### end actual response
+
+### expected response
+{
+    "message": "Consulted V2 Successfully",
+    "data": [
+        {
+            "promo_id": "strata10",
+            "promo_desc": "Strata Syarat Quantity & Reward Value PerOrder Not Sequential (Quantity)",
+            "strata_id": [
+                "6942318992fbf2a51400181b"
+            ],
+            "strata_desc": [
+                "strata 1 quantity"
+            ],
+            "strata_reward": [
+                2000
+            ],
+            "strata_rule_type": "quantity",
+            "strata_reward_type": "fixed_value",
+            "strata_per_scope": "per_order",
+            "total_gross_value": 4300000,
+            "products_eligible": [
+                710,
+                534,
+                673
+            ],
+            "reward_value": [
+                {
+                    "pro_id": 710,
+                    "gross_value": 1000000,
+                    "promo1": 667, // Perhitungan nilai strata promo 1 diambil dari perhitungan "strata_reward(2000)/product_eligible(3) -> jumlah product_eligible"
+                    "promo2": 0,
+                    "promo3": 0,
+                    "promo4": 0,
+                    "promo5": 0,
+                    "net_value": 999333
+                },
+                {
+                    "pro_id": 534,
+                    "gross_value": 1500000,
+                    "promo1": 667, // Perhitungan nilai strata promo 1 diambil dari perhitungan "strata_reward(2000)/product_eligible(3) -> jumlah product_eligible"
+                    "promo2": 0,
+                    "promo3": 0,
+                    "promo4": 0,
+                    "promo5": 0,
+                    "net_value": 1499333
+                },
+                {
+                    "pro_id": 673,
+                    "gross_value": 1800000,
+                    "promo1": 667, // Perhitungan nilai strata promo 1 diambil dari perhitungan "strata_reward(2000)/product_eligible(3) -> jumlah product_eligible"
+                    "promo2": 0,
+                    "promo3": 0,
+                    "promo4": 0,
+                    "promo5": 0,
+                    "net_value": 1799333
+                }
+            ]
+        }
+    ],
+    "request_id": "c78936e3-47f4-4883-9895-e0a74f4801a3"
+}
+### end expected response
+
+### Get Stock Report
+GET {{host-inventory}}/v1/stocks/report
+    ?limit=10
+    &page=1
+    &date=2025-12-17
+    &wh_id=63
+    &pro_id=534
+    # &pro_id=534
+    &show_conversion=true
+    &show_price=true
+    &include_zero_stock=true
+    &active_product_only=true
+    &sort=pro_code:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login_local.response.body.data.token.access}}
+
+###
+
+### Test Case 1 Response
+{
+    "message": "Consulted V2 Successfully",
+    "data": [
+        {
+            "promo_id": "slab04",
+            "promo_desc": "Syarat Value & Reward Produk (Quantity)",
+            "slab_id": "694caff8cc48b19f80002ceb",
+            "slab_desc": "slab 1 Quantity Smallest",
+            "slab_reward": 1,
+            "slab_reward_uom": "smallest",
+            "slab_reward_type": "product",
+            "slab_per_scope": "",
+            "total_gross_value": 1600000,
+            "products_eligible": [
+                710,
+                711
+            ],
+            "reward_value": null,
+            "reward_percentage": null,
+            "reward_product": [
+                {
+                    "pro_id": 491,
+                    "qty1": 1, // hasil reward product qty ambil dari slab_reward (*ada catatan dikolom remarks)
+                    "qty2": 0,
+                    "qty3": 0,
+                    "gross_value": 12000, // nilai gross_value diambil sesuai pro_id dan sesuai setting sell_price1/outlet_price1/manual_price1 yang sudah disesuaikan
+                    "promo1": 12000, // hasil reward product dari nilai gross_value(12000)*qty1(1)/qty2/qty3
+                    "promo2": 0,
+                    "promo3": 0,
+                    "promo4": 0,
+                    "promo5": 0
+                }
+            ]
+        }
+    ],
+    "request_id": "858bf909-c18d-4ace-8f4d-58753e96bb92"
+}
+###
+
+### Promo Conversion V2 - 
+POST {{host-sales}}/v2/promotions/unit-conversion
+Content-Type: application/json
+Authorization: Bearer {{login_local.response.body.data.token.access}}
+
+{
+    "pro_id": 534,
+    "qty1": 0,
+    "qty2": 10,
+    "qty3": 5
+}
+### 
+
+
+@master_url = http://127.0.0.1:9002
+
+####### PRODUCT #######
+# @name get_product_list
+GET {{host-master}}/v1/products?pro_id=491&q=&page=1&limit=10&sort=pro_id:asc&is_active=1&mode=lookup_dist_price&distributor_id=68
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login_local.response.body.data.token.access}}
+###

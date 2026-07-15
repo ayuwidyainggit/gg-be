@@ -1,0 +1,20 @@
+CREATE TABLE picklist.order_product (
+    order_no VARCHAR(128) PRIMARY KEY,
+    invoice_no VARCHAR(128) NULL,
+    outlet_name VARCHAR(128) NULL,
+    product_name VARCHAR(128) NULL,
+    quantity_1 NUMERIC NULL,
+    quantity_2 NUMERIC NULL,
+    quantity_3 NUMERIC NULL,
+    quantity_unit_1 VARCHAR(128) NULL,
+    quantity_unit_2 VARCHAR(128) NULL,
+    quantity_unit_3 VARCHAR(128) NULL,
+    volume NUMERIC NULL,
+    weight NUMERIC NULL,
+    unit_1_price NUMERIC NULL,
+    unit_2_price NUMERIC NULL,
+    unit_3_price NUMERIC NULL,
+    ppn NUMERIC NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

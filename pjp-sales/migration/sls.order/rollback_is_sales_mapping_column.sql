@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE IF EXISTS sls.order
+DROP COLUMN IF EXISTS is_sales_mapping;
+
+COMMIT;

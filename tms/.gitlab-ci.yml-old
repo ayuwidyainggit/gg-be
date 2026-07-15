@@ -1,0 +1,63 @@
+# .gitlab-ci.yml
+# -------------------------- DEFINITION
+variables:
+  TAG_IMAGE: "$CI_COMMIT_BRANCH-$CI_COMMIT_SHA"
+  
+# Define the stages
+stages:
+  - deploy
+  - sync  # Add the sync stage here
+
+# -------------------------- DEPLOY TO JENKINS 
+
+deploy-dev:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://103.28.219.73:8080"
+    JENKINS_JOB: "scylla-tms"
+    JENKINS_TOKEN: "scylla-tms-cicd-token"
+  script:
+    - |
+      curl -G \
+      --data-urlencode "CI_COMMIT_AUTHOR=$CI_COMMIT_AUTHOR" \
+      --data-urlencode "CI_COMMIT_MESSAGE=$CI_COMMIT_MESSAGE" \
+      -u "$JENKINS_USERNAME:$JENKINS_PWD" \
+      -I "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN&CI_PROJECT_NAME=$CI_PROJECT_NAME&CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH&CI_COMMIT_BEFORE_SHA=$CI_COMMIT_BEFORE_SHA"
+  only:
+    - staging
+
+deploy-qa:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://103.28.219.76:8080"
+    JENKINS_JOB: "scylla-tms"
+    JENKINS_TOKEN: "scylla-tms-cicd-token"
+  script:
+    - |
+      curl -G \
+      --data-urlencode "CI_COMMIT_AUTHOR=$CI_COMMIT_AUTHOR" \
+      --data-urlencode "CI_COMMIT_MESSAGE=$CI_COMMIT_MESSAGE" \
+      -u "$JENKINS_USERNAME:$JENKINS_PWD" \
+      -I "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN&CI_PROJECT_NAME=$CI_PROJECT_NAME&CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH&CI_COMMIT_BEFORE_SHA=$CI_COMMIT_BEFORE_SHA"
+  only:
+    - demo
+
+deploy-prod:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://110.239.87.116:8080"
+    JENKINS_JOB: "scylla-tms"
+    JENKINS_TOKEN: "scylla-tms-cicd-token"
+  script:
+    - |
+      curl -G \
+      --data-urlencode "CI_COMMIT_AUTHOR=$CI_COMMIT_AUTHOR" \
+      --data-urlencode "CI_COMMIT_MESSAGE=$CI_COMMIT_MESSAGE" \
+      -u "$JENKINS_USERNAME:$JENKINS_PWD" \
+      -I "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN&CI_PROJECT_NAME=$CI_PROJECT_NAME&CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH&CI_COMMIT_BEFORE_SHA=$CI_COMMIT_BEFORE_SHA"
+  only:
+    - main
+

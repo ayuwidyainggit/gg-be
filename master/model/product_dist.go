@@ -1,0 +1,141 @@
+package model
+
+import (
+	"time"
+)
+
+type ProductDist struct {
+	CustId         string     `json:"cust_id" db:"cust_id"`
+	ProductId      int64      `json:"pro_id" db:"pro_id"`
+	ProductCode    string     `json:"pro_code" db:"pro_code"`
+	ProductName    string     `json:"pro_name" db:"pro_name"`
+	BarCode        *string    `json:"bar_code" db:"bar_code"`
+	PCatId         *int       `json:"pcat_id" db:"pcat_id"`
+	PCatCode       *string    `json:"pcat_code" db:"pcat_code"`
+	PCatName       *string    `json:"pcat_name" db:"pcat_name"`
+	PlId           int        `json:"pl_id" db:"pl_id"`
+	PlCode         string     `json:"pl_code" db:"pl_code"`
+	PlName         string     `json:"pl_name" db:"pl_name"`
+	BrandId        int        `json:"brand_id" db:"brand_id"`
+	BrandCode      string     `json:"brand_code" db:"brand_code"`
+	BrandName      string     `json:"brand_name" db:"brand_name"`
+	Sbrand1        int        `json:"sbrand1_id" db:"sbrand1_id"`
+	Sbrand1Code    string     `json:"sbrand1_code" db:"sbrand1_code"`
+	Sbrand1Name    string     `json:"sbrand1_name" db:"sbrand1_name"`
+	Sbrand2        int        `json:"sbrand2_id" db:"sbrand2_id"`
+	Sbrand2Code    string     `json:"sbrand2_code" db:"sbrand2_code"`
+	Sbrand2Name    string     `json:"sbrand2_name" db:"sbrand2_name"`
+	FlavorId       int        `json:"flavor_id" db:"flavor_id"`
+	FlavorCode     string     `json:"flavor_code" db:"flavor_code"`
+	FlavorName     string     `json:"flavor_name" db:"flavor_name"`
+	PTypeId        int        `json:"ptype_id" db:"ptype_id"`
+	PTypeCode      string     `json:"ptype_code" db:"ptype_code"`
+	PTypeName      string     `json:"ptype_name" db:"ptype_name"`
+	PSizeId        int        `json:"psize_id" db:"psize_id"`
+	PSizeCode      string     `json:"psize_code" db:"psize_code"`
+	PsizeName      string     `json:"psize_name" db:"psize_name"`
+	SupId          int        `json:"sup_id" db:"sup_id"`
+	SupCode        string     `json:"sup_code" db:"sup_code"`
+	SupName        string     `json:"sup_name" db:"sup_name"`
+	PrincipalId    int        `json:"principal_id" db:"principal_id"`
+	PrincipalCode  string     `json:"principal_code" db:"principal_code"`
+	PrincipalName  string     `json:"principal_name" db:"principal_name"`
+	CProId         int        `json:"c_pro_id" db:"c_pro_id"`
+	CProCode       string     `json:"c_pro_code" db:"c_pro_code"`
+	CProName       string     `json:"c_pro_name" db:"c_pro_name"`
+	IsMainPro      bool       `json:"is_main_pro" db:"is_main_pro"`
+	IsAlloc        bool       `json:"is_alloc" db:"is_alloc"`
+	SMweek1        *int       `json:"s_mweek1" db:"s_mweek1"`
+	SMweek2        *int       `json:"s_mweek2" db:"s_mweek2"`
+	SortNo         int        `json:"sort_no" db:"sort_no"`
+	ItemNo         int        `json:"item_no" db:"item_no"`
+	UnitId1        *string    `json:"unit_id1" db:"unit_id1"`
+	UnitId2        *string    `json:"unit_id2" db:"unit_id2"`
+	UnitId3        *string    `json:"unit_id3" db:"unit_id3"`
+	UnitId4        *string    `json:"unit_id4" db:"unit_id4"`
+	UnitId5        *string    `json:"unit_id5" db:"unit_id5"`
+	UnitName1      *string    `json:"unit_name1" db:"unit_name1"`
+	UnitName2      *string    `json:"unit_name2" db:"unit_name2"`
+	UnitName3      *string    `json:"unit_name3" db:"unit_name3"`
+	UnitName4      *string    `json:"unit_name4" db:"unit_name4"`
+	UnitName5      *string    `json:"unit_name5" db:"unit_name5"`
+	ConvUnit2      float32    `json:"conv_unit2" db:"conv_unit2"`
+	ConvUnit3      float32    `json:"conv_unit3" db:"conv_unit3"`
+	ConvUnit4      float32    `json:"conv_unit4" db:"conv_unit4"`
+	ConvUnit5      float32    `json:"conv_unit5" db:"conv_unit5"`
+	Margin         *float64   `json:"margin" db:"margin"`
+	Weight         *float64   `json:"weight" db:"weight"`
+	IsBatch        bool       `json:"is_batch" db:"is_batch"`
+	IsExpDate      bool       `json:"is_exp_date" db:"is_exp_date"`
+	Length         float64    `json:"length" db:"length"`
+	Width          float64    `json:"width"  db:"width" `
+	Height         float64    `json:"height" db:"height"`
+	Volume         float64    `json:"volume" db:"volume"`
+	MinStock       float64    `json:"min_stock" db:"min_stock"`
+	MinStockStr    string     `json:"min_stock_str" db:"min_stock_str"`
+	SafetyStock    float64    `json:"safety_stock" db:"safety_stock"`
+	SafetyStockStr string     `json:"safety_stock_str" db:"safety_stock_str"`
+	PoFormula      int        `json:"po_formula" db:"po_formula"`
+	ParentProId    *int       `json:"parent_pro_id" db:"parent_pro_id"`
+	IsNewPro       bool       `json:"is_new_pro" db:"is_new_pro"`
+	Vat            float64    `json:"vat" db:"vat"`
+	VatBg          float64    `json:"vat_bg" db:"vat_bg"`
+	VatLgPurch     float64    `json:"vat_lg_purch" db:"vat_lg_purch"`
+	VatLgSell      float64    `json:"vat_lg_sell" db:"vat_lg_sell"`
+	ExciseRate     float64    `json:"excise_rate" db:"excise_rate"`
+	ExciseTax      float64    `json:"excise_tax" db:"excise_tax"`
+	IsActive       bool       `json:"is_active" db:"is_active"`
+	IsDel          bool       `json:"is_del" db:"is_del"`
+	CreatedBy      *int64     `json:"created_by,omitempty" db:"created_by,omitempty"`
+	CreatedAt      *time.Time `json:"created_at,omitempty" db:"created_at,omitempty"`
+	UpdatedBy      *int64     `json:"updated_by,omitempty" db:"updated_by,omitempty"`
+	UpdatedByName  *string    `json:"updated_by_name" db:"updated_by_name,omitempty"`
+	UpdatedAt      *time.Time `json:"updated_at,omitempty" db:"updated_at,omitempty"`
+	DeletedBy      *int64     `json:"deleted_by,omitempty" db:"deleted_by,omitempty"`
+	DeletedAt      *time.Time `json:"deleted_at,omitempty" db:"deleted_at,omitempty"`
+	ImageUrl       *string    `json:"image_url" db:"image_url"`
+	Cogs           float64    `json:"cogs" db:"cogs"`
+}
+
+type ProductDistUpdate struct {
+	IsActive       *bool      `json:"is_active" sql:"is_active"`
+	IsAlloc        *bool      `json:"is_alloc" sql:"is_alloc"`
+	MinStock       *float64   `json:"min_stock" sql:"min_stock"`
+	MinStockStr    *string    `json:"min_stock_str" sql:"min_stock_str"`
+	SafetyStock    *float64   `json:"safety_stock" sql:"safety_stock"`
+	SafetyStockStr *string    `json:"safety_stock_str" sql:"safety_stock_str"`
+	PoFormula      *int       `json:"po_formula" sql:"po_formula"`
+	IsNewPro       *bool      `json:"is_new_pro" sql:"is_new_pro"`
+	Vat            *float64   `json:"vat" sql:"vat"`
+	VatBg          *float64   `json:"vat_bg" sql:"vat_bg"`
+	VatLgPurch     *float64   `json:"vat_lg_purch" sql:"vat_lg_purch"`
+	VatLgSell      *float64   `json:"vat_lg_sell" sql:"vat_lg_sell"`
+	Cogs           *float64   `json:"cogs" sql:"cogs"`
+	SMweek1        *int       `json:"s_mweek1" sql:"s_mweek1"`
+	SMweek2        *int       `json:"s_mweek2" sql:"s_mweek2"`
+	UpdatedAt      *time.Time `json:"updated_at" sql:"updated_at"`
+	UpdatedBy      *int64     `json:"updated_by" sql:"updated_by"`
+}
+
+type ProductDistCreate struct {
+	CustId         string    `json:"cust_id" db:"cust_id"`
+	ProId          *int64    `json:"pro_id" db:"pro_id"`
+	IsActive       bool      `json:"is_active" db:"is_active"`
+	IsAlloc        bool      `json:"is_alloc" db:"is_alloc"`
+	MinStock       float64   `json:"min_stock" db:"min_stock"`
+	MinStockStr    string    `json:"min_stock_str" db:"min_stock_str"`
+	SafetyStock    float64   `json:"safety_stock" db:"safety_stock"`
+	SafetyStockStr string    `json:"safety_stock_str" db:"safety_stock_str"`
+	PoFormula      int       `json:"po_formula" db:"po_formula"`
+	IsNewPro       bool      `json:"is_new_pro" db:"is_new_pro"`
+	Vat            float64   `json:"vat" db:"vat"`
+	VatBg          float64   `json:"vat_bg" db:"vat_bg"`
+	VatLgPurch     float64   `json:"vat_lg_purch" db:"vat_lg_purch"`
+	VatLgSell      float64   `json:"vat_lg_sell" db:"vat_lg_sell"`
+	Cogs           float64   `json:"cogs" db:"cogs"`
+	SMweek1        int       `json:"s_mweek1" db:"s_mweek1"`
+	SMweek2        int       `json:"s_mweek2" db:"s_mweek2"`
+	UpdatedAt      time.Time `json:"updated_at" db:"updated_at"`
+	UpdatedBy      int64     `json:"updated_by" db:"updated_by"`
+	ParentProId    *int64    `json:"parent_pro_id" db:"parent_pro_id"`
+}

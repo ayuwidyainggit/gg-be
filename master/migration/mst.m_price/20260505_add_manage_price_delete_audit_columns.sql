@@ -1,0 +1,7 @@
+ALTER TABLE mst.m_price
+    ADD COLUMN IF NOT EXISTS is_del BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN IF NOT EXISTS deleted_by BIGINT NULL,
+    ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ NULL;
+
+CREATE INDEX IF NOT EXISTS idx_m_price_is_del
+    ON mst.m_price (is_del);

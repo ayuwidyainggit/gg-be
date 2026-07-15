@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS mst.m_outlet_principal_code_seq (
+    prefix VARCHAR(64) PRIMARY KEY,
+    last_sequence_no INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);

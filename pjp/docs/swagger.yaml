@@ -1,0 +1,3085 @@
+definitions:
+  model.Pjp:
+    properties:
+      approval_status:
+        enum:
+        - In Review
+        - Draft
+        - Approved
+        - Approved With Propose
+        - Reject
+        type: string
+      created_at:
+        type: string
+      cust_id:
+        type: string
+      emp_code:
+        description: EmpCode       string `gorm:"column:emp_code;type:varchar(125);null"
+          json:"emp_code"`
+        type: string
+      id:
+        type: integer
+      operation_type:
+        type: string
+      pjp_code:
+        type: integer
+      pjp_mode:
+        type: string
+      route_code:
+        type: integer
+      routeOutlets:
+        items:
+          $ref: '#/definitions/model.RouteOutlet'
+        type: array
+      salesman_code:
+        type: string
+      salesman_id:
+        type: integer
+      salesman_name:
+        type: string
+      status:
+        type: string
+      team_salesman:
+        type: string
+      total_destinations:
+        type: integer
+      total_outlet:
+        type: integer
+      total_route:
+        type: integer
+      updated_at:
+        type: string
+      warehouse_id:
+        type: integer
+      warehouse_name:
+        type: string
+    required:
+    - approval_status
+    type: object
+  model.Route:
+    properties:
+      avg_sales_week:
+        type: number
+      created_at:
+        type: string
+      cust_id:
+        type: string
+      id:
+        type: integer
+      is_assign:
+        type: boolean
+      is_assign_pjp:
+        type: boolean
+      is_pjp_old:
+        type: boolean
+      latitude:
+        type: string
+      longitude:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_name:
+        type: string
+      outlet_status:
+        type: string
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      route_name:
+        type: string
+      route_pop_status:
+        type: string
+      routeOutlets:
+        items:
+          $ref: '#/definitions/model.RouteOutlet'
+        type: array
+      status:
+        type: string
+      total_outlet:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  model.RouteOutlet:
+    properties:
+      avg_sales_week:
+        type: number
+      created_at:
+        type: string
+      cust_id:
+        type: string
+      id:
+        type: integer
+      latitude:
+        type: string
+      longitude:
+        type: string
+      old_pjp_code:
+        type: integer
+      old_pjp_id:
+        type: integer
+      old_route_code:
+        type: integer
+      old_route_name:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_name:
+        type: string
+      outlet_status:
+        type: string
+      outlet_visit_list_id:
+        description: alias column
+        type: integer
+      pjp:
+        $ref: '#/definitions/model.Pjp'
+      pjp_code:
+        type: integer
+      pjp_id:
+        type: integer
+      pjpOld:
+        $ref: '#/definitions/model.Pjp'
+      route:
+        $ref: '#/definitions/model.Route'
+      route_code:
+        type: integer
+      route_name:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+      verified_date:
+        type: string
+    type: object
+  request.AddOutletToRouteData:
+    properties:
+      outlets:
+        description: Date      string `validate:"required,date"    json:"date"`
+        items:
+          $ref: '#/definitions/request.Outlets'
+        type: array
+      pjp_code:
+        example: "2"
+        type: string
+      pjp_id:
+        example: 53
+        type: integer
+      route_code:
+        example: 7170
+        type: integer
+    required:
+    - outlets
+    - pjp_code
+    - pjp_id
+    - route_code
+    type: object
+  request.AddOutletToRouteRequest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/request.AddOutletToRouteData'
+        type: array
+    required:
+    - data
+    type: object
+  request.CancelAddOutletToRouteData:
+    properties:
+      outlet_code:
+        example: "20241126"
+        type: string
+      pjp_id:
+        example: 53
+        type: integer
+      route_code:
+        example: 7170
+        type: integer
+    required:
+    - outlet_code
+    - pjp_id
+    - route_code
+    type: object
+  request.CancelAddOutletToRouteRequest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/request.CancelAddOutletToRouteData'
+        type: array
+    required:
+    - data
+    type: object
+  request.CopyAllRequest:
+    properties:
+      pjp_code:
+        items:
+          type: integer
+        type: array
+    required:
+    - pjp_code
+    type: object
+  request.CopyPartialRequest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/request.RoutesData'
+        type: array
+    type: object
+  request.CreatePjpAuto:
+    properties:
+      Day:
+        example:
+        - '["Monday"'
+        - '"Monday"'
+        - '"Sunday"'
+        - '"Sunday"]'
+        items:
+          type: string
+        type: array
+      Route:
+        items:
+          items:
+            $ref: '#/definitions/request.OutletReq'
+          type: array
+        type: array
+      Sales:
+        items:
+          $ref: '#/definitions/request.PjpAutoRequest'
+        type: array
+    required:
+    - Day
+    - Route
+    - Sales
+    type: object
+  request.CreatePjpEnhanceRequest:
+    properties:
+      approval_status:
+        description: Status         string              `validate:"required,oneof=true
+          false"   json:"is_active"`
+        enum:
+        - Need Review
+        - Draft
+        example: Need Review
+        type: string
+      operation_type:
+        example: GT
+        type: string
+      pjp_code:
+        maximum: 9999
+        minimum: 1
+        type: integer
+      routes:
+        items:
+          $ref: '#/definitions/request.RoutesCreatePjp'
+        type: array
+      salesman_code:
+        example: "3456"
+        type: string
+      salesman_id:
+        example: 4
+        minimum: 0
+        type: integer
+      salesman_name:
+        example: Budi
+        type: string
+      salesman_team:
+        example: Canvas
+        type: string
+      visit_day:
+        items:
+          $ref: '#/definitions/request.VisitDayCreatePjp'
+        type: array
+      warehouse_id:
+        example: 1
+        minimum: 0
+        type: integer
+      warehouse_name:
+        example: Gudang
+        type: string
+    required:
+    - approval_status
+    - operation_type
+    - pjp_code
+    - routes
+    - salesman_code
+    - salesman_name
+    - salesman_team
+    - warehouse_name
+    type: object
+  request.CreateRouteRequest:
+    properties:
+      route_name:
+        maxLength: 125
+        minLength: 2
+        type: string
+    required:
+    - route_name
+    type: object
+  request.DeleteOutletAdditionalRequest:
+    properties:
+      date:
+        type: string
+      outlet_code:
+        items:
+          type: string
+        type: array
+      route_code:
+        type: integer
+      week:
+        type: integer
+    required:
+    - date
+    - outlet_code
+    - route_code
+    - week
+    type: object
+  request.DeleteOutletRequest:
+    properties:
+      date:
+        type: string
+      outlet_code:
+        items:
+          type: string
+        type: array
+      route_code:
+        type: integer
+      week:
+        type: integer
+    required:
+    - outlet_code
+    - route_code
+    type: object
+  request.DeletePjpRequest:
+    properties:
+      pjp_code:
+        type: string
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+    required:
+    - pjp_code
+    - pjp_id
+    - route_code
+    type: object
+  request.Destination:
+    properties:
+      address:
+        example: mampang
+        type: string
+      avg_sales_week:
+        example: 100
+        type: number
+      code:
+        example: OUT 5
+        type: string
+      id:
+        example: 5
+        type: integer
+      is_additional:
+        example: false
+        type: boolean
+      latitude:
+        example: "-6.200000"
+        type: string
+      longitude:
+        example: "106.816666"
+        type: string
+      name:
+        example: Outlet okok
+        type: string
+      status:
+        example: "1"
+        type: string
+      type:
+        enum:
+        - outlet
+        - distributor
+        example: outlet
+        type: string
+    required:
+    - address
+    - code
+    - id
+    - latitude
+    - longitude
+    - name
+    - type
+    type: object
+  request.DuplicateRoute:
+    properties:
+      route_code:
+        type: integer
+    required:
+    - route_code
+    type: object
+  request.FinishVisitRequest:
+    properties:
+      current_time:
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      salesman_code:
+        type: string
+    required:
+    - current_time
+    - cust_id
+    - date
+    - salesman_code
+    type: object
+  request.GeotagingValidationRequest:
+    properties:
+      activity:
+        enum:
+        - arrive
+        - leave
+        example: arrive
+        type: string
+      arrival_latitude:
+        example: "-6.208760"
+        type: string
+      arrival_longitude:
+        example: "106.845600"
+        type: string
+      current_time:
+        example: 1704556800
+        type: integer
+      cust_id:
+        example: C220010001
+        type: string
+      emp_id:
+        example: 1
+        type: integer
+      outlet_id:
+        example: 190
+        type: integer
+      outlet_latitude:
+        example: "-6.208763"
+        type: string
+      outlet_longitude:
+        example: "106.845599"
+        type: string
+      user_id:
+        example: 43
+        type: integer
+    required:
+    - activity
+    - current_time
+    - cust_id
+    - emp_id
+    - outlet_id
+    - outlet_latitude
+    - outlet_longitude
+    - user_id
+    type: object
+  request.LeaveVisitRequest:
+    properties:
+      current_time:
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      salesman_code:
+        type: string
+    required:
+    - current_time
+    - cust_id
+    - date
+    - id
+    - salesman_code
+    type: object
+  request.NewRouteBody:
+    properties:
+      old_pjp_code:
+        type: integer
+      old_pjp_id:
+        type: integer
+      old_route_code:
+        type: integer
+      old_route_name:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      pjp_code:
+        type: string
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      route_name:
+        type: string
+    required:
+    - old_pjp_code
+    - old_pjp_id
+    - old_route_code
+    - old_route_name
+    - outlet_code
+    - outlet_id
+    - pjp_code
+    - pjp_id
+    - route_code
+    - route_name
+    type: object
+  request.NewRouteRequest:
+    properties:
+      new_route_propose:
+        items:
+          $ref: '#/definitions/request.NewRouteBody'
+        type: array
+    required:
+    - new_route_propose
+    type: object
+  request.OnholdVisitRequest:
+    properties:
+      current_time:
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      salesman_code:
+        type: string
+    required:
+    - current_time
+    - cust_id
+    - date
+    - id
+    - salesman_code
+    type: object
+  request.OutletReq:
+    properties:
+      latitude:
+        example: "29.355400"
+        type: string
+      longitude:
+        example: "-98.445857"
+        type: string
+      outlet_address:
+        example: Semarang
+        type: string
+      outlet_code:
+        example: OUT10
+        type: string
+      outlet_id:
+        example: 10
+        type: integer
+      outlet_name:
+        example: Outlet 10
+        type: string
+      outlet_status:
+        example: 1
+        type: integer
+    type: object
+  request.OutletVisitRequest:
+    properties:
+      cust_id:
+        type: string
+      date:
+        type: string
+      salesman_code:
+        type: string
+    required:
+    - cust_id
+    - date
+    - salesman_code
+    type: object
+  request.Outlets:
+    properties:
+      avg_sales_week:
+        example: 100
+        type: number
+      latitude:
+        example: "-6.200000"
+        type: string
+      longitude:
+        example: "106.816666"
+        type: string
+      outlet_address:
+        example: mampang
+        type: string
+      outlet_code:
+        example: OUT 5
+        type: string
+      outlet_id:
+        example: 5
+        type: integer
+      outlet_name:
+        example: Outlet okok
+        type: string
+      outlet_status:
+        example: 1
+        type: integer
+    required:
+    - latitude
+    - longitude
+    - outlet_address
+    - outlet_code
+    - outlet_id
+    - outlet_name
+    - outlet_status
+    type: object
+  request.PjpAutoRequest:
+    properties:
+      id:
+        example: 18
+        type: integer
+      pjp_code:
+        example: "1000"
+        type: string
+      salesman_name:
+        example: DEN BEI
+        type: string
+    required:
+    - id
+    - pjp_code
+    - salesman_name
+    type: object
+  request.PjpRequest:
+    properties:
+      id:
+        minimum: 1
+        type: integer
+      is_active:
+        enum:
+        - "true"
+        - "false"
+        type: string
+      operation_type:
+        type: string
+      pjp_code:
+        maximum: 9999
+        minimum: 1
+        type: integer
+      salesman_code:
+        type: string
+      salesman_id:
+        minimum: 0
+        type: integer
+      salesman_name:
+        type: string
+      salesman_team:
+        type: string
+      warehouse_id:
+        minimum: 0
+        type: integer
+      warehouse_name:
+        type: string
+    required:
+    - is_active
+    - operation_type
+    - pjp_code
+    - salesman_code
+    - salesman_name
+    - salesman_team
+    - warehouse_name
+    type: object
+  request.ResumeVisitRequest:
+    properties:
+      current_time:
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      salesman_code:
+        type: string
+    required:
+    - current_time
+    - cust_id
+    - date
+    - id
+    - salesman_code
+    type: object
+  request.Route:
+    properties:
+      latitude:
+        type: string
+      longitude:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_name:
+        type: string
+      outlet_status:
+        type: integer
+      route_code:
+        type: integer
+    required:
+    - latitude
+    - longitude
+    - outlet_address
+    - outlet_code
+    - outlet_id
+    - outlet_name
+    - outlet_status
+    - route_code
+    type: object
+  request.RouteDailyData:
+    properties:
+      outlets:
+        items:
+          $ref: '#/definitions/request.Outlets'
+        type: array
+      pjp_code:
+        type: string
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      weeks:
+        items:
+          $ref: '#/definitions/request.Week'
+        type: array
+    required:
+    - outlets
+    - pjp_code
+    - pjp_id
+    - route_code
+    - weeks
+    type: object
+  request.RouteData:
+    properties:
+      pjp_code:
+        type: string
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      weeks:
+        items:
+          $ref: '#/definitions/request.Week'
+        type: array
+    required:
+    - pjp_code
+    - pjp_id
+    - route_code
+    - weeks
+    type: object
+  request.Routes:
+    properties:
+      route_code:
+        type: integer
+    required:
+    - route_code
+    type: object
+  request.RoutesCreatePjp:
+    properties:
+      destinations:
+        items:
+          $ref: '#/definitions/request.Destination'
+        type: array
+      id:
+        description: digunakan untuk update/delete
+        example: 2
+        type: integer
+      route_code:
+        description: optional untuk referensi
+        example: 234
+        type: integer
+      route_name:
+        example: Rute senin
+        type: string
+    required:
+    - destinations
+    - route_name
+    type: object
+  request.RoutesData:
+    properties:
+      pjp_code:
+        type: integer
+      routes:
+        items:
+          $ref: '#/definitions/request.Routes'
+        type: array
+    required:
+    - pjp_code
+    type: object
+  request.RoutesMapping:
+    properties:
+      date:
+        type: string
+      day:
+        type: string
+      pjp_code:
+        type: integer
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      routes:
+        items:
+          $ref: '#/definitions/request.Routes'
+        type: array
+      week:
+        type: integer
+      year:
+        type: integer
+    required:
+    - date
+    - day
+    - pjp_code
+    - pjp_id
+    - route_code
+    - week
+    - year
+    type: object
+  request.SaveDailyRouteMap:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/request.RouteDailyData'
+        type: array
+    required:
+    - data
+    type: object
+  request.SaveOutletRequest:
+    properties:
+      outlets:
+        items:
+          $ref: '#/definitions/request.Outlets'
+        type: array
+      route_code:
+        type: integer
+    required:
+    - outlets
+    - route_code
+    type: object
+  request.SavePjpRequest:
+    properties:
+      pjp_code:
+        type: string
+      pjp_id:
+        type: integer
+      route_code:
+        items:
+          type: integer
+        type: array
+    required:
+    - pjp_code
+    - pjp_id
+    - route_code
+    type: object
+  request.SaveRouteConfirmationRequest:
+    properties:
+      new_routes:
+        items:
+          $ref: '#/definitions/request.Route'
+        type: array
+    type: object
+  request.SaveWeeklyRequest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/request.RouteData'
+        type: array
+    required:
+    - data
+    type: object
+  request.SkipVisitRequest:
+    properties:
+      current_time:
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      salesman_code:
+        type: string
+      skip_reason:
+        type: string
+    required:
+    - current_time
+    - cust_id
+    - date
+    - id
+    - salesman_code
+    - skip_reason
+    type: object
+  request.StartVisitRequest:
+    properties:
+      current_time:
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      salesman_code:
+        type: string
+    required:
+    - current_time
+    - cust_id
+    - date
+    - salesman_code
+    type: object
+  request.UpdatePjpInRouteRequest:
+    properties:
+      pjp_code:
+        type: integer
+      route_code:
+        items:
+          type: integer
+        type: array
+    required:
+    - pjp_code
+    - route_code
+    type: object
+  request.UpdateRoutesRequest:
+    properties:
+      id:
+        type: integer
+      route_name:
+        type: string
+    required:
+    - id
+    - route_name
+    type: object
+  request.UpdateStatusEnhanceRequest:
+    properties:
+      pjp_code:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+    required:
+    - pjp_code
+    - status
+    type: object
+  request.UpdateStatusPjpEnhanceRequest:
+    properties:
+      operation_type:
+        example: Taking Order, Canvas
+        type: string
+      salesman_code:
+        example: "1234"
+        type: string
+      salesman_name:
+        example: Charles Leclerc
+        type: string
+      salesman_team:
+        example: MT
+        type: string
+      status:
+        example: true
+        type: boolean
+      warehouse_id:
+        example: 1
+        type: integer
+      warehouse_name:
+        example: Gudang
+        type: string
+    type: object
+  request.UpdateStatusRequest:
+    properties:
+      id:
+        items:
+          type: integer
+        type: array
+      status:
+        type: string
+    required:
+    - id
+    - status
+    type: object
+  request.VisitDayCreatePjp:
+    properties:
+      date:
+        example: "2022-01-01"
+        type: string
+      day:
+        example: Senin
+        type: string
+      id:
+        example: 5
+        type: integer
+      indexDay:
+        example: 1
+        type: integer
+      isInCurrentYear:
+        example: true
+        type: boolean
+      startWeek:
+        example: "2022-01-01"
+        type: string
+      visit:
+        $ref: '#/definitions/request.RoutesCreatePjp'
+      week:
+        example: 1
+        type: integer
+      year:
+        example: 2022
+        type: integer
+    required:
+    - date
+    - day
+    - id
+    - indexDay
+    - isInCurrentYear
+    - startWeek
+    - visit
+    - week
+    - year
+    type: object
+  request.Week:
+    properties:
+      date:
+        type: string
+      day:
+        type: string
+      week:
+        type: integer
+      year:
+        type: integer
+    required:
+    - week
+    - year
+    type: object
+  response.GeotagingValidationData:
+    properties:
+      allowed_radius:
+        example: 100
+        type: integer
+      confirmed_at:
+        example: "2026-01-06T19:45:03+07:00"
+        type: string
+      distance_meter:
+        example: 135
+        type: integer
+      location_status:
+        example: IN_RADIUS
+        type: string
+    type: object
+  response.GeotagingValidationResponse:
+    properties:
+      data:
+        $ref: '#/definitions/response.GeotagingValidationData'
+      error_code:
+        example: GPS_DISABLED
+        type: string
+      message:
+        example: Arrival confirmed successfully
+        type: string
+      request_id:
+        example: 6915a6dd2395083c685e8e16
+        type: string
+    type: object
+  response.Meta:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  response.OutletHistory:
+    properties:
+      avg_sales_week:
+        type: number
+      cust_id:
+        type: string
+      id:
+        type: integer
+      indexDay:
+        example: 1
+        type: integer
+      is_additional:
+        example: true
+        type: boolean
+      isInCurrentYear:
+        example: true
+        type: boolean
+      latitude:
+        type: string
+      longitude:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_name:
+        type: string
+      outlet_status:
+        type: string
+      pjp_code:
+        type: integer
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      route_name:
+        type: string
+      startWeek:
+        example: "2022-01-01"
+        type: string
+      status:
+        type: string
+      week:
+        type: integer
+      year:
+        type: integer
+    type: object
+  response.Outlets:
+    properties:
+      avg_sales_week:
+        type: number
+      cust_id:
+        type: string
+      id:
+        type: integer
+      latitude:
+        type: string
+      longitude:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_name:
+        type: string
+      outlet_status:
+        type: string
+      pjp_code:
+        type: integer
+      pjp_id:
+        type: integer
+      route_code:
+        type: integer
+      route_name:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+    type: object
+  response.Pagination:
+    properties:
+      code:
+        type: integer
+      data: {}
+      meta:
+        $ref: '#/definitions/response.Meta'
+      status:
+        type: string
+      trace_id:
+        type: string
+    type: object
+  response.Pjp:
+    properties:
+      approval_status:
+        enum:
+        - In Review
+        - Draft
+        - Approved
+        - Approved With Propose
+        - Reject
+        type: string
+      cust_id:
+        type: string
+      emp_code:
+        type: string
+      id:
+        type: integer
+      operation_type:
+        type: string
+      pjp_code:
+        type: string
+      pjp_mode:
+        type: string
+      route_code:
+        type: integer
+      salesman_code:
+        type: string
+      salesman_id:
+        type: integer
+      salesman_name:
+        type: string
+      status:
+        type: string
+      team_salesman:
+        type: string
+      warehouse_id:
+        type: integer
+      warehouse_name:
+        type: string
+    required:
+    - approval_status
+    type: object
+  response.PjpEnhanceResponse:
+    properties:
+      pjp:
+        $ref: '#/definitions/response.Pjp'
+      routes:
+        items:
+          $ref: '#/definitions/response.Routes'
+        type: array
+      visit_day:
+        items:
+          $ref: '#/definitions/response.VisitDay'
+        type: array
+    type: object
+  response.PjpResponse:
+    properties:
+      approval_status:
+        type: string
+      id:
+        type: integer
+      operation_type:
+        type: string
+      pjp_code:
+        type: string
+      pjp_mode:
+        type: string
+      routes:
+        items:
+          $ref: '#/definitions/response.RoutesEntity'
+        type: array
+      salesman_code:
+        type: string
+      salesman_id:
+        type: integer
+      salesman_name:
+        type: string
+      status:
+        type: boolean
+      team_salesman:
+        description: EmployeeCode      string         `json:"emp_code"`
+        type: string
+      total_destinations:
+        type: integer
+      total_route:
+        type: integer
+      warehouse_id:
+        type: integer
+      warehouse_name:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/response.Meta'
+      status:
+        type: string
+      trace_id:
+        type: string
+    type: object
+  response.Routes:
+    properties:
+      cust_id:
+        description: |-
+          IsAssign       bool      `gorm:"column:is_assign;type:bool;default:false" json:"is_assign"`
+          IsAssignPjp    bool      `gorm:"->" json:"is_assign_pjp"`
+          RoutePopStatus string    `gorm:"->" json:"route_pop_status"`
+        type: string
+      destinations:
+        items:
+          $ref: '#/definitions/response.Outlets'
+        type: array
+      id:
+        type: integer
+      route_code:
+        type: integer
+      route_name:
+        type: string
+    type: object
+  response.RoutesEntity:
+    properties:
+      route_code:
+        type: integer
+      total_outlet:
+        type: integer
+    type: object
+  response.RoutesHistory:
+    properties:
+      cust_id:
+        type: string
+      destinations:
+        items:
+          $ref: '#/definitions/response.OutletHistory'
+        type: array
+      route_code:
+        type: integer
+      route_name:
+        type: string
+    type: object
+  response.VisitDay:
+    properties:
+      date:
+        example: "2022-01-01"
+        type: string
+      day:
+        example: Senin
+        type: string
+      id:
+        type: integer
+      indexDay:
+        example: 1
+        type: integer
+      isInCurrentYear:
+        example: true
+        type: boolean
+      startWeek:
+        example: "2022-01-01"
+        type: string
+      visit:
+        $ref: '#/definitions/response.RoutesHistory'
+      week:
+        example: 1
+        type: integer
+      year:
+        example: 2022
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: ScyllaX-PJP API in Go using Gin framework
+  title: ScyllaX-PJP API
+  version: "1.0"
+paths:
+  /list-salesman:
+    get:
+      description: Return list of salesman.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get list salesman by PJP.
+      tags:
+      - sales
+  /mobile/add-outlets:
+    post:
+      description: add outlet to route for mobile.
+      parameters:
+      - description: save add outlet to route
+        in: body
+        name: save
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddOutletToRouteRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: add outlet to route for mobile.
+      tags:
+      - mobile
+  /mobile/cancel/add-outlets:
+    post:
+      description: cancel add outlet to route for mobile.
+      parameters:
+      - description: cancel add outlet to route
+        in: body
+        name: save
+        required: true
+        schema:
+          $ref: '#/definitions/request.CancelAddOutletToRouteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: cancel add outlet to route for mobile.
+      tags:
+      - mobile
+  /mobile/salesman/report:
+    get:
+      description: salesman report and example date(yyyy-mm-dd).
+      parameters:
+      - description: salesman_id
+        in: query
+        name: salesman_id
+        required: true
+        type: string
+      - description: date
+        in: query
+        name: date
+        type: string
+      - description: year
+        in: query
+        name: year
+        type: string
+      - description: month
+        in: query
+        name: month
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: salesman report mobile.
+      tags:
+      - mobile
+  /mobile/todo/list/{outletVisitId}:
+    get:
+      description: todo list arrive and leave.
+      parameters:
+      - description: todo list arrive and leave
+        in: path
+        name: outletVisitId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: todo list
+      tags:
+      - mobile
+  /mobile/visits/arrive:
+    post:
+      consumes:
+      - multipart/form-data
+      description: arrive visit with file URL and optional location update for approval.
+        If is_update_location is true, location change will be saved to outlet_cr
+        for approval.
+      parameters:
+      - description: 'Visit date (format: yyyy-mm-dd)'
+        in: formData
+        name: date
+        required: true
+        type: string
+      - description: Salesman code
+        in: formData
+        name: salesman_code
+        required: true
+        type: string
+      - description: Customer ID
+        in: formData
+        name: cust_id
+        required: true
+        type: string
+      - description: Current timestamp
+        in: formData
+        name: current_time
+        required: true
+        type: integer
+      - description: Outlet visit list ID
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Outlet ID
+        in: formData
+        name: outlet_id
+        type: integer
+      - description: New latitude
+        in: formData
+        name: latitude
+        type: string
+      - description: New longitude
+        in: formData
+        name: longitude
+        type: string
+      - description: Whether to update location (requires approval if true)
+        in: formData
+        name: is_update_location
+        required: true
+        type: boolean
+      - description: File URL
+        in: formData
+        name: file_url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: arrive visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/end:
+    post:
+      description: end visit.
+      parameters:
+      - description: end visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.FinishVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: end visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/geotaging:
+    post:
+      consumes:
+      - application/json
+      description: Validates user location against outlet location and returns distance
+        information
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Geotaging validation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.GeotagingValidationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful validation
+          schema:
+            $ref: '#/definitions/response.GeotagingValidationResponse'
+        "400":
+          description: GPS disabled or invalid request
+          schema:
+            $ref: '#/definitions/response.GeotagingValidationResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/response.GeotagingValidationResponse'
+      summary: Validate geotaging for arrival
+      tags:
+      - Mobile - Visits
+  /mobile/visits/leave:
+    post:
+      description: leave visit.
+      parameters:
+      - description: leave visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.LeaveVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: leave visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/onhold:
+    post:
+      description: onhold visit.
+      parameters:
+      - description: onhold visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.OnholdVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: onhold visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/outlet:
+    post:
+      description: outlet visit.
+      parameters:
+      - description: outlet visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.OutletVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: outlet visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/outlet/list:
+    get:
+      description: outlet visit and example date(yyyy-mm-dd).
+      parameters:
+      - description: salesman_code
+        in: query
+        name: salesman_code
+        required: true
+        type: string
+      - description: cust_id
+        in: query
+        name: cust_id
+        required: true
+        type: string
+      - description: date
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: outlet visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/resume:
+    post:
+      description: resume visit.
+      parameters:
+      - description: skip visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ResumeVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: resume visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/skip:
+    post:
+      description: skip visit.
+      parameters:
+      - description: skip visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.SkipVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: skip visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/start:
+    post:
+      description: start visit.
+      parameters:
+      - description: start visit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.StartVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: start visit mobile.
+      tags:
+      - mobile
+  /mobile/visits/status:
+    get:
+      description: summary visit and example date(yyyy-mm-dd).
+      parameters:
+      - description: salesman_code
+        in: query
+        name: salesman_code
+        type: string
+      - description: date
+        in: query
+        name: date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: summary visit Status mobile.
+      tags:
+      - mobile
+  /mobile/visits/summary:
+    get:
+      description: summary visit and example date(yyyy-mm-dd).
+      parameters:
+      - description: salesman_code
+        in: query
+        name: salesman_code
+        type: string
+      - description: date
+        in: query
+        name: date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: summary visit mobile.
+      tags:
+      - mobile
+  /outlets:
+    get:
+      description: Return list of outlet.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      - description: IsActive
+        in: query
+        name: is_active
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get outlet.
+      tags:
+      - outlet
+  /outlets-picklist/salesman:
+    get:
+      description: Return list of outlet.
+      parameters:
+      - description: SalesmanCode
+        in: query
+        name: salesman_code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get outlet for picklist.
+      tags:
+      - outlet
+  /outlets/salesman:
+    get:
+      description: Return list of outlet.
+      parameters:
+      - description: SalesmanCode
+        in: query
+        name: salesman_code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get outlet.
+      tags:
+      - outlet
+  /teams/salesman:
+    get:
+      description: Return list of salesman.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: SalesTeamId
+        in: query
+        name: sales_team_id
+        type: string
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      - description: IsActive
+        in: query
+        name: is_active
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get salesman.
+      tags:
+      - sales
+  /teams/salesman/{empId}:
+    get:
+      description: Return of salesman by selected Id.
+      parameters:
+      - description: get salesman by id
+        in: path
+        name: empId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get salesman By ID.
+      tags:
+      - sales
+  /web/approval-routes:
+    get:
+      description: Return list of approval route.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: pjp_code
+        in: query
+        name: pjp_code
+        type: string
+      - description: route_code
+        in: query
+        name: route_code
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: salesman_name
+        in: query
+        name: salesman_name
+        type: string
+      - description: salesman_code
+        in: query
+        name: salesman_code
+        type: string
+      - description: start date
+        in: query
+        name: start_date
+        type: string
+      - description: end date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all approval route.
+      tags:
+      - approval route
+  /web/approval-routes-enhance:
+    get:
+      description: Return list of approval route.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: pjp_code
+        in: query
+        name: pjp_code
+        type: string
+      - description: route_code
+        in: query
+        name: route_code
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      - description: salesman_name
+        in: query
+        name: salesman_name
+        type: string
+      - description: salesman_code
+        in: query
+        name: salesman_code
+        type: string
+      - description: start date
+        in: query
+        name: start_date
+        type: string
+      - description: end date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all approval route.
+      tags:
+      - approval route
+  /web/approval-routes-enhance/status:
+    patch:
+      description: Update status in route to approval with propose.
+      parameters:
+      - description: update status approval with propose
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateStatusEnhanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update status in route to approval with propose.
+      tags:
+      - approval route
+  /web/approval-routes/status:
+    patch:
+      description: Update status in route to approval with propose.
+      parameters:
+      - description: update status approval with propose
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update status in route to approval with propose.
+      tags:
+      - approval route
+  /web/daily-route-maps:
+    get:
+      description: Return list of route pop permanent.
+      parameters:
+      - description: Pjp Code
+        in: query
+        name: pjp_code
+        type: string
+      - description: Salesman Name
+        in: query
+        name: salesman_name
+        type: string
+      - description: Week
+        in: query
+        name: week
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all route pop permanent.
+      tags:
+      - daily route map
+    post:
+      description: Save daily route map additional example date(yyyy-mm-dd).
+      parameters:
+      - description: save daily route map and example date (2006-01-02 || yyyy-mm-dd)
+        in: body
+        name: save
+        required: true
+        schema:
+          $ref: '#/definitions/request.SaveDailyRouteMap'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Save daily route map additional.
+      tags:
+      - daily route map
+  /web/daily-route-maps/all:
+    post:
+      description: Copy all permanent to daily.
+      parameters:
+      - description: copy all permanent to daily
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.CopyAllRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Copy all to daily.
+      tags:
+      - daily route map
+  /web/daily-route-maps/daily:
+    get:
+      description: Return list of route pop daily.
+      parameters:
+      - description: Pjp Code
+        in: query
+        name: pjp_code
+        type: string
+      - description: Salesman Name
+        in: query
+        name: salesman_name
+        type: string
+      - description: Route Code
+        in: query
+        name: route_code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all route pop daily.
+      tags:
+      - daily route map
+  /web/daily-route-maps/partial:
+    post:
+      description: Copy partial permanent to daily.
+      parameters:
+      - description: copy partial permanent to daily
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.CopyPartialRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Copy partial to daily.
+      tags:
+      - daily route map
+  /web/daily-route-maps/pjp/{pjpCode}/{routeCode}:
+    get:
+      description: Return list of route by pjp_code and route_code.
+      parameters:
+      - description: pjp_code
+        in: path
+        name: pjpCode
+        required: true
+        type: string
+      - description: route_code
+        in: path
+        name: routeCode
+        required: true
+        type: string
+      - description: date
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all route by pjp_code and route_code.
+      tags:
+      - daily route map
+  /web/daily-route-maps/specific:
+    post:
+      description: Copy specific permanent to daily.
+      parameters:
+      - description: copy specific permanent to daily
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.RoutesMapping'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Copy specific to daily.
+      tags:
+      - daily route map
+  /web/daily-route-maps/to/daily:
+    post:
+      description: Copy route daily to daily.
+      parameters:
+      - description: copy route daily to daily
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.RoutesMapping'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Copy route daily to daily.
+      tags:
+      - daily route map
+  /web/pjp:
+    get:
+      description: Return list of pjp.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: Pjp Code (%2C-separated for multiple values)
+        in: query
+        name: pjp_code
+        type: string
+      - description: OperationType
+        in: query
+        name: operation_type
+        type: string
+      - description: TeamSalesman (%2C-separated for multiple values)
+        in: query
+        name: team_salesman
+        type: string
+      - description: SalesmanName
+        in: query
+        name: salesman_name
+        type: string
+      - description: SalesmanCode
+        in: query
+        name: salesman_code
+        type: string
+      - description: Q
+        in: query
+        name: q
+        type: string
+      - description: Is Active
+        in: query
+        name: is_active
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Pagination'
+      security:
+      - Bearer: []
+      summary: Get all pjp.
+      tags:
+      - pjp
+    post:
+      description: Save pjp data in Db.
+      parameters:
+      - description: Create pjp
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.PjpRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Create pjp.
+      tags:
+      - pjp
+  /web/pjp-enhance:
+    post:
+      description: Save pjp data in Db.
+      parameters:
+      - description: Create pjp
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreatePjpEnhanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Create pjp.
+      tags:
+      - pjp-enhance
+  /web/pjp-enhance/{id}:
+    get:
+      description: Get detail of a specific pjp by ID.
+      parameters:
+      - description: PJP ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PjpEnhanceResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get pjp by ID.
+      tags:
+      - pjp-enhance
+    put:
+      description: Update detail of a specific PJP by ID.
+      parameters:
+      - description: PJP ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update PJP payload
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreatePjpEnhanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Pjp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update pjp by ID.
+      tags:
+      - pjp-enhance
+  /web/pjp-enhance/{id}/status:
+    put:
+      description: Change status pjp of a specific PJP by ID.
+      parameters:
+      - description: PJP ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update PJP payload
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateStatusPjpEnhanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Pjp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Change Status pjp by ID.
+      tags:
+      - pjp-enhance
+  /web/pjp/{pjpId}:
+    delete:
+      description: Remove pjp data by id.
+      parameters:
+      - description: delete pjp by id
+        in: path
+        name: pjpId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete pjp.
+      tags:
+      - pjp
+    get:
+      description: Return the pjp whoes pjpId value mathes id.
+      parameters:
+      - description: update pjp by id
+        in: path
+        name: pjpId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PjpResponse'
+      security:
+      - Bearer: []
+      summary: Get Single pjp by id.
+      tags:
+      - pjp
+    patch:
+      description: Update pjp data.
+      parameters:
+      - description: update pjp by id
+        in: path
+        name: pjpId
+        required: true
+        type: string
+      - description: Update pjp
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.PjpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update pjp.
+      tags:
+      - pjp
+  /web/pjp/auto:
+    post:
+      description: Create pjp auto data in Db.
+      parameters:
+      - description: Create pjp auto summary
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreatePjpAuto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Create pjp auto.
+      tags:
+      - pjp auto
+  /web/pjp/list:
+    get:
+      description: Return list of with route for dropdown.
+      parameters:
+      - description: Q
+        in: query
+        name: q
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Pagination'
+      security:
+      - Bearer: []
+      summary: Get all pjp with route for dropdown.
+      tags:
+      - pjp
+  /web/pjp/update/{empId}:
+    patch:
+      description: Change status pjp of a specific PJP by EmpID.
+      parameters:
+      - description: empId
+        in: path
+        name: empId
+        required: true
+        type: string
+      - description: Update PJP payload
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateStatusPjpEnhanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Pjp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Change Status pjp by EmpID.
+      tags:
+      - pjp
+  /web/pjp/visit-list:
+    get:
+      description: Return list of route with status approve dropdown.
+      parameters:
+      - description: Q
+        in: query
+        name: q
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Pagination'
+      security:
+      - Bearer: []
+      summary: Get all pjp route with status approve dropdown.
+      tags:
+      - pjp
+  /web/route-mappings:
+    get:
+      description: Return list of route.
+      parameters:
+      - description: route_code
+        in: query
+        name: route_code
+        type: string
+      - description: is_assign
+        in: query
+        name: is_assign
+        type: string
+      - description: route_name
+        in: query
+        name: route_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all route.
+      tags:
+      - route mapping
+    post:
+      description: Save route data in Db.
+      parameters:
+      - description: Create routes
+        in: body
+        name: route
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateRouteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Create route.
+      tags:
+      - route mapping
+  /web/route-mappings/{routeCode}:
+    get:
+      description: Return list of route outlet by route_code.
+      parameters:
+      - description: route_code
+        in: path
+        name: routeCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get route outlet by routeCode.
+      tags:
+      - route mapping
+  /web/route-mappings/{routeCode}/{pjpCode}:
+    get:
+      description: Return list of route outlet by route_code.
+      parameters:
+      - description: route_code
+        in: path
+        name: routeCode
+        required: true
+        type: string
+      - description: pjp_code
+        in: path
+        name: pjpCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get route outlet by routeCode and pjpCode.
+      tags:
+      - route mapping
+  /web/route-mappings/{routeId}:
+    delete:
+      description: Remove route data by id.
+      parameters:
+      - description: remove route data by id
+        in: path
+        name: routeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete route.
+      tags:
+      - route mapping
+    patch:
+      description: Update route data.
+      parameters:
+      - description: update route by id
+        in: path
+        name: routeId
+        required: true
+        type: string
+      - description: Update route
+        in: body
+        name: route
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateRoutesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update route.
+      tags:
+      - route mapping
+  /web/route-mappings/additional/{routeCode}:
+    get:
+      description: Return list of route outlet by additional route_code.
+      parameters:
+      - description: get route outlet by additional route_code
+        in: path
+        name: routeCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get route outlet by additional routeCode.
+      tags:
+      - route mapping
+  /web/route-mappings/duplicate:
+    post:
+      description: Duplicate route.
+      parameters:
+      - description: duplicate route
+        in: body
+        name: raw
+        required: true
+        schema:
+          $ref: '#/definitions/request.DuplicateRoute'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Duplicate route.
+      tags:
+      - route mapping
+  /web/route-mappings/new-route:
+    patch:
+      description: New route propose.
+      parameters:
+      - description: new route with propose
+        in: body
+        name: raw
+        required: true
+        schema:
+          $ref: '#/definitions/request.NewRouteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: New route propose.
+      tags:
+      - route mapping
+  /web/route-mappings/outlets:
+    post:
+      description: Save assign outlet to routeCode data in Db.
+      parameters:
+      - description: save assign outlet to routeCode data in Db
+        in: body
+        name: outlet
+        required: true
+        schema:
+          $ref: '#/definitions/request.SaveOutletRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Assign outlet to routeCode.
+      tags:
+      - route mapping
+  /web/route-mappings/outlets-additional/update:
+    patch:
+      description: Delete outlet additional in assign route.
+      parameters:
+      - description: delete outlet additional in assign route
+        in: body
+        name: outlet
+        required: true
+        schema:
+          $ref: '#/definitions/request.DeleteOutletAdditionalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete outlet additional in assign route.
+      tags:
+      - route mapping
+  /web/route-mappings/outlets/update:
+    patch:
+      description: Delete outlet in assign route.
+      parameters:
+      - description: delete outlet in assign route
+        in: body
+        name: outlet
+        required: true
+        schema:
+          $ref: '#/definitions/request.DeleteOutletRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete outlet in assign route.
+      tags:
+      - route mapping
+  /web/route-mappings/pjp:
+    patch:
+      description: Update pjpId in route route outlet.
+      parameters:
+      - description: update pjp in route outlet
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdatePjpInRouteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update pjp in route outlet.
+      tags:
+      - route mapping
+    post:
+      description: Save assign outlet to pjpCode data in Db.
+      parameters:
+      - description: save assign outlet to pjpCode data in Db
+        in: body
+        name: pjp
+        required: true
+        schema:
+          $ref: '#/definitions/request.SavePjpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Assign outlet to pjpCode.
+      tags:
+      - route mapping
+  /web/route-mappings/pjp/{pjpCode}/{routeCode}:
+    get:
+      description: Return list of route by pjp_code and route_code.
+      parameters:
+      - description: pjp_code
+        in: path
+        name: pjpCode
+        required: true
+        type: string
+      - description: route_code
+        in: path
+        name: routeCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all route by pjp_code and route_code.
+      tags:
+      - route mapping
+  /web/route-mappings/remove/route:
+    patch:
+      description: Delete route in pjp.
+      parameters:
+      - description: delete pjp code & pjp id in route
+        in: body
+        name: route
+        required: true
+        schema:
+          $ref: '#/definitions/request.DeletePjpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete route in pjp.
+      tags:
+      - route mapping
+  /web/route-mappings/save/route:
+    post:
+      description: Save route confirmation in Db.
+      parameters:
+      - description: save route confirmation
+        in: body
+        name: raw
+        required: true
+        schema:
+          $ref: '#/definitions/request.SaveRouteConfirmationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Save route confirmation.
+      tags:
+      - route mapping
+  /web/visit-day-maps:
+    get:
+      description: Return list of visit day map.
+      parameters:
+      - description: pjp_code
+        in: query
+        name: pjp_code
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get all visit day map.
+      tags:
+      - visit day map
+    post:
+      description: Recurring for all week,biweekly,next weekly.
+      parameters:
+      - description: save recurring week and example date (2006-01-02 || yyyy-mm-dd)
+        in: body
+        name: approval
+        required: true
+        schema:
+          $ref: '#/definitions/request.SaveWeeklyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Save weeklys.
+      tags:
+      - visit day map
+schemes:
+- http
+- https
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

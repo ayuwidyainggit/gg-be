@@ -1,0 +1,155 @@
+package model
+
+type OrderHistoryProduct struct {
+	// CustId        string `gorm:"cust_id" json:"cust_id"`
+	// RoNo          string `gorm:"ro_no" json:"ro_no"`
+	// SeqNo         int    `gorm:"seq_no" json:"seq_no"`
+	// OrderDetailID *int   `gorm:"column:order_detail_id;primaryKey" json:"order_detail_id"`
+	// ProId         int    `gorm:"pro_id" json:"pro_id"`
+	// ProCode       string `gorm:"column:pro_code" json:"pro_code"`
+	// ProName       string `gorm:"column:pro_name" json:"pro_name"`
+	// ImageUrl      string `gorm:"column:image_url" json:"img_url"`
+	CustId         string  `json:"cust_id" gorm:"column:cust_id"`
+	ProId          int64   `json:"pro_id" gorm:"column:pro_id"`
+	ProCode        string  `json:"pro_code" gorm:"column:pro_code"`
+	ProName        string  `json:"pro_name" gorm:"column:pro_name"`
+	BarCode        string  `json:"bar_code" gorm:"column:bar_code"`
+	PCatId         int     `json:"pcat_id" gorm:"column:pcat_id"`
+	PCatCode       string  `json:"pcat_code" gorm:"column:pcat_code"`
+	PCatName       string  `json:"pcat_name" gorm:"column:pcat_name"`
+	PlId           int     `json:"pl_id" gorm:"column:pl_id"`
+	PlCode         string  `json:"pl_code" gorm:"column:pl_code"`
+	PlName         string  `json:"pl_name" gorm:"column:pl_name"`
+	BrandId        int     `json:"brand_id" gorm:"column:brand_id"`
+	BrandCode      string  `json:"brand_code" gorm:"column:brand_code"`
+	BrandName      string  `json:"brand_name" gorm:"column:brand_name"`
+	Sbrand1        int     `json:"sbrand1_id" gorm:"column:sbrand1_id"`
+	Sbrand1Code    string  `json:"sbrand1_code" gorm:"column:sbrand1_code"`
+	Sbrand1Name    string  `json:"sbrand1_name" gorm:"column:sbrand1_name"`
+	Sbrand2        int     `json:"sbrand2_id" gorm:"column:sbrand2_id"`
+	Sbrand2Code    string  `json:"sbrand2_code" gorm:"column:sbrand2_code"`
+	Sbrand2Name    string  `json:"sbrand2_name" gorm:"column:sbrand2_name"`
+	FlavorId       int     `json:"flavor_id" gorm:"column:flavor_id"`
+	FlavorCode     string  `json:"flavor_code" gorm:"column:flavor_code"`
+	FlavorName     string  `json:"flavor_name" gorm:"column:flavor_name"`
+	PTypeId        int     `json:"ptype_id" gorm:"column:ptype_id"`
+	PTypeCode      string  `json:"ptype_code" gorm:"column:ptype_code"`
+	PTypeName      string  `json:"ptype_name" gorm:"column:ptype_name"`
+	PSizeId        int     `json:"psize_id" gorm:"column:psize_id"`
+	PSizeCode      string  `json:"psize_code" gorm:"column:psize_code"`
+	PsizeName      string  `json:"psize_name" gorm:"column:psize_name"`
+	SupId          int     `json:"sup_id" gorm:"column:sup_id"`
+	SupCode        string  `json:"sup_code" gorm:"column:sup_code"`
+	SupName        string  `json:"sup_name" gorm:"column:sup_name"`
+	PrincipalId    int     `json:"principal_id" gorm:"column:principal_id"`
+	PrincipalCode  string  `json:"principal_code" gorm:"column:principal_code"`
+	PrincipalName  string  `json:"principal_name" gorm:"column:principal_name"`
+	CProId         int     `json:"c_pro_id" gorm:"column:c_pro_id"`
+	CProCode       string  `json:"c_pro_code" gorm:"column:c_pro_code"`
+	CProName       string  `json:"c_pro_name" gorm:"column:c_pro_name"`
+	IsMainPro      bool    `json:"is_main_pro" gorm:"column:is_main_pro"`
+	IsAlloc        bool    `json:"is_alloc" gorm:"column:is_alloc"`
+	SMweek1        int     `json:"s_mweek1" gorm:"column:s_mweek1"`
+	SMweek2        int     `json:"s_mweek2" gorm:"column:s_mweek2"`
+	SortNo         int     `json:"sort_no" gorm:"column:sort_no"`
+	ItemNo         int     `json:"item_no" gorm:"column:item_no"`
+	UnitId1        string  `json:"unit_id1" gorm:"column:unit_id1"`
+	UnitId2        string  `json:"unit_id2" gorm:"column:unit_id2"`
+	UnitId3        string  `json:"unit_id3" gorm:"column:unit_id3"`
+	UnitId4        string  `json:"unit_id4" gorm:"column:unit_id4"`
+	UnitId5        string  `json:"unit_id5" gorm:"column:unit_id5"`
+	UnitName1      string  `json:"unit_name1" gorm:"column:unit_name1"`
+	UnitName2      string  `json:"unit_name2" gorm:"column:unit_name2"`
+	UnitName3      string  `json:"unit_name3" gorm:"column:unit_name3"`
+	UnitName4      string  `json:"unit_name4" gorm:"column:unit_name4"`
+	UnitName5      string  `json:"unit_name5" gorm:"column:unit_name5"`
+	ConvUnit2      float32 `json:"conv_unit2" gorm:"column:conv_unit2"`
+	ConvUnit3      float32 `json:"conv_unit3" gorm:"column:conv_unit3"`
+	ConvUnit4      float32 `json:"conv_unit4" gorm:"column:conv_unit4"`
+	ConvUnit5      float32 `json:"conv_unit5" gorm:"column:conv_unit5"`
+	Margin         float64 `json:"margin" gorm:"column:margin"`
+	Weight         float64 `json:"weight" gorm:"column:weight"`
+	IsBatch        bool    `json:"is_batch" gorm:"column:is_batch"`
+	IsExpDate      bool    `json:"is_exp_date" gorm:"column:is_exp_date"`
+	Length         float64 `json:"length" gorm:"column:length"`
+	Width          float64 `json:"width"  gorm:"column:width" `
+	Height         float64 `json:"height" gorm:"column:height"`
+	Volume         float64 `json:"volume" gorm:"column:volume"`
+	MinStock       float64 `json:"min_stock" gorm:"column:min_stock"`
+	MinStockStr    string  `json:"min_stock_str" gorm:"column:min_stock_str"`
+	SafetyStock    float64 `json:"safety_stock" gorm:"column:safety_stock"`
+	SafetyStockStr string  `json:"safety_stock_str" gorm:"column:safety_stock_str"`
+	PoFormula      int     `json:"po_formula" gorm:"column:po_formula"`
+	ParentProId    int64   `json:"parent_pro_id" gorm:"column:parent_pro_id"`
+	IsNewPro       bool    `json:"is_new_pro" gorm:"column:is_new_pro"`
+	Vat            float64 `json:"vat" gorm:"column:vat"`
+	VatBg          float64 `json:"vat_bg" gorm:"column:vat_bg"`
+	VatLgPurch     float64 `json:"vat_lg_purch" gorm:"column:vat_lg_purch"`
+	VatLgSell      float64 `json:"vat_lg_sell" gorm:"column:vat_lg_sell"`
+	ExciseRate     float64 `json:"excise_rate" gorm:"column:excise_rate"`
+	ExciseTax      float64 `json:"excise_tax" gorm:"column:excise_tax"`
+	IsActive       bool    `json:"is_active" gorm:"column:is_active"`
+	ImageUrl       string  `json:"image_url" gorm:"column:img_url"`
+	Cogs           float64 `json:"cogs" gorm:"column:cogs"`
+	Price1         float64 `json:"price1" gorm:"column:sell_price1"`
+	Price2         float64 `json:"price2" gorm:"column:sell_price2"`
+	Price3         float64 `json:"price3" gorm:"column:sell_price3"`
+	Price4         float64 `json:"price4" gorm:"column:sell_price4"`
+	Price5         float64 `json:"price5" gorm:"column:sell_price5"`
+	Qty            float64 `json:"qty" gorm:"column:qty"`
+}
+
+func (OrderHistoryProduct) TableName() string {
+	return "sls.order_detail"
+}
+
+// type OrderDetailRead struct {
+// 	CustId        string     `gorm:"cust_id" json:"cust_id"`
+// 	RoNo          string     `gorm:"ro_no" json:"ro_no"`
+// 	SeqNo         int        `gorm:"seq_no" json:"seq_no"`
+// 	OrderDetailID *int       `gorm:"column:order_detail_id;primaryKey" json:"order_detail_id"`
+// 	ProId         int        `gorm:"pro_id" json:"pro_id"`
+// 	ProCode       string     `gorm:"column:pro_code" json:"pro_code"`
+// 	ProName       string     `gorm:"column:pro_name" json:"pro_name"`
+// 	ItemType      int        `gorm:"item_type" json:"item_type"`
+// 	Qty1          *float64   `gorm:"qty1" json:"qty1"`
+// 	Qty2          *float64   `gorm:"qty2" json:"qty2"`
+// 	Qty3          *float64   `gorm:"qty3" json:"qty3"`
+// 	Qty4          *float64   `gorm:"qty4" json:"qty4"`
+// 	Qty5          *float64   `gorm:"qty5" json:"qty5"`
+// 	PurchPrice1   *float64   `gorm:"purch_price1" json:"purch_price1"`
+// 	PurchPrice2   *float64   `gorm:"purch_price2" json:"purch_price2"`
+// 	PurchPrice3   *float64   `gorm:"purch_price3" json:"purch_price3"`
+// 	PurchPrice4   *float64   `gorm:"purch_price4" json:"purch_price4"`
+// 	PurchPrice5   *float64   `gorm:"purch_price5" json:"purch_price5"`
+// 	SellPrice1    *float64   `gorm:"sell_price1" json:"sell_price1"`
+// 	SellPrice2    *float64   `gorm:"sell_price2" json:"sell_price2"`
+// 	SellPrice3    *float64   `gorm:"sell_price3" json:"sell_price3"`
+// 	SellPrice4    *float64   `gorm:"sell_price4" json:"sell_price4"`
+// 	SellPrice5    *float64   `gorm:"sell_price5" json:"sell_price5"`
+// 	Amount        *float64   `gorm:"amount" json:"amount"`
+// 	DiscValue     *float64   `gorm:"disc_value" json:"disc_value"`
+// 	BatchNo       *string    `gorm:"batch_no" json:"batch_no"`
+// 	ExpDate       *time.Time `gorm:"exp_date" json:"exp_date"`
+// 	Vat           *float64   `gorm:"vat" json:"vat"`
+// 	VatBg         *float64   `gorm:"vat_bg" json:"vat_bg"`
+// 	VatLgSell     *float64   `gorm:"vat_lg_sell" json:"vat_lg_sell"`
+// 	VatValue      *float64   `gorm:"vat_value" json:"vat_value"`
+// 	VatBgValue    *float64   `gorm:"vat_bg_value" json:"vat_bg_value"`
+// 	// VatLgValue     *float64   `gorm:"vat_lg_value" json:"vat_lg_value"`
+// 	VatLgSellValue *float64 `gorm:"vat_lg_sell_value" json:"vat_lg_sell_value"`
+// 	UnitId1        *string  `gorm:"unit_id1" json:"unit_id1"`
+// 	UnitId2        *string  `gorm:"unit_id2" json:"unit_id2"`
+// 	UnitId3        *string  `gorm:"unit_id3" json:"unit_id3"`
+// 	UnitId4        *string  `gorm:"unit_id4" json:"unit_id4"`
+// 	UnitId5        *string  `gorm:"unit_id5" json:"unit_id5"`
+// 	ConvUnit2      *int     `gorm:"conv_unit2" json:"conv_unit2"`
+// 	ConvUnit3      *int     `gorm:"conv_unit3" json:"conv_unit3"`
+// 	ConvUnit4      *int     `gorm:"conv_unit4" json:"conv_unit4"`
+// 	ConvUnit5      *int     `gorm:"conv_unit5" json:"conv_unit5"`
+// 	Notes          *string  `gorm:"notes" json:"notes"`
+// }
+
+// func (OrderDetailRead) TableName() string {
+// 	return "sls.order_detail"
+// }

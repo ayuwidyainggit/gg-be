@@ -1,0 +1,16 @@
+# -------------------------- DEFINITION
+variables:
+  TAG_IMAGE: "$CI_COMMIT_BRANCH-$CI_COMMIT_SHA"
+
+# -------------------------- DEPLOY TO JENKINS 
+
+deploy:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_USERNAME: $JENKINS_USERNAME 
+    JENKINS_PWD: $JENKINS_PWD
+  script:
+    - curl -G --data-urlencode "CI_COMMIT_AUTHOR=$CI_COMMIT_AUTHOR" --data-urlencode "CI_COMMIT_MESSAGE=$CI_COMMIT_MESSAGE" -u "$JENKINS_USERNAME":"$JENKINS_PWD" -I "http://103.28.219.73:8080/job/scylla-cronjob/buildWithParameters?token=scylla-cronjob-cicd-token&CI_PROJECT_NAME=$CI_PROJECT_NAME&CI_COMMIT_BRANCH=$CI_COMMIT_BRANCH&CI_COMMIT_BEFORE_SHA=$CI_COMMIT_BEFORE_SHA"
+  only:
+    - dev

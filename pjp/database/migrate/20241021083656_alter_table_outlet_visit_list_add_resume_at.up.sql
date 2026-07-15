@@ -1,0 +1,2 @@
+ALTER TABLE pjp.outlet_visit_list
+ADD COLUMN IF NOT EXISTS resume_at BIGINT DEFAULT NULL;

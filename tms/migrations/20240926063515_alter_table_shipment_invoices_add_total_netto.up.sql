@@ -1,0 +1,2 @@
+ALTER TABLE tms.shipment_invoices
+ADD COLUMN IF NOT EXISTS total_netto NUMERIC(20,4) DEFAULT NULL;

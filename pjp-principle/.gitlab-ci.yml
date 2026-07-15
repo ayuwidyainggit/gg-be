@@ -1,0 +1,228 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+# ============================================================
+# Stage 1: Build & Push Docker Image to GitLab Container Registry
+# ============================================================
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "staging" ]; then
+        TAG="staging"
+      elif [ "$CI_COMMIT_BRANCH" = "demo" ]; then
+        TAG="demo"
+      elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        TAG="live"
+      elif [ "$CI_COMMIT_BRANCH" = "ssn-prod" ]; then
+        TAG="ssn-prod"
+      fi
+    - docker build -t "$CI_REGISTRY_IMAGE:${TAG}-${CI_COMMIT_SHORT_SHA}" -t "$CI_REGISTRY_IMAGE:${TAG}-latest" .
+    - docker push "$CI_REGISTRY_IMAGE:${TAG}-${CI_COMMIT_SHORT_SHA}"
+    - docker push "$CI_REGISTRY_IMAGE:${TAG}-latest"
+  only:
+    - staging
+    - demo
+    - main
+    - ssn-prod
+
+# ============================================================
+# Stage 2: Deploy to Servers
+# ============================================================
+
+# staging branch → Dev Server
+deploy_dev:
+  stage: deploy
+  image: alpine:latest
+  needs:
+    - build
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p "$DEV_PORT" "$DEV_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no -p "$DEV_PORT" "$DEV_USER@$DEV_HOST" << EOF
+        docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+        
+        # Pull new image
+        docker pull $CI_REGISTRY_IMAGE:staging-latest
+        
+        # Stop and remove old container
+        docker stop scylla-pjp-principles-app || true
+        docker rm scylla-pjp-principles-app || true
+        
+        # Run new container
+        docker run -d \
+          --name scylla-pjp-principles-app \
+          --restart unless-stopped \
+          --network scylla-net \
+          --network-alias scylla-pjp-principles \
+          -p 9007:8888 \
+          -e POSTGRES_HOST=10.10.12.11 \
+          -e POSTGRES_USER=scylla \
+          -e POSTGRES_PASSWORD='S0l1dScyll@' \
+          -e POSTGRES_DB=scylla_citus_dev \
+          -e POSTGRES_PORT=5433 \
+          -e KONG_URL='http://10.10.12.11:9002' \
+          -e ENVIRONMENT=prod \
+          -e SWAGGER_HOST=103.28.219.73:5001 \
+          -e SWAGGER_URL=/scylla-pjp-principles/api/v1 \
+          -e JWT_SECRET_KEY=secret \
+          $CI_REGISTRY_IMAGE:staging-latest
+      EOF
+  only:
+    - staging
+
+# demo branch → Demo Server
+deploy_demo:
+  stage: deploy
+  image: alpine:latest
+  needs:
+    - build
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p "$DEMO_PORT" "$DEMO_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no -p "$DEMO_PORT" "$DEMO_USER@$DEMO_HOST" << EOF
+        docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+        
+        # Pull new image
+        docker pull $CI_REGISTRY_IMAGE:demo-latest
+        
+        # Stop and remove old container
+        docker stop scylla-pjp-principles-app || true
+        docker rm scylla-pjp-principles-app || true
+        
+        # Run new container
+        docker run -d \
+          --name scylla-pjp-principles-app \
+          --restart unless-stopped \
+          --network scylla-net \
+          --network-alias scylla-pjp-principles \
+          -p 9007:8888 \
+          -e POSTGRES_HOST=10.10.15.11 \
+          -e POSTGRES_USER=scylla \
+          -e POSTGRES_PASSWORD='S0l1dScyll@' \
+          -e POSTGRES_DB=scylla_citus_dev \
+          -e POSTGRES_PORT=5433 \
+          -e KONG_URL='http://10.10.15.11:9002' \
+          -e ENVIRONMENT=prod \
+          -e SWAGGER_HOST=103.28.219.76:5001 \
+          -e SWAGGER_URL=/scylla-pjp-principles/api/v1 \
+          -e JWT_SECRET_KEY=secret \
+          $CI_REGISTRY_IMAGE:demo-latest
+      EOF
+  only:
+    - demo
+
+# main branch → Production Server
+deploy_prod:
+  stage: deploy
+  image: alpine:latest
+  needs:
+    - build
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p "$PROD_PORT" "$PROD_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no -p "$PROD_PORT" "$PROD_USER@$PROD_HOST" << EOF
+        docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+        
+        # Pull new image
+        docker pull $CI_REGISTRY_IMAGE:live-latest
+        
+        # Stop and remove old container
+        docker stop scylla-pjp-principles-app || true
+        docker rm scylla-pjp-principles-app || true
+        
+        # Run new container
+        docker run -d \
+          --name scylla-pjp-principles-app \
+          --restart unless-stopped \
+          --network scylla-net \
+          --network-alias scylla-pjp-principles \
+          -p 9007:8888 \
+          -e POSTGRES_HOST=172.17.0.1 \
+          -e POSTGRES_USER=scylla \
+          -e POSTGRES_PASSWORD='S0l1dScyll@' \
+          -e POSTGRES_DB=scylla_citus_dev \
+          -e POSTGRES_PORT=25431 \
+          -e KONG_URL='http://scylla-master-app:9002' \
+          -e ENVIRONMENT=prod \
+          -e SWAGGER_HOST='http://110.239.69.88:5001' \
+          -e SWAGGER_URL=/scylla-pjp/api/v1 \
+          -e JWT_SECRET_KEY=secret \
+          $CI_REGISTRY_IMAGE:live-latest
+      EOF
+  only:
+    - main
+
+# ssn-prod branch → SSN Production Server
+deploy_ssn_prod:
+  stage: deploy
+  image: alpine:latest
+  needs:
+    - build
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -p "$SSN_PROD_PORT" "$SSN_PROD_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no -p "$SSN_PROD_PORT" "$SSN_PROD_USER@$SSN_PROD_HOST" << EOF
+        docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+        
+        # Pull new image
+        docker pull $CI_REGISTRY_IMAGE:ssn-prod-latest
+        
+        # Stop and remove old container
+        docker stop scylla-pjp-principles-app || true
+        docker rm scylla-pjp-principles-app || true
+        
+        # Run new container
+        docker run -d \
+          --name scylla-pjp-principles-app \
+          --restart unless-stopped \
+          --network scylla-net \
+          --network-alias scylla-pjp-principles \
+          -p 9007:8888 \
+          -e POSTGRES_HOST=172.17.0.1 \
+          -e POSTGRES_USER=scylla \
+          -e POSTGRES_PASSWORD='S0l1dScyll@' \
+          -e POSTGRES_DB=scylla_citus_dev \
+          -e POSTGRES_PORT=25431 \
+          -e KONG_URL='http://scylla-master-app:9002' \
+          -e ENVIRONMENT=prod \
+          -e SWAGGER_HOST='http://110.239.69.88:5001' \
+          -e SWAGGER_URL=/scylla-pjp/api/v1 \
+          -e JWT_SECRET_KEY=secret \
+          $CI_REGISTRY_IMAGE:ssn-prod-latest
+      EOF
+  only:
+    - ssn-prod

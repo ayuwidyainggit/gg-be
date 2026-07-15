@@ -1,0 +1,47 @@
+###
+GET http://103.28.219.73:5001/master/v1/outlets?outlet_id=190
+Accept: application/json
+Authorization: 
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzI1MDAxMDAxIiwiZGlzdF9wcmljZV9ncnBfaWQiOjAsImRpc3RyaWJ1dG9yX2lkIjoxLCJlbWFpbCI6ImFkbWluLmtlZGlyaUB0YnMuY29tIiwiZW1wX2lkIjoyODQsImV4cGlyZXMiOjE3NTkyODY2ODQsImlzX2FkbWluIjp0cnVlLCJsYW5nX2lkIjoiZW4iLCJtb2JpbGVfbm8iOiItIiwicGFyZW50X2N1c3RfaWQiOiJDMjUwMDEiLCJ1c2VyX2Z1bGxuYW1lIjoiQWRtaW4gS2VkaXJpIiwidXNlcl9pZCI6NTQsInVzZXJfbmFtZSI6ImFkbWluLmtlZGlyaUB0YnMuY29tIiwid2hhdHNhcHAiOiItIn0.wNy26qGOguC7U-Y5IjofGlcr1ZXq7M0Qkf5lOgRg-cY
+
+###
+GET http://localhost:8888/api/v1/outlets-picklist/salesman?is_active=1&mode=lookup&q=&salesman_code=20040&page=1&limit=9999999
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NjcsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc2MzY5MTEwMywiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.sDpxSLnp0cSuezTCJ8CY3ZyJxS23C03MVPk298EBUJo
+
+### LOGIN MOBILE
+POST https://bel.scyllax.online/mobile/v1/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    
+    "email":"nizamnaura536@gmail.com",
+    "password":"admin",
+    // "device_id": "910004043856575",
+    // "mac_address": "00-B0-D0-63-C2-26",
+    "fcm_token":"fcm token"
+
+}
+
+### GET OUTLET LIST
+GET http://localhost:8888/api/v1/mobile/visits/outlet/list?date=2025-10-29&salesman_code=S0002$cust_id=C220010001
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxvd19pbnB1dF9wcmljZSI6dHJ1ZSwiY3VzdF9pZCI6IkMyMjAwMTAwMDEiLCJkaXN0X3ByaWNlX2dycF9pZCI6MSwiZW1haWwiOiJzeWFocml6YS5zYWxlc21hbkBzY3lsbGF4LmlkIiwiZW1wX2NvZGUiOiJTMDAwMiIsImVtcF9ncnBfaWQiOjg5LCJlbXBfaWQiOjEsImV4cGlyZXMiOjE3NjE4MTMxODgsImlzX2FjdGl2ZV9ndWRhbmdfY2FudmFzIjp0cnVlLCJpc19hY3RpdmVfZ3VkYW5nX3V0YW1hIjp0cnVlLCJsYW5nX2lkIjoiZW4iLCJtb2JpbGVfbm8iOiItIiwib3ByX3R5cGVfY2FudmFzIjoiQyIsIm9wcl90eXBlX29yZGVyX3Rha2luZyI6Ik8iLCJwYXJlbnRfY3VzdF9pZCI6IkMyMjAwMSIsInRheF9vcHRpb24iOiIiLCJ1c2VyX2lkIjo0MywidXNlcl9yb2xlIjoic2FsZXNtYW4iLCJ3aGF0c2FwcCI6Ii0ifQ.at5kfpkoenzR2wKriyC3cwRMfKLhUb9UXYAnup6Gndc
+
+### GET Outlet List
+GET https://bel.scyllax.online/scylla-pjp/api/v1/mobile/visits/outlet/list?date=2025-11-24&salesman_code=DL001&cust_id=C25003002
+Accept: application/json
+Content-Type: application/json
+
+### GET Outlet List
+GET http://localhost:8888/api/v1/mobile/visits/outlet/list?date=2025-11-24&salesman_code=DL001&cust_id=C25003002
+Accept: application/json
+Content-Type: application/json
+
+### GET Outlet List
+GET http://103.28.219.73:5001/master/v1/outlets?limit=10
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGxvd19pbnB1dF9wcmljZSI6dHJ1ZSwiY3VzdF9pZCI6IkMyNTAwMzAwiIsImRpc3RfcHJpY2VfZ3JwX2lkIjowLCJlbWFpbCI6Im5pemFtbmF1cmE1MzZAZ21haWwuY29tIiwiZW1wX2NvZGUiOiJETDAwMSIsImVtcF9ncnBfaWQiOjE1NywiZW1wX2lkIjo3MTksImV4cGlyZXMiOjE3NjQwNDI2NjAsImlzX2FjdGl2ZV9ndWRhbmdfY2FudmFzIjp0cnVlLCJpc19hY3RpdmVfZ3VkYW5nX3V0YW1hIjp0cnVlLCJsYW5nX2lkIjoiZW4iLCJtb2JpbGVfbm8iOiItIiwib3ByX3R5cGVfY2FudmFzIjoiQyIsIm9wcl90eXBlX29yZGVyX3Rha2luZyI6IlMiLCJwYXJlbnRfY3VzdF9pZCI6IkMyNTAwMyIsInRheF9vcHRpb24iOiJFIiwidXNlcl9pZCI6MTA3LCJ1c2VyX3JvbGUiOiJzYWxlc21hbiIsIndoYXRzYXBwIjoiLSJ9.OyvlgpQS20d5I77QNXNUPy3EuQ6s2oJ7Vn8VStcOUsU

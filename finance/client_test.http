@@ -1,0 +1,775 @@
+# @hostname = http://103.28.219.73:5001
+@hostname = http://127.0.0.1
+
+# @path-system = /system
+@path-system = :9001
+
+# @path-master = /master
+@path-master = :9002
+
+# @path-sales = /sales
+@path-sales = :9004
+
+# @path-inventory = /inventory
+@path-inventory = :9003
+
+@host-system = {{hostname}}{{path-system}}
+@host-master = {{hostname}}{{path-master}}
+@host-sales = {{hostname}}{{path-sales}}
+@host-inventory = {{hostname}}{{path-inventory}}
+
+#
+@contentType = application/json
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+
+# users
+@email-principal = princ@idetama.id
+@email-distributor = dist@sda.idetama.id
+@password = admin
+
+### LOKI ###  
+GET http://localhost:3100/loki/api/v1/labels?start=1720546528666000000&end=1720550128666000000
+### END OF LOKI ###  
+
+### PING ###  
+GET http://127.0.0.1:9001/ping
+###
+
+### User Login
+# @name login
+POST {{host-system}}/v1/users/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+
+{
+  "email":"{{email-distributor}}",
+  "password":"{{password}}"
+}
+###
+
+####### MASTER ####################################################################################
+
+####### Consumer Product ########################################
+
+### Get Cons Products ### | query params filter: q=68593150
+# @name get_cons_products
+GET {{host-master}}/v1/cons-products?q=&page=1&limit=10
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Get Detail Cons Product ### | query path: /:c_pro_id
+# @name get_cons_product_detail
+GET {{host-master}}/v1/cons-products/20
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Cons Products
+# @name create_cons_products
+POST {{host-master}}/v1/cons-products
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "c_pro_code": "WED01",
+    "c_pro_name": "WED satu",
+    "is_active": true
+}
+
+### Update Cons Products
+# @name update_cons_products
+PATCH {{host-master}}/v1/cons-products/20
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "c_pro_name": "Test edit WED01",
+    "is_active": true
+}
+
+### Delete Cons Products
+# @name delete_cons_product
+DELETE  {{host-master}}/v1/cons-products/19
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+####### End Of Consumer Product ########################################
+
+### Get Detail Principal ### | query path: /:c_pro_id
+# @name get_principal_detail
+GET {{host-master}}/v1/principals/14
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Principal
+# @name create_principal
+POST {{host-master}}/v1/principals
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "principal_code": "KG",
+    "principal_name": "asdsadasd",
+    "is_active": true
+}
+
+### Update Principal
+# @name update_principal
+PATCH  {{host-master}}/v1/principals/14
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "principal_name": "Test edit"
+}
+
+### Delete Principal
+# @name delete_principal
+DELETE  {{host-master}}/v1/principals/15
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+
+### Get Sub Beat ### | query params filter: q=68593150
+# @name get_sub_beat
+GET {{host-master}}/v1/sub-beats?q=&page=1&limit=10
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Get Detail Sub Beat ### | query path: /:sbeat_id
+# @name get_cons_sbeat_detail
+GET {{host-master}}/v1/sub-beats/1
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Sub Beat
+# @name create_sub_beat
+POST {{host-master}}/v1/sub-beats
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "sbeat_code": "sSB4",
+    "sbeat_name": "asdas",
+    "beat_id": 1,
+    "district_id": 1,
+    "is_active": true
+}
+
+### Update Sub Beat
+# @name update_sub_beat
+PATCH {{host-master}}/v1/sub-beats/4
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "sbeat_code": "sSB4",
+    "sbeat_name": "Test edit"
+}
+
+### Delete Sub Beat
+# @name delete_sub_beat
+DELETE {{host-master}}/v1/sub-beats/1
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+### Get Detail principals ### | query path: /:principal_id
+# @name get_principal_detail
+GET {{host-master}}/v1/principals/2
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+####### PRODUCT #######
+# @name get_product_list
+GET {{host-master}}/v1/products
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_product_detail
+GET {{host-master}}/v1/products/428
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+####### END OF MASTER #############################################################################
+
+####### INVENTORY ####################################################################################
+
+####### Goods Receipt #######
+# @name get_good_receipt_list
+GET {{host-inventory}}/v1/goods-receipts
+    ?page=1
+    &limit=10
+    # &gr_no=21
+    &q=
+    # &promo_desc=Edit 2
+    &from=1704047009
+    &to=1722363809
+    &sort=created_at:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+####### End Of Goods Receipt #######
+
+####### END OF INVENTORY #############################################################################
+
+####### SALES ###########################################################################################
+
+####### PROMOTION ##########################################
+# @name create_promotion
+POST {{host-sales}}/v1/promotions
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_id": "PR0150724005 as",
+    "promo_desc": "Promo Pembelian ",
+    "promo_type": 1,
+    "existing_promo_id": "",
+    "promo_status_id": 3,
+    "is_budget_reference": false,
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "budget_control_level": 1, 
+    "execution_level": 1,
+    "effective_from": "2024-06-25",
+    "effective_to": "2024-06-29",
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "max_discount_outlet_uom": 1,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 1,
+            "slab_reward": 5,
+            "slab_reward_uom": 1 
+        }
+    ],
+    "reward_products": [
+        {
+            "pro_id": 1
+        },
+        {
+            "pro_id": 2
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1,
+            "is_mandatory": false,
+            "min_buy_type": 1,
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name update_promotion
+PATCH {{host-sales}}/v1/promotions/PR0150724005
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_desc": "Promo Pembelian edit",
+    "promo_type": 1,
+    "existing_promo_id": "",
+    "promo_status_id": 1,
+    "is_budget_reference": false,
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "budget_control_level": 1, 
+    "execution_level": 1,
+    "effective_from": "2024-06-25",
+    "effective_to": "2024-06-29",
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "max_discount_outlet_uom": 1,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 3,
+            "slab_reward": 500,
+            "slab_reward_uom": 0 
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1,
+            "is_mandatory": false,
+            "min_buy_type": 1,
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name bulk_update_status_promotion
+POST {{host-sales}}/v1/promotions/bulk-update-status
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_id": ["PR0150724005"],
+    "promo_status_id": 7,
+    "remarks": "jangan bikin promo dulu"
+}
+###
+
+# @name get_promotion_list
+GET {{host-sales}}/v1/promotions
+    ?page=1
+    &limit=10
+    &q=
+    # &promo_id=PR09
+    &promo_status_id=1
+    &promo_status_id=2
+    # &promo_desc=Edit 2
+    &effective_from=1719334800
+    &effective_to=1719334800
+    &sort=created_at:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_promotion_detail
+@getPromoID = PR0150724005
+GET {{host-sales}}/v1/promotions/{{getPromoID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name delete_promotion
+DELETE {{host-sales}}/v1/promotions/PR0150724004
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_promotion_status
+GET {{host-sales}}/v1/promotions/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+####### END OF PROMOTION ###################################
+
+####### PROMO TEMPLATE ###################################
+# @name create_promo_template
+POST {{host-sales}}/v1/promo-templates
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_desc": "Promo Pembelian 7",
+    "promo_template_status_id": 1,
+    "is_budget_reference": false, 
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 1, 
+            "slab_reward": 5,
+            "slab_reward_uom": 1 
+        }
+    ],
+    "reward_products": [
+        {
+            "pro_id": 1
+        },
+        {
+            "pro_id": 2
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name update_promo_template
+PATCH {{host-sales}}/v1/promo-templates/cqatcaucoml41sonkk0g
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "promo_desc": "Promo Pembelian 7",
+    "promo_template_status_id": 1,
+    "is_budget_reference": false, 
+    "budget_reference_type": 1, 
+    "budget_reference_id": 1,
+    "budget_amount": 0,
+    "is_claimable": false,
+    "claim_days": 4,
+    "max_invoice_outlet": 99999,
+    "max_discount_type": 1, 
+    "max_discount_outlet": 50,
+    "is_multiplied": false,
+    "promo_criterias": [
+        {
+            "slab_desc": "123",
+            "slab_rule_type": 1, 
+            "slab_rule_from": 1,
+            "slab_rule_to": 5,
+            "slab_rule_uom": 1, 
+            "slab_reward_type": 1, 
+            "slab_reward": 5,
+            "slab_reward_uom": 1 
+        }
+    ],
+    "reward_products": [
+        {
+            "pro_id": 1
+        }
+    ],
+    "promo_additional_criterias": [
+        {
+            "attribute": "PRO",
+            "condition": "I", 
+            "reference_id": 1, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OCL",
+            "condition": "I", 
+            "reference_id": 48, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTG",
+            "condition": "I", 
+            "reference_id": 58, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "OTY",
+            "condition": "I", 
+            "reference_id": 49, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STY",
+            "condition": "I", 
+            "reference_id": 2, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        },
+        {
+            "attribute": "STE",
+            "condition": "I", 
+            "reference_id": 35, 
+            "is_mandatory": false,
+            "min_buy_type": 1, 
+            "min_buy_value": 1,
+            "min_buy_uom": 1 
+        }
+    ]
+}
+###
+
+# @name get_promo_template_list
+GET {{host-sales}}/v1/promo-templates
+?page=1
+&limit=10
+&q=
+&promo_template_id=
+&promo_template_status_id=1
+&promo_desc=
+&from=1719334800
+&to=1722445199
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_promo_template_status
+GET {{host-sales}}/v1/promo-templates/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+###
+
+# @name get_promo_template_detail
+@getPromoTemplateID = cqatcaucoml41sonkk0g
+GET {{host-sales}}/v1/promo-templates/{{getPromoTemplateID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name delete_promo_template
+@deletePromoTemplateID = cq621aecoml544d00a00
+DELETE {{host-sales}}/v1/promo-templates/{{deletePromoTemplateID}}
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+####### END OF PROMO TEMPLATE ############################
+
+####### END OF SALES #############################################################################
+
+# PROMO APPROVAL #
+# yg bikin promo draft role admin distributor ( principal masih ga bisa )
+# approval adalah supervisor diatasnya
+# 1. multiple submit draft & rejected yg udah di edit ( perlu flagging ketika rejected sudah di edit )
+# 2. edit reject, ada action save and submit, reason nya di replace ga perlu history
+# 3. status expired di takeout
+#
+
+####### FINANCE ###########################################################################################
+
+### Deposit Number List (default)
+# @name get_deposit_number_list_default
+GET {{hostname}}:9005/v1/deposits?page=1&limit=20&sort=created_date:desc&collector_id=123
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Deposit Number List (multi collector + search)
+# @name get_deposit_number_list_multi_collector
+GET {{hostname}}:9005/v1/deposits?q=DP&page=1&limit=20&sort=deposit_date:desc&collector_id=123,124
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+####### END OF FINANCE #####################################################################################

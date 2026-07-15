@@ -1,0 +1,1 @@
+ALTER TABLE pjp.routes ADD COLUMN sequence INT DEFAULT 0;

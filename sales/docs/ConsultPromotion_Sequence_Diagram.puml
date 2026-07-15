@@ -1,0 +1,215 @@
+@startuml ConsultPromotion Sequence Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam sequenceArrowThickness 2
+
+actor Client
+participant "PromotionService" as Service
+participant "PromotionRepository" as Repo
+participant "Conversion Method" as Conversion
+
+== Phase 1: Initial Quantity Conversion ==
+Client -> Service: ConsultPromotion(request)
+activate Service
+
+loop For each detail in request.Details
+    Service -> Conversion: Conversion(detailConversion)
+    activate Conversion
+    Conversion -> Repo: FindProductByID(productId)
+    Repo --> Conversion: product
+    Conversion --> Conversion: Convert Qty1/Qty2/Qty3 to standard units
+    Conversion --> Service: OrderConversionResponse
+    deactivate Conversion
+    Service --> Service: Update request.Details with converted quantities
+end
+
+== Phase 2: Outlet & Salesman Validation ==
+Service -> Repo: FindOutletByID(outletId, custId, parentCustId)
+Repo --> Service: outlet
+alt Outlet not found
+    Service --> Client: Error: Outlet ID not found
+else
+    Service -> Repo: FindSalesmanByID(salesmanId, custId, parentCustId)
+    Repo --> Service: salesman
+    alt Salesman not found
+        Service --> Client: Error: Salesman ID not found
+    end
+end
+
+Service --> Service: Set WhId = salesman.WhId (if not set)
+
+== Phase 3: Build Attribute Validation Criteria ==
+Service --> Service: attributePromoValidationCriteriaList[\n  OCL = outlet.OtClassId\n  OTG = outlet.OtGrpId\n  OTY = outlet.OtTypeId\n  STE = salesman.SalesTeamId\n]
+
+== Phase 4: Find & Validate Promo Additional Criteria ==
+Service -> Repo: FindAllPromoAdditionalCriteriasByActivePromo(request)
+activate Repo
+Repo --> Service: promoAdditionalCriterias[]
+deactivate Repo
+
+Service --> Service: Initialize maps:\n- promoAdditionalCriteriaGroups\n- attributePromoValidationList\n- finalAttributePromoValidationList
+
+loop For each promoAdditionalCriteria
+    Service --> Service: Group by PromoID and Attribute
+    alt Attribute != "PRO"
+        Service --> Service: Validate against attributePromoValidationCriteriaList
+        alt Condition == "I" AND ReferenceID matches
+            Service --> Service: Set attributePromoValidationList[PromoID][Attribute] = true
+        else Condition == "E" AND ReferenceID not matches
+            Service --> Service: Set attributePromoValidationList[PromoID][Attribute] = true
+        end
+    end
+end
+
+== Phase 5: Eliminate Invalid Promos ==
+Service --> Service: validatedPromoAdditionalCriteriaGroups = {}
+loop For each PromoID in attributePromoValidationList
+    Service --> Service: Check if all attributes (except PRO) are valid
+    alt All attributes valid
+        Service --> Service: Add to validatedPromoAdditionalCriteriaGroups
+    else Any attribute invalid
+        Service --> Service: Skip this promo
+    end
+end
+
+== Phase 6: Validate Promo Additional Criteria by Product ==
+Service --> Service: validatedPromoAdditionalCriteriaByProductGroups = {}
+Service --> Service: validatedPromoList = []
+
+loop For each PromoID in validatedPromoAdditionalCriteriaGroups
+    Service --> Service: isPromoAdditionalCriteriaValid = false
+    
+    loop For each PRO criteria in validatedPromoAdditionalCriteriaGroups[PromoID]["PRO"]
+        loop For each detail in request.Details
+            Service --> Service: Check if ReferenceID == ProID
+            
+            alt ReferenceID matches
+                Service --> Service: Calculate buyValue based on MinBuyType & MinBuyUom
+                
+                alt MinBuyValue > buyValue AND IsMandatory
+                    Service --> Service: isPromoAdditionalCriteriaValid = false
+                    Service --> Service: Break loop
+                else MinBuyValue <= buyValue
+                    Service --> Service: isPromoAdditionalCriteriaValid = true
+                    Service --> Service: Add to validatedPromoAdditionalCriteriaByProductGroups
+                    Service --> Service: Add SubTotal to subTotalValidatedPromoAdditionalCriteriaByProductGroups
+                end
+            else ReferenceID not matches AND last detail AND IsMandatory
+                Service --> Service: isPromoAdditionalCriteriaValid = false
+                Service --> Service: isMandatoryPromoAdditionalCriteriaNotValid = true
+            end
+        end
+        
+        alt isMandatoryPromoAdditionalCriteriaNotValid
+            Service --> Service: Break outer loop
+        end
+    end
+    
+    alt isPromoAdditionalCriteriaValid == false
+        Service --> Service: Remove from validatedPromoAdditionalCriteriaByProductGroups
+    else isPromoAdditionalCriteriaValid == true
+        Service --> Service: Add PromoID to validatedPromoList
+    end
+end
+
+== Phase 7: Validate Promo Criteria (Slab Rules) ==
+Service -> Repo: FindAllPromoCriteriasByPromoIDs(validatedPromoList)
+activate Repo
+Repo --> Service: promoCriterias[]
+deactivate Repo
+
+Service --> Service: validatedPromoCriterias = {}
+Service --> Service: validatedSlabIDs = []
+
+loop For each promoCriteria in promoCriterias
+    Service --> Service: Calculate slabRuleValue
+    alt SlabRuleType == 1 (Quantity-based)
+        Service --> Service: Calculate buyValue for each product\nbased on SlabRuleUom
+        Service --> Service: Sum all buyValues
+    else SlabRuleType == 0 (Amount-based)
+        Service --> Service: Use subTotalValidatedPromoAdditionalCriteriaByProductGroups
+    end
+    
+    alt IsMultiplied AND slabRuleValue >= SlabRuleTo\nOR\n!IsMultiplied AND slabRuleValue in range [SlabRuleFrom, SlabRuleTo]
+        Service --> Service: Add to validatedPromoCriterias
+        Service --> Service: Add SlabID to validatedSlabIDs
+        Service --> Service: isPromoCriteriaValid = true
+    end
+end
+
+== Phase 8: Calculate Rewards ==
+Service -> Repo: FindPromoCriteriasBySlabIDs(validatedSlabIDs)
+activate Repo
+Repo --> Service: sortedPromoCriterias[]
+deactivate Repo
+
+Service --> Service: stockOfProductRewards = {}
+
+loop For each promoCriteria in sortedPromoCriterias
+    Service --> Service: Create ConsultPromotionResponse
+    
+    alt SlabRewardType == 3 (Percentage)
+        Service --> Service: SlabReward = (SubTotal * SlabReward) / 100
+    else SlabRewardType == 2 (Fixed)
+        Service --> Service: SlabReward = SlabReward
+    else
+        Service --> Service: SlabReward = 0
+    end
+    
+    loop For each product in validatedPromoAdditionalCriteriaByProductGroups
+        Service --> Service: Calculate RewardPrice:\nreward = (SubTotal * SlabReward) / TotalSubTotal
+        Service --> Service: Add RewardPrice to response
+    end
+    
+    alt SlabReward == 0 (Product Reward)
+        Service -> Repo: GetAllRewardProductFromStock(request, validatedPromoCriterias)
+        activate Repo
+        Repo --> Service: rewards[]
+        deactivate Repo
+        
+        Service --> Service: Convert stock quantities based on SlabRewardUom
+        
+        alt IsMultiplied
+            Service --> Service: multipliedValue = SlabRule / SlabRuleTo
+        else
+            Service --> Service: multipliedValue = 1
+        end
+        
+        Service --> Service: totalQtyReward = SlabReward * multipliedValue
+        
+        alt totalQtyReward > totalQtyStock AND request.PromoIDs not empty
+            Service --> Service: Add response to responses (partial)
+            Service --> Service: Continue to next promo
+        end
+        
+        loop For each reward in rewards
+            Service --> Service: Calculate qtyReward (min of totalQtyReward and reward.QtyStock)
+            Service --> Service: totalQtyReward -= qtyReward
+            
+            Service -> Conversion: Conversion(rewardProductConversion)
+            activate Conversion
+            Conversion -> Repo: FindProductByID(reward.ProID)
+            Repo --> Conversion: product
+            Conversion --> Conversion: Convert quantities
+            Conversion --> Service: OrderConversionResponse
+            deactivate Conversion
+            
+            Service --> Service: Update stockOfProductRewards
+            Service --> Service: Add RewardProduct to response
+            
+            alt totalQtyReward <= 0
+                Service --> Service: Break loop
+            end
+        end
+    end
+    
+    alt Has RewardProduct OR Has RewardPrice
+        Service --> Service: Add response to responses
+    end
+end
+
+Service --> Client: responses[]
+deactivate Service
+
+@enduml
+

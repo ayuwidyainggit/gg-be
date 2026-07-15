@@ -1,0 +1,10 @@
+ALTER TABLE tms.shipment_invoices
+DROP COLUMN qty1,
+DROP COLUMN qty2,
+DROP COLUMN qty3,
+DROP COLUMN conv_unit1,
+DROP COLUMN conv_unit2,
+DROP COLUMN conv_unit3,
+DROP COLUMN unit_id1,
+DROP COLUMN unit_id2,
+DROP COLUMN unit_id3;

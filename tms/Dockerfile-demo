@@ -1,0 +1,28 @@
+FROM alpine:3.15 as root-certs
+RUN apk add -U --no-cache ca-certificates
+RUN addgroup -g 1001 app
+RUN adduser app -u 1001 -D -G app /home/app
+
+FROM golang:1.21 as builder
+WORKDIR /app
+COPY --from=root-certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY . .
+COPY .env.demo .env
+RUN go mod tidy
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=mod -o ./scylla-tms .
+
+FROM alpine:3.15 as ping-installer
+RUN apk add --no-cache iputils
+
+FROM alpine:3.15 as final
+RUN apk add --no-cache tzdata
+COPY --from=root-certs /etc/passwd /etc/passwd
+COPY --from=root-certs /etc/group /etc/group
+COPY --chown=1001:1001 --from=root-certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /app/.env.demo .env
+COPY --from=builder /app/scylla-tms /
+COPY --from=ping-installer /bin/ping /bin/ping
+COPY --from=ping-installer /lib /lib 
+COPY --from=ping-installer /usr/lib /usr/lib
+USER app
+CMD ["./scylla-tms"]

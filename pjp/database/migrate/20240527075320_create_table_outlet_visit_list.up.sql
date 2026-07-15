@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS pjp.outlet_visit_list (
+    id SERIAL PRIMARY KEY,
+    year BIGINT,
+    week BIGINT,
+    date TIMESTAMP,
+    day VARCHAR(125),
+    route_code BIGINT,
+    outlet_code VARCHAR(125),
+    pjp_id BIGINT,
+    pjp_code BIGINT,
+    start BIGINT,
+    finish BIGINT,
+    arrive_at BIGINT,
+    skip_at BIGINT,
+    leave_at BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_route_pop_daily_pjp FOREIGN KEY (pjp_id) REFERENCES pjp.permanent_journey_plans (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_route_pop_daily_route FOREIGN KEY (route_code) REFERENCES pjp.routes (route_code) ON UPDATE CASCADE ON DELETE CASCADE
+);

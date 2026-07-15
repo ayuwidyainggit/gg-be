@@ -1,0 +1,4279 @@
+definitions:
+  entity.ArriveRequest:
+    properties:
+      current_time:
+        type: integer
+      outlet_id:
+        type: integer
+      shipment_no:
+        type: string
+    required:
+    - current_time
+    - outlet_id
+    - shipment_no
+    type: object
+  entity.CreatePicklistRequest:
+    properties:
+      driver:
+        description: PicklistNo string          `json:"picklist_no" validate:"required"`
+        type: string
+      helper:
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/entity.OrderPicklistRequest'
+        type: array
+      updated_by:
+        type: string
+      vehicle:
+        type: string
+    type: object
+  entity.CreateShipmentAutoRequest:
+    properties:
+      delivery_date:
+        type: string
+      shipments:
+        items:
+          $ref: '#/definitions/entity.ShipmentBody'
+        type: array
+      vehicles:
+        items:
+          $ref: '#/definitions/entity.VehicleBody'
+        type: array
+    required:
+    - delivery_date
+    - shipments
+    - vehicles
+    type: object
+  entity.CreateShipmentRequest:
+    properties:
+      delivery_date:
+        type: string
+      shipments:
+        items:
+          $ref: '#/definitions/entity.ShipmentBody'
+        type: array
+      vehicles:
+        $ref: '#/definitions/entity.VehicleBody'
+    required:
+    - delivery_date
+    - shipments
+    - vehicles
+    type: object
+  entity.CustomShipmentInvoice:
+    properties:
+      data_status:
+        type: integer
+      data_status_name:
+        type: string
+      delivery_date:
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/entity.ResponseShipmentInvoiveDetails'
+        type: array
+      disc:
+        type: number
+      disc_value:
+        type: number
+      due_date:
+        type: string
+      invoice_date:
+        type: string
+      invoice_no:
+        type: string
+      mobile_id:
+        type: integer
+      order_no:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_latitude:
+        type: string
+      outlet_longitude:
+        type: string
+      outlet_name:
+        type: string
+      pay_type:
+        type: integer
+      pay_type_name:
+        type: string
+      po_no: {}
+      reff_no: {}
+      sales_name:
+        type: string
+      salesman_code:
+        type: string
+      salesman_id:
+        type: integer
+      total_bruto:
+        description: Mapped from sub_total
+        type: number
+      total_netto:
+        description: Mapped from total
+        type: number
+      total_ppn:
+        description: Mapped from vat_value
+        type: number
+      total_promo:
+        description: Mapped from promo_value
+        type: number
+      total_volume:
+        type: number
+      total_weight:
+        type: number
+      vat:
+        type: number
+      vehicle_no: {}
+      wh_code:
+        type: string
+      wh_id:
+        type: integer
+      wh_latitude:
+        type: string
+      wh_longitude:
+        type: string
+      wh_name:
+        type: string
+    type: object
+  entity.DailyActivityResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+      is_active:
+        example: true
+        type: boolean
+      shipment_no:
+        example: "11024051411"
+        type: string
+      status:
+        example: pending
+        type: string
+    type: object
+  entity.DeletePicklistRequest:
+    properties:
+      picklist_no:
+        type: string
+    required:
+    - picklist_no
+    type: object
+  entity.DeleteShipmentRequest:
+    properties:
+      shipment_no:
+        items:
+          type: string
+        type: array
+    required:
+    - shipment_no
+    type: object
+  entity.DriverNameDropdown:
+    properties:
+      driver_name:
+        example: John Driver
+        type: string
+    type: object
+  entity.DriverReportResponse:
+    properties:
+      progress:
+        type: number
+      skipped_reasons:
+        items:
+          $ref: '#/definitions/entity.SkippedReason'
+        type: array
+      total_finished:
+        type: integer
+      total_shipment:
+        type: integer
+      total_skipped:
+        type: integer
+      total_trip:
+        type: integer
+    type: object
+  entity.JsonBadRequest:
+    properties:
+      code:
+        example: 400
+        type: integer
+      errors:
+        additionalProperties:
+          type: string
+        example:
+          email: email is required
+          username: username is required
+        type: object
+      status:
+        example: BAD REQUEST
+        type: string
+      trace_id:
+        example: dedc5250-5c20-48c9-9383-fac3ccff2679
+        type: string
+    type: object
+  entity.JsonCreated:
+    properties:
+      code:
+        example: 201
+        type: integer
+      data: {}
+      message:
+        example: Created
+        type: string
+      status:
+        example: CREATED
+        type: string
+      trace_id:
+        example: dedc5250-5c20-48c9-9383-fac3ccff2679
+        type: string
+    type: object
+  entity.JsonInternalServerError:
+    properties:
+      code:
+        example: 500
+        type: integer
+      errors:
+        example: error database or third party
+        type: string
+      status:
+        example: INTERNAL SERVER ERROR
+        type: string
+      trace_id:
+        example: dedc5250-5c20-48c9-9383-fac3ccff2679
+        type: string
+    type: object
+  entity.JsonNotFound:
+    properties:
+      code:
+        example: 404
+        type: integer
+      errors:
+        example: record not found
+        type: string
+      status:
+        example: NOT FOUND
+        type: string
+      trace_id:
+        example: dedc5250-5c20-48c9-9383-fac3ccff2679
+        type: string
+    type: object
+  entity.JsonSuccess:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data: {}
+      message:
+        example: Success
+        type: string
+      status:
+        example: OK
+        type: string
+      trace_id:
+        example: dedc5250-5c20-48c9-9383-fac3ccff2679
+        type: string
+    type: object
+  entity.JsonUnauthorized:
+    properties:
+      code:
+        example: 401
+        type: integer
+      errors:
+        example: empty token
+        type: string
+      status:
+        example: UNAUTHORIZED
+        type: string
+      trace_id:
+        example: dedc5250-5c20-48c9-9383-fac3ccff2679
+        type: string
+    type: object
+  entity.LeaveRequest:
+    properties:
+      current_time:
+        type: integer
+      outlet_id:
+        type: integer
+      shipment_no:
+        type: string
+    required:
+    - current_time
+    - outlet_id
+    - shipment_no
+    type: object
+  entity.Meta:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total_data:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  entity.OrderPicklist:
+    properties:
+      discount:
+        type: number
+      due_date:
+        type: string
+      id:
+        type: integer
+      invoice_date:
+        type: string
+      invoice_no:
+        type: string
+      order_no:
+        type: string
+      outlet_name:
+        type: string
+      payment_type:
+        type: string
+      picklist_no:
+        type: string
+      ppn:
+        type: number
+      products:
+        items:
+          $ref: '#/definitions/entity.OrderProduct'
+        type: array
+      salesman:
+        type: string
+      total_price:
+        type: number
+      total_unpaid:
+        type: number
+    type: object
+  entity.OrderPicklistRequest:
+    properties:
+      discount:
+        type: number
+      due_date:
+        type: string
+      invoice_date:
+        type: string
+      invoice_no:
+        type: string
+      order_no:
+        type: string
+      outlet_name:
+        type: string
+      payment_type:
+        type: string
+      picklist_no:
+        type: string
+      ppn:
+        type: number
+      products:
+        items:
+          $ref: '#/definitions/entity.OrderProductRequest'
+        type: array
+      salesman:
+        type: string
+      total_price:
+        type: number
+      total_promo:
+        type: number
+      total_unpaid:
+        type: number
+    type: object
+  entity.OrderProduct:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      ppn:
+        type: number
+      product_code:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity_1:
+        type: integer
+      quantity_2:
+        type: integer
+      quantity_3:
+        type: integer
+      quantity_unit_1:
+        type: string
+      quantity_unit_2:
+        type: string
+      quantity_unit_3:
+        type: string
+      unit_1_price:
+        description: |-
+          Volume        float64 `json:"volume"`
+          Weight        float64 `json:"weight"`
+        type: number
+      unit_2_price:
+        type: number
+      unit_3_price:
+        type: number
+      volume1:
+        type: number
+      volume2:
+        type: number
+      volume3:
+        type: number
+      weight1:
+        type: number
+      weight2:
+        type: number
+      weight3:
+        type: number
+    type: object
+  entity.OrderProductRequest:
+    properties:
+      order_id:
+        description: ID            uint    `json:"id"`
+        type: integer
+      ppn:
+        type: number
+      product_code:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity_1:
+        type: integer
+      quantity_2:
+        type: integer
+      quantity_3:
+        type: integer
+      quantity_unit_1:
+        type: string
+      quantity_unit_2:
+        type: string
+      quantity_unit_3:
+        type: string
+      unit_1_price:
+        description: |-
+          Volume        float64 `json:"volume"`
+          Weight        float64 `json:"weight"`
+        type: number
+      unit_2_price:
+        type: number
+      unit_3_price:
+        type: number
+      volume1:
+        type: number
+      volume2:
+        type: number
+      volume3:
+        type: number
+      weight1:
+        type: number
+      weight2:
+        type: number
+      weight3:
+        type: number
+    type: object
+  entity.OrderProductResponse:
+    properties:
+      ppn:
+        type: number
+      product_code:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity_1:
+        type: integer
+      quantity_2:
+        type: integer
+      quantity_3:
+        type: integer
+      quantity_unit_1:
+        type: string
+      quantity_unit_2:
+        type: string
+      quantity_unit_3:
+        type: string
+      unit_1_price:
+        type: number
+      unit_2_price:
+        type: number
+      unit_3_price:
+        type: number
+      volume1:
+        type: number
+      volume2:
+        type: number
+      volume3:
+        type: number
+      weight1:
+        type: number
+      weight2:
+        type: number
+      weight3:
+        type: number
+    type: object
+  entity.OrderResponse:
+    properties:
+      discount:
+        type: number
+      due_date:
+        type: string
+      invoice_date:
+        type: string
+      invoice_no:
+        type: string
+      order_no:
+        type: string
+      outlet_name:
+        type: string
+      payment_type:
+        type: string
+      ppn:
+        type: number
+      products:
+        items:
+          $ref: '#/definitions/entity.OrderProductResponse'
+        type: array
+      salesman:
+        type: string
+      total_price:
+        type: number
+      total_promo:
+        type: number
+      total_unpaid:
+        type: number
+    type: object
+  entity.OutletDropdown:
+    properties:
+      outlet_code:
+        example: "18"
+        type: string
+      outlet_name:
+        example: Lapan belas
+        type: string
+    type: object
+  entity.OutletResponse:
+    properties:
+      outlet_address:
+        example: address 1
+        type: string
+      outlet_code:
+        example: "18"
+        type: string
+      outlet_id:
+        example: 34
+        type: integer
+      outlet_name:
+        example: Lapan Belas
+        type: string
+      outlet_status:
+        example: On Progress
+        type: string
+      total_product:
+        example: 3
+        type: integer
+      total_product_delivery:
+        example: 3
+        type: integer
+      total_product_pickup:
+        example: 3
+        type: integer
+    type: object
+  entity.PickUpRequest:
+    properties:
+      current_time:
+        example: 1727233938570
+        type: integer
+      id:
+        example:
+        - 1218
+        items:
+          type: integer
+        type: array
+    required:
+    - current_time
+    - id
+    type: object
+  entity.PicklistResponse:
+    properties:
+      created_at:
+        type: string
+      driver:
+        type: string
+      helper:
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/entity.OrderResponse'
+        type: array
+      picklist_no:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+      vehicle:
+        type: string
+    type: object
+  entity.PickupPartialBody:
+    properties:
+      current_time:
+        example: 1727233938570
+        type: integer
+      outlet_id:
+        example: 88
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/entity.Product'
+        type: array
+      shipment_no:
+        example: DO202409250178
+        type: string
+    required:
+    - current_time
+    - outlet_id
+    - products
+    - shipment_no
+    type: object
+  entity.PickupPartialRequest:
+    properties:
+      data:
+        $ref: '#/definitions/entity.PickupPartialBody'
+    required:
+    - data
+    type: object
+  entity.Product:
+    properties:
+      id:
+        example: 1224
+        type: integer
+      qty:
+        items:
+          $ref: '#/definitions/entity.Quantity'
+        type: array
+    required:
+    - id
+    - qty
+    type: object
+  entity.ProductCodeDropdown:
+    properties:
+      product_code:
+        example: "00123456"
+        type: string
+    type: object
+  entity.ProductMap:
+    properties:
+      conv_unit1:
+        type: integer
+      conv_unit2:
+        type: integer
+      conv_unit3:
+        type: integer
+      ctg_id1:
+        type: string
+      ctg_id2:
+        type: string
+      ctg_id3:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      product_status:
+        type: string
+      sku:
+        type: string
+      stock1:
+        type: integer
+      stock2:
+        type: integer
+      stock3:
+        type: integer
+      unit_id1:
+        type: string
+      unit_id2:
+        type: string
+      unit_id3:
+        type: string
+    type: object
+  entity.ProductResponse:
+    properties:
+      condition_name:
+        example: good
+        type: string
+      conv_unit1:
+        example: 0
+        type: integer
+      conv_unit2:
+        example: 20
+        type: integer
+      conv_unit3:
+        example: 20
+        type: integer
+      ctg_id1:
+        type: string
+      ctg_id2:
+        type: string
+      ctg_id3:
+        type: string
+      driver_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      outlet_code:
+        example: "18"
+        type: string
+      outlet_id:
+        example: 34
+        type: integer
+      product_id:
+        example: 1
+        type: integer
+      product_name:
+        example: ASSORTED BISCUIT OPP RED 20 275G
+        type: string
+      product_status:
+        example: Reject
+        type: string
+      qty1:
+        example: 10
+        type: integer
+      qty2:
+        example: 10
+        type: integer
+      qty3:
+        example: 10
+        type: integer
+      reason_name:
+        example: Reject
+        type: string
+      return_date:
+        example: "2024-09-27"
+        type: string
+      return_no:
+        example: SR2409240002
+        type: string
+      salesman:
+        example: John Doe
+        type: string
+      sku:
+        example: "0001"
+        type: string
+      status:
+        example: Delivery
+        type: string
+      unit_id1:
+        example: PCS
+        type: string
+      unit_id2:
+        example: CTN
+        type: string
+      unit_id3:
+        example: CTN
+        type: string
+      vat:
+        example: 1
+        type: integer
+      vat_value:
+        example: 1111
+        type: integer
+    type: object
+  entity.Quantity:
+    properties:
+      stock:
+        example: 2
+        minimum: 0
+        type: integer
+      unit_id:
+        example: CTN
+        type: string
+    required:
+    - unit_id
+    type: object
+  entity.ReasonDropdown:
+    properties:
+      reason_name:
+        example: reject
+        type: string
+    type: object
+  entity.ReasonRejectResponse:
+    properties:
+      reject_reason_code:
+        example: "0001"
+        type: string
+      reject_reason_id:
+        example: 1
+        type: integer
+      reject_reason_name:
+        example: reject
+        type: string
+    type: object
+  entity.RejectCancelRequest:
+    properties:
+      id:
+        items:
+          type: integer
+        type: array
+    required:
+    - id
+    type: object
+  entity.RejectPartialBody:
+    properties:
+      current_time:
+        type: integer
+      outlet_id:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/entity.Product'
+        type: array
+      reason_id:
+        type: integer
+      reason_name:
+        type: string
+      shipment_no:
+        type: string
+    required:
+    - current_time
+    - outlet_id
+    - products
+    - reason_id
+    - reason_name
+    - shipment_no
+    type: object
+  entity.RejectPartialRequest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/entity.RejectPartialBody'
+        type: array
+    required:
+    - data
+    type: object
+  entity.RejectPartialResponse:
+    properties:
+      id:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/entity.ProductMap'
+        type: array
+      reason_id:
+        type: integer
+      reason_name:
+        type: string
+    type: object
+  entity.RejectRequest:
+    properties:
+      current_time:
+        type: integer
+      id:
+        items:
+          type: integer
+        type: array
+      reason_id:
+        type: integer
+      reason_name:
+        type: string
+    required:
+    - current_time
+    - id
+    - reason_id
+    - reason_name
+    type: object
+  entity.RejectResponse:
+    properties:
+      conv_unit1:
+        example: 0
+        type: integer
+      conv_unit2:
+        example: 20
+        type: integer
+      conv_unit3:
+        example: 10
+        type: integer
+      ctg_id1:
+        type: string
+      ctg_id2:
+        type: string
+      ctg_id3:
+        type: string
+      driver_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      product_id:
+        example: 1
+        type: integer
+      product_name:
+        example: ASSORTED BISCUIT OPP RED 20 275G
+        type: string
+      product_status:
+        example: Reject
+        type: string
+      qty_reject_1:
+        example: 10
+        type: integer
+      qty_reject_2:
+        example: 10
+        type: integer
+      qty_reject_3:
+        example: 10
+        type: integer
+      qty1:
+        example: 0
+        type: integer
+      qty2:
+        example: 0
+        type: integer
+      qty3:
+        example: 0
+        type: integer
+      reason_id:
+        example: 1
+        type: integer
+      reason_name:
+        example: reject
+        type: string
+      sku:
+        example: "0001"
+        type: string
+      unit_id1:
+        example: PCS
+        type: string
+      unit_id2:
+        example: CTN
+        type: string
+      unit_id3:
+        example: CTN
+        type: string
+    type: object
+  entity.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/entity.Meta'
+      status:
+        type: string
+      trace_id:
+        type: string
+    type: object
+  entity.ResponseReturn:
+    properties:
+      data_status:
+        type: integer
+      data_status_name:
+        type: string
+      details:
+        items:
+          properties:
+            conv_unit2:
+              type: integer
+            conv_unit3:
+              type: integer
+            invoice_qty1:
+              type: integer
+            invoice_qty2:
+              type: integer
+            invoice_qty3:
+              type: integer
+            item_cnd:
+              type: integer
+            item_cnd_name:
+              type: string
+            order_detail_id:
+              type: integer
+            product_code:
+              type: string
+            product_id:
+              type: integer
+            product_name:
+              type: string
+            qty1:
+              type: integer
+            qty2:
+              type: integer
+            qty3:
+              type: integer
+            remaining_qty1:
+              type: integer
+            remaining_qty2:
+              type: integer
+            remaining_qty3:
+              type: integer
+            return_detail_id:
+              type: integer
+            return_no:
+              type: string
+            return_reason_code:
+              type: string
+            return_reason_id:
+              type: integer
+            return_reason_name:
+              type: string
+            sell_price1:
+              type: integer
+            sell_price2:
+              type: integer
+            sell_price3:
+              type: integer
+            sub_total:
+              type: integer
+            total:
+              type: number
+            unit_id1:
+              type: string
+            unit_id2:
+              type: string
+            unit_id3:
+              type: string
+            unit_name1:
+              type: string
+            unit_name2:
+              type: string
+            unit_name3:
+              type: string
+            vat:
+              type: integer
+            vat_value:
+              type: number
+            volume:
+              type: number
+            weight:
+              type: number
+            wh_code:
+              type: string
+            wh_id:
+              type: integer
+            wh_name:
+              type: string
+          type: object
+        type: array
+      invoice_date:
+        type: string
+      invoice_no:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_latitude:
+        type: string
+      outlet_longitude:
+        type: string
+      outlet_name:
+        type: string
+      return_date:
+        type: string
+      return_no:
+        type: string
+      salesman_code:
+        type: string
+      salesman_id:
+        type: integer
+      salesman_name:
+        type: string
+      total_volume:
+        type: number
+      total_weight:
+        type: number
+    type: object
+  entity.ResponseShipmentInvoiveDetails:
+    properties:
+      amount:
+        type: number
+      batch_no:
+        type: string
+      conv_unit1:
+        type: integer
+      conv_unit2:
+        type: integer
+      conv_unit3:
+        type: integer
+      disc_value:
+        type: integer
+      exp_date:
+        type: string
+      item_type:
+        type: integer
+      net_value:
+        type: integer
+      order_detail_id:
+        type: integer
+      price_exclude_ppn:
+        type: integer
+      price_include_ppn:
+        type: integer
+      pro_code:
+        type: string
+      pro_id:
+        type: integer
+      pro_name:
+        type: string
+      purch_price1:
+        type: number
+      purch_price2:
+        type: number
+      purch_price3:
+        type: number
+      qty1:
+        type: integer
+      qty2:
+        type: integer
+      qty3:
+        type: integer
+      sell_price1:
+        type: number
+      sell_price2:
+        type: number
+      sell_price3:
+        type: number
+      seq_no:
+        type: integer
+      stock1:
+        type: integer
+      stock2:
+        type: integer
+      stock3:
+        type: integer
+      unit_id1:
+        type: string
+      unit_id2:
+        type: string
+      unit_id3:
+        type: string
+      vat:
+        type: number
+      vat_value:
+        type: number
+      volume1:
+        type: number
+      volume2:
+        type: number
+      volume3:
+        type: number
+      weight1:
+        type: number
+      weight2:
+        type: number
+      weight3:
+        type: number
+    type: object
+  entity.SendPickResponse:
+    properties:
+      orders:
+        example:
+        - INV1243123
+        items:
+          type: string
+        type: array
+      shipment_no:
+        example: fleet_10_1
+        type: string
+    type: object
+  entity.ShipmentBody:
+    properties:
+      conv_unit1:
+        minimum: 0
+        type: integer
+      conv_unit2:
+        minimum: 0
+        type: integer
+      conv_unit3:
+        minimum: 0
+        type: integer
+      cust_id:
+        type: string
+      date:
+        type: string
+      delivery_date:
+        type: string
+      due_date:
+        type: string
+      invoice_no:
+        type: string
+      item_cdn_name:
+        type: string
+      order_detail_id:
+        type: integer
+      order_no:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_latitude: {}
+      outlet_longitude: {}
+      outlet_name:
+        type: string
+      outlet_status:
+        type: string
+      pay_type_name:
+        type: string
+      product_code:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      product_status:
+        type: string
+      qty1:
+        minimum: 0
+        type: integer
+      qty2:
+        minimum: 0
+        type: integer
+      qty3:
+        minimum: 0
+        type: integer
+      salesman_id:
+        type: integer
+      salesman_name:
+        type: string
+      sell_price1:
+        type: number
+      sell_price2:
+        type: number
+      sell_price3:
+        type: number
+      sku:
+        type: string
+      status:
+        type: string
+      total_bruto:
+        type: number
+      total_netto:
+        type: number
+      total_ppn:
+        type: number
+      total_promo:
+        type: number
+      total_volume_disc:
+        type: number
+      unit_id1:
+        type: string
+      unit_id2:
+        type: string
+      unit_id3:
+        type: string
+      vat:
+        type: number
+      vat_value:
+        type: number
+      volume:
+        type: number
+      warehouse_latitude: {}
+      warehouse_longitude: {}
+      weight:
+        minimum: 0
+        type: number
+    required:
+    - cust_id
+    - order_no
+    - outlet_address
+    - outlet_code
+    - outlet_id
+    - outlet_latitude
+    - outlet_longitude
+    - outlet_name
+    - outlet_status
+    - product_code
+    - product_id
+    - product_name
+    - product_status
+    - salesman_id
+    - salesman_name
+    - sku
+    - status
+    - unit_id1
+    - unit_id2
+    - unit_id3
+    - vat
+    - vat_value
+    - volume
+    - warehouse_latitude
+    - warehouse_longitude
+    type: object
+  entity.ShipmentEntryResponse:
+    properties:
+      outlet_id:
+        example: 34
+        type: integer
+      outlets:
+        items:
+          $ref: '#/definitions/entity.ShipmentItemResponse'
+        type: array
+    type: object
+  entity.ShipmentInvoiceList:
+    properties:
+      arrive_at:
+        type: integer
+      conv_unit1:
+        type: integer
+      conv_unit2:
+        type: integer
+      conv_unit3:
+        type: integer
+      created_at:
+        type: string
+      cust_id:
+        type: string
+      delivery_date:
+        type: string
+      due_date:
+        type: string
+      id:
+        type: integer
+      in_outlet:
+        type: boolean
+      invoice_date:
+        type: string
+      invoice_no:
+        type: string
+      item_cdn_name:
+        type: string
+      leave_at:
+        type: integer
+      nilai_invoice:
+        type: number
+      order_detail_id:
+        type: integer
+      order_no:
+        type: string
+      outlet_address:
+        type: string
+      outlet_code:
+        type: string
+      outlet_id:
+        type: integer
+      outlet_latitude:
+        type: string
+      outlet_longitude:
+        type: string
+      outlet_name:
+        type: string
+      outlet_status:
+        type: string
+      pay_type_name:
+        type: string
+      photo:
+        type: string
+      product_code:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      product_status:
+        type: string
+      qty_reject_1:
+        type: integer
+      qty_reject_2:
+        type: integer
+      qty_reject_3:
+        type: integer
+      qty1:
+        type: integer
+      qty2:
+        type: integer
+      qty3:
+        type: integer
+      reason_id:
+        type: integer
+      reason_name:
+        type: string
+      route_id:
+        type: integer
+      salesman_id:
+        type: integer
+      salesman_name:
+        type: string
+      sell_price1:
+        type: number
+      sell_price2:
+        type: number
+      sell_price3:
+        type: number
+      shipment_no:
+        type: string
+      signature:
+        type: string
+      skip_at:
+        type: integer
+      skip_reason:
+        type: string
+      sku:
+        type: string
+      status:
+        type: string
+      total_belum_bayar:
+        type: number
+      total_bruto:
+        type: number
+      total_netto:
+        type: number
+      total_ppn:
+        type: number
+      total_promo:
+        type: number
+      total_volume_disc:
+        type: number
+      unit_id1:
+        type: string
+      unit_id2:
+        type: string
+      unit_id3:
+        type: string
+      unload_at:
+        type: integer
+      updated_at:
+        type: string
+      volume:
+        type: number
+      warehouse_latitude:
+        type: string
+      warehouse_longitude:
+        type: string
+      weight:
+        type: number
+    type: object
+  entity.ShipmentItemResponse:
+    properties:
+      conv_unit1:
+        example: 0
+        type: integer
+      conv_unit2:
+        example: 6
+        type: integer
+      conv_unit3:
+        example: 6
+        type: integer
+      due_date:
+        example: "2024-12-12"
+        type: string
+      invoice_date:
+        example: "2024-12-12"
+        type: string
+      invoices_no:
+        example: "406438662776815"
+        type: string
+      item_cdn_name:
+        type: string
+      order_detail_id:
+        type: integer
+      order_no:
+        example: SO2409100004
+        type: string
+      outlet_code:
+        example: "001001"
+        type: string
+      outlet_id:
+        example: 34
+        type: integer
+      outlet_name:
+        example: Lapan Belas
+        type: string
+      outlet_status:
+        example: On Progress
+        type: string
+      product_code:
+        example: PRO5173
+        type: string
+      product_id:
+        example: 1
+        type: integer
+      product_name:
+        example: ASSORTED BISCUIT OPP RED 20 275G
+        type: string
+      product_status:
+        example: '-'
+        type: string
+      qty1:
+        example: 10
+        type: integer
+      qty2:
+        example: 10
+        type: integer
+      qty3:
+        example: 10
+        type: integer
+      salesman_name:
+        example: John Sales
+        type: string
+      sell_price1:
+        type: number
+      sell_price2:
+        type: number
+      sell_price3:
+        type: number
+      shipment_status:
+        example: Delivery
+        type: string
+      sku:
+        example: "0001"
+        type: string
+      unit_id1:
+        example: PCS
+        type: string
+      unit_id2:
+        example: CTN
+        type: string
+      unit_id3:
+        example: CTN
+        type: string
+      volume:
+        example: 0.04
+        type: number
+      weight:
+        example: 0.3578877
+        type: number
+    type: object
+  entity.ShipmentNoDropdown:
+    properties:
+      shipment_no:
+        example: "11024066062"
+        type: string
+    type: object
+  entity.ShipmentPickList:
+    properties:
+      invoices:
+        items:
+          $ref: '#/definitions/entity.ShipmentInvoiceList'
+        type: array
+      total_belum_bayar:
+        type: number
+      total_invoice:
+        type: number
+      total_netto:
+        type: number
+    type: object
+  entity.ShipmentPreviewResponse:
+    properties:
+      driver_id:
+        example: 1
+        type: integer
+      driver_name:
+        example: John Driver
+        type: string
+      helper_id:
+        example: 2
+        type: integer
+      helper_name:
+        example: George Helper
+        type: string
+      pick_list_date:
+        type: string
+      pick_list_no:
+        type: string
+      salesman_name:
+        example: John Sales
+        type: string
+      shipment:
+        items:
+          $ref: '#/definitions/entity.ShipmentEntryResponse'
+        type: array
+      shipment_no:
+        example: "11024066062"
+        type: string
+      start:
+        example: 1722912443
+        type: integer
+      total_bruto:
+        type: number
+      total_netto:
+        type: number
+      total_ppn:
+        type: number
+      total_promo:
+        type: number
+      total_volume_disc:
+        type: number
+      vehicle_name:
+        example: Garuda
+        type: string
+      vehicle_no:
+        example: B 323 R
+        type: string
+      vehicle_type:
+        example: "5"
+        type: string
+    type: object
+  entity.ShipmentReportDetail:
+    properties:
+      delivery_date:
+        example: "2024-06-11"
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/entity.ShipmentReportDetails'
+        type: array
+      driver_name:
+        example: John Driver
+        type: string
+      shipment_no:
+        example: "11024066062"
+        type: string
+    type: object
+  entity.ShipmentReportDetails:
+    properties:
+      arrive_at:
+        type: integer
+      document_no:
+        description: |-
+          InvoiceNo      string `json:"invoice_no" example:"INV1243123"`
+          OrderNo        string `json:"order_no" example:"SO20241025009"`
+        example: SO20241025009
+        type: string
+      drive_time:
+        type: integer
+      end_time:
+        type: integer
+      eta:
+        type: integer
+      leave_at:
+        type: integer
+      outlet_code:
+        example: "18"
+        type: string
+      outlet_name:
+        example: Lapan belas
+        type: string
+      photo:
+        type: string
+      received_status:
+        type: string
+      signature:
+        type: string
+      spent:
+        type: integer
+      start_time:
+        type: integer
+      unload_at:
+        type: integer
+      visited_status:
+        example: Delivery
+        type: string
+    type: object
+  entity.ShipmentReportReject:
+    properties:
+      delivery_date:
+        example: "2024-06-11"
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/entity.ShipmentReportRejectDetails'
+        type: array
+      driver_name:
+        example: John Driver
+        type: string
+      shipment_no:
+        example: "11024066062"
+        type: string
+    type: object
+  entity.ShipmentReportRejectDetails:
+    properties:
+      invoice_no:
+        example: INV1243123
+        type: string
+      outlet_code:
+        example: "18"
+        type: string
+      outlet_name:
+        example: Lapan belas
+        type: string
+      product_code:
+        example: "00123456"
+        type: string
+      product_name:
+        example: ASSORTED BISCUIT OPP RED 20 275G
+        type: string
+      qty_reject_1:
+        example: 10
+        type: integer
+      qty_reject_2:
+        example: 10
+        type: integer
+      qty_reject_3:
+        example: 10
+        type: integer
+      reason_name:
+        example: reject
+        type: string
+    type: object
+  entity.ShipmentReportSummary:
+    properties:
+      delivery_date:
+        type: string
+      driver_name:
+        type: string
+      end_time:
+        type: integer
+      eta:
+        type: integer
+      leave_at:
+        type: integer
+      photo:
+        type: string
+      planned:
+        type: integer
+      received:
+        type: integer
+      reject_all:
+        type: integer
+      reject_partial:
+        type: integer
+      shipment_no:
+        type: string
+      signature:
+        type: string
+      skipped:
+        type: integer
+      spent:
+        type: integer
+      start_time:
+        type: integer
+      visited:
+        type: integer
+    type: object
+  entity.ShipmentResponse:
+    properties:
+      created_at:
+        example: "2024-06-11"
+        type: string
+      delivery_date:
+        example: "2024-06-11"
+        type: string
+      driver_id:
+        example: 1
+        type: integer
+      driver_name:
+        example: John Driver
+        type: string
+      id:
+        example: 1
+        type: integer
+      shipment_no:
+        example: "11024066062"
+        type: string
+      shipment_type:
+        example: manual
+        type: string
+      vehicle_id:
+        example: 1
+        type: integer
+      vehicle_name:
+        example: Garuda
+        type: string
+      vehicle_type:
+        example: "5"
+        type: string
+    type: object
+  entity.SkipPickUpBody:
+    properties:
+      id:
+        example: 1218
+        type: integer
+      reason_id:
+        example: 1
+        type: integer
+      reason_name:
+        example: Reject
+        type: string
+    required:
+    - id
+    - reason_id
+    - reason_name
+    type: object
+  entity.SkipPickUpRequest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/entity.SkipPickUpBody'
+        type: array
+    required:
+    - data
+    type: object
+  entity.SkipRequest:
+    properties:
+      current_time:
+        type: integer
+      in_outlet:
+        type: boolean
+      outlet_id:
+        type: integer
+      shipment_no:
+        type: string
+      skip_reason:
+        type: string
+    required:
+    - current_time
+    - in_outlet
+    - outlet_id
+    - shipment_no
+    - skip_reason
+    type: object
+  entity.SkippedReason:
+    properties:
+      count:
+        type: integer
+      percentage:
+        type: number
+      reason_name:
+        type: string
+    type: object
+  entity.SubmitShipmentRequest:
+    properties:
+      outlet_name:
+        items:
+          type: string
+        type: array
+      route_id:
+        items:
+          type: integer
+        type: array
+      shipment_no:
+        type: string
+    required:
+    - outlet_name
+    - route_id
+    - shipment_no
+    type: object
+  entity.SummaryDailyResponse:
+    properties:
+      end_time:
+        example: 1719122155729
+        type: integer
+      start_time:
+        example: 1719122155729
+        type: integer
+    type: object
+  entity.SummaryResponse:
+    properties:
+      end_time:
+        example: 0
+        type: integer
+      finished:
+        example: 1
+        type: integer
+      in_progress:
+        example: 0
+        type: integer
+      shipments:
+        example: 10
+        type: integer
+      start_time:
+        example: 1719122155729
+        type: integer
+      trip:
+        example: 3
+        type: integer
+    type: object
+  entity.TravelListResponse:
+    properties:
+      arrive_at:
+        example: 1719122155729
+        type: integer
+      in_outlet:
+        example: true
+        type: boolean
+      leave_at:
+        example: 1719122155729
+        type: integer
+      on_hold:
+        example: 1719122155729
+        type: integer
+      pickup_at:
+        example: 1719122155729
+        type: integer
+      resume_at:
+        example: 1719122155729
+        type: integer
+      skip_at:
+        example: 1719122155729
+        type: integer
+      skip_reason:
+        example: outlet closed
+        type: string
+      unload_at:
+        example: 1719122155729
+        type: integer
+      unload_desc:
+        example: ""
+        type: string
+    type: object
+  entity.UnloadRequest:
+    properties:
+      current_time:
+        type: integer
+      outlet_id:
+        type: integer
+      shipment_no:
+        type: string
+    required:
+    - current_time
+    - outlet_id
+    - shipment_no
+    type: object
+  entity.UpdatePicklistRequest:
+    properties:
+      driver:
+        type: string
+      helper:
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/entity.OrderPicklist'
+        type: array
+      picklist_no:
+        type: string
+      updated_by:
+        type: string
+      vehicle:
+        type: string
+    required:
+    - picklist_no
+    type: object
+  entity.VehicleBody:
+    properties:
+      cust_id:
+        type: string
+      driver_id:
+        type: integer
+      driver_name:
+        type: string
+      height:
+        minimum: 0
+        type: number
+      helper_id:
+        type: integer
+      helper_name:
+        type: string
+      length:
+        minimum: 0
+        type: number
+      vehicle_id:
+        type: integer
+      vehicle_name:
+        type: string
+      vehicle_no:
+        type: string
+      vehicle_type:
+        type: string
+      volume:
+        minimum: 0
+        type: number
+      warehouse_latitude: {}
+      warehouse_longitude: {}
+      weight:
+        minimum: 0
+        type: number
+      width:
+        minimum: 0
+        type: number
+    required:
+    - cust_id
+    - driver_id
+    - driver_name
+    - helper_id
+    - helper_name
+    - vehicle_id
+    - vehicle_name
+    - vehicle_no
+    - vehicle_type
+    - warehouse_latitude
+    - warehouse_longitude
+    type: object
+  entity.VehicleResponse:
+    properties:
+      driver_id:
+        example: 1
+        type: integer
+      driver_name:
+        example: John Driver
+        type: string
+      height:
+        example: 12
+        type: number
+      helper_id:
+        example: 2
+        type: integer
+      helper_name:
+        example: George Helper
+        type: string
+      length:
+        example: 0
+        type: number
+      vehicle_desc:
+        example: Box Double
+        type: string
+      vehicle_id:
+        example: 1
+        type: integer
+      vehicle_no:
+        example: G001
+        type: string
+      vehicle_type_name:
+        example: Garuda
+        type: string
+      volume:
+        example: 1728
+        type: number
+      weight:
+        example: 11
+        type: number
+      width:
+        example: 12
+        type: number
+    type: object
+  entity.VisitRequest:
+    properties:
+      current_time:
+        type: integer
+      driver_id:
+        type: integer
+      shipment_no:
+        type: string
+    required:
+    - current_time
+    - driver_id
+    - shipment_no
+    type: object
+info:
+  contact: {}
+  description: ScyllaX-TMS API in Go using Fiber framework
+  title: ScyllaX-TMS API
+  version: "1.0"
+paths:
+  /generate/send-pick:
+    post:
+      description: 'catatan untuk attr outlet_latitude, outlet_longitude, warehouse_latitude,
+        warehouse_longitude wajib diisi dgn numeric/integer, contoh : -6.1365484 dan
+        gk boleh kosong!!!!!!!!.'
+      parameters:
+      - description: send pick auto shipment
+        in: body
+        name: shipment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateShipmentAutoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.SendPickResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: send to sendpick with result shipment_no and order_id
+      tags:
+      - sendpick(thirdparty)
+  /invoices:
+    get:
+      description: Return list of returns.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: OutletId
+        in: query
+        name: outlet_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.CustomShipmentInvoice'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entity.JsonUnauthorized'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Get list of returns.
+      tags:
+      - invoice
+  /login/send-pick:
+    post:
+      description: login sendpick get token jwt.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: login sendpick get token jwt
+      tags:
+      - sendpick(thirdparty)
+  /mobile/arrive:
+    post:
+      description: update arrive_at to db.
+      parameters:
+      - description: arrive
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ArriveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: arrive
+      tags:
+      - visit
+  /mobile/driver/reports:
+    get:
+      description: Return driver report.
+      parameters:
+      - description: driver_id
+        in: query
+        name: driver_id
+        required: true
+        type: string
+      - description: period (today/month)
+        in: query
+        name: period
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.DriverReportResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get driver report.
+      tags:
+      - report
+  /mobile/leave:
+    post:
+      description: update leave_at to db.
+      parameters:
+      - description: leave
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LeaveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: leave
+      tags:
+      - visit
+  /mobile/onhold:
+    post:
+      description: update on_hold to db.
+      parameters:
+      - description: on_hold
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UnloadRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: onhold
+      tags:
+      - visit
+  /mobile/outlet/{driverId}/{outletId}/{shipmentNo}:
+    get:
+      description: Return the outlet.
+      parameters:
+      - description: Driver ID
+        in: path
+        name: driverId
+        required: true
+        type: string
+      - description: Outlet ID
+        in: path
+        name: outletId
+        required: true
+        type: string
+      - description: ShipmentNo
+        in: path
+        name: shipmentNo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.OutletResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get outlet by driver_id, outlet_id and shipment_no.
+      tags:
+      - outlet
+  /mobile/outlets:
+    get:
+      description: Return the outlets.
+      parameters:
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      - description: cust_id
+        in: query
+        name: cust_id
+        type: string
+      - description: driver_id
+        in: query
+        name: driver_id
+        type: string
+      - description: product_id
+        in: query
+        name: product_id
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.OutletResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get outlets.
+      tags:
+      - outlet
+  /mobile/pickup:
+    post:
+      description: save pickup all to db.
+      parameters:
+      - description: pickup all
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PickUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: pickup all
+      tags:
+      - pickup
+  /mobile/pickup/partial:
+    post:
+      description: save pickup partial to db.
+      parameters:
+      - description: pickup partial
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PickupPartialRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: pickup partial
+      tags:
+      - pickup
+  /mobile/pickup/skip:
+    post:
+      description: save skip pickup to db.
+      parameters:
+      - description: skip pickup
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SkipPickUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: skip pickup
+      tags:
+      - skip pickup
+  /mobile/products:
+    get:
+      description: Return the product.
+      parameters:
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      - description: outlet_id
+        in: query
+        name: outlet_id
+        type: string
+      - description: outlet_code
+        in: query
+        name: outlet_code
+        type: string
+      - description: cust_id
+        in: query
+        name: cust_id
+        type: string
+      - description: product_id
+        in: query
+        name: product_id
+        type: string
+      - description: product_name
+        in: query
+        name: product_name
+        type: string
+      - description: driver_id
+        in: query
+        name: driver_id
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.ProductResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get all product.
+      tags:
+      - product
+  /mobile/rejects:
+    get:
+      description: Return list of reject.
+      parameters:
+      - description: reason_id
+        in: query
+        name: reason_id
+        type: string
+      - description: driver_id
+        in: query
+        name: driver_id
+        type: string
+      - description: outlet_id
+        in: query
+        name: outlet_id
+        type: string
+      - description: product_name
+        in: query
+        name: product_name
+        type: string
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.RejectResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get all reject.
+      tags:
+      - reject
+    post:
+      description: save reject all to db.
+      parameters:
+      - description: reject all
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RejectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: reject all
+      tags:
+      - reject
+  /mobile/rejects/cancel:
+    post:
+      description: reject cancel to db.
+      parameters:
+      - description: reject cancel
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RejectCancelRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: reject cancel
+      tags:
+      - reject
+  /mobile/rejects/partial:
+    get:
+      description: Return list of reject partial.
+      parameters:
+      - description: reason_id
+        in: query
+        name: reason_id
+        type: string
+      - description: driver_id
+        in: query
+        name: driver_id
+        type: string
+      - description: outlet_id
+        in: query
+        name: outlet_id
+        type: string
+      - description: product_name
+        in: query
+        name: product_name
+        type: string
+      - description: Sort
+        in: query
+        name: sort
+        type: string
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.RejectPartialResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get all reject partial.
+      tags:
+      - reject
+    post:
+      description: save reject partial to db.
+      parameters:
+      - description: reject partial
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RejectPartialRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: reject partial
+      tags:
+      - reject
+  /mobile/resume:
+    post:
+      description: update resume_at to db.
+      parameters:
+      - description: resume_at
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UnloadRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: resume
+      tags:
+      - visit
+  /mobile/skip:
+    post:
+      description: update skip_at to db.
+      parameters:
+      - description: skip
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SkipRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: skip
+      tags:
+      - visit
+  /mobile/todo/list/{outletId}/{shipmentNo}:
+    get:
+      description: todo list arrive, unload, leave.
+      parameters:
+      - description: OutletID
+        in: path
+        name: outletId
+        required: true
+        type: string
+      - description: ShipmentNo
+        in: path
+        name: shipmentNo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.TravelListResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: todo list
+      tags:
+      - reject
+  /mobile/unload:
+    post:
+      description: update unload_at to db.
+      parameters:
+      - description: unload
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UnloadRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: unload
+      tags:
+      - visit
+  /mobile/visits/daily-activity/{driverId}:
+    get:
+      description: Return the daily activity is current_date.
+      parameters:
+      - description: Driver ID
+        in: path
+        name: driverId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.DailyActivityResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get daily activity by driver_id.
+      tags:
+      - activities
+  /mobile/visits/daily/{shipmentNo}/{custId}:
+    get:
+      description: Return the summary daily by shipment_no.
+      parameters:
+      - description: shipment_no
+        in: path
+        name: shipmentNo
+        required: true
+        type: string
+      - description: cust_id
+        in: path
+        name: custId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.SummaryDailyResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get summary daily by shipment_no.
+      tags:
+      - activities
+  /mobile/visits/end:
+    post:
+      description: end visit in Db.
+      parameters:
+      - description: end visit and fill in current_time, you can use it from https://currentmillis.com/
+        in: body
+        name: visit
+        required: true
+        schema:
+          $ref: '#/definitions/entity.VisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: end visit.
+      tags:
+      - visit
+  /mobile/visits/start:
+    post:
+      description: start visit in Db.
+      parameters:
+      - description: start visit and fill in current_time, you can use it from https://currentmillis.com/
+        in: body
+        name: visit
+        required: true
+        schema:
+          $ref: '#/definitions/entity.VisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: start visit.
+      tags:
+      - visit
+  /mobile/visits/summary/{driverId}/{custId}:
+    get:
+      description: Return the summary.
+      parameters:
+      - description: Driver ID
+        in: path
+        name: driverId
+        required: true
+        type: integer
+      - description: Customer ID
+        in: path
+        name: custId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.SummaryResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get summary by driver_id, cust_id.
+      tags:
+      - activities
+  /picklists:
+    delete:
+      description: Delete a picklist from the database.
+      parameters:
+      - description: Delete Picklist
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.DeletePicklistRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.PicklistResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Delete a picklist
+      tags:
+      - picklist
+    get:
+      description: Get all picklists from the database.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: Driver
+        in: query
+        name: driver
+        type: string
+      - description: Vehicle
+        in: query
+        name: vehicle
+        type: string
+      - description: Start Date
+        in: query
+        name: start_date
+        type: string
+      - description: End Date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.PicklistResponse'
+                  type: array
+                meta:
+                  $ref: '#/definitions/entity.Meta'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Get all picklists
+      tags:
+      - picklist
+    post:
+      description: Create a new picklist and save it to the database.
+      parameters:
+      - description: Create Picklist
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreatePicklistRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.PicklistResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Create a new picklist
+      tags:
+      - picklist
+    put:
+      description: Update an existing picklist in the database.
+      parameters:
+      - description: Update Picklist
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdatePicklistRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.PicklistResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Update an existing picklist
+      tags:
+      - picklist
+  /picklists/{id}:
+    get:
+      description: Get a picklist from the database.
+      parameters:
+      - description: Picklist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.PicklistResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get a picklist
+      tags:
+      - picklist
+  /picklists/invoices:
+    get:
+      description: Return list of returns.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: OutletId
+        in: query
+        name: outlet_id
+        type: string
+      - description: DocumentType
+        in: query
+        name: document_type
+        type: string
+      - description: EmpId
+        in: query
+        name: emp_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.CustomShipmentInvoice'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entity.JsonUnauthorized'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Get list of returns.
+      tags:
+      - picklist
+  /reject-reason:
+    get:
+      description: Return list of reject reason.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: IsActive
+        in: query
+        name: is_active
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.ReasonRejectResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get All reject reason.
+      tags:
+      - reason
+  /returns:
+    get:
+      description: Return list of returns.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: OutletId
+        in: query
+        name: outlet_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.ResponseReturn'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/entity.JsonUnauthorized'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Get list of returns.
+      tags:
+      - return
+  /vehicles:
+    get:
+      description: Return list of vehicles via mapping dms.
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: string
+      - description: IsActive
+        in: query
+        name: is_active
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.VehicleResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get All vehicles via mapping dms.
+      tags:
+      - vehicle
+  /vehicles/dev:
+    get:
+      description: Return list of vehicles.
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: delivery_date
+        in: query
+        name: delivery_date
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.VehicleResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get All vehicles.
+      tags:
+      - vehicle
+  /web/shipment-report/detail:
+    get:
+      description: Return shipment report detail.
+      parameters:
+      - description: start_date
+        in: query
+        name: start_date
+        type: string
+      - description: end_date
+        in: query
+        name: end_date
+        type: string
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      - description: outlet
+        in: query
+        name: outlet
+        type: string
+      - description: driver
+        in: query
+        name: driver
+        type: string
+      - description: visited_status
+        in: query
+        name: visited_status
+        type: string
+      - description: received_status
+        in: query
+        name: received_status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ShipmentReportDetail'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get shipment report detail.
+      tags:
+      - web(shipment_report)
+  /web/shipment-report/driver:
+    get:
+      description: Return driver_name dropdown.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.DriverNameDropdown'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get driver name dropdown.
+      tags:
+      - web(shipment_report)-dropdown
+  /web/shipment-report/outlet:
+    get:
+      description: Return outlet (outlet_name & outlet_code) dropdown.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.OutletDropdown'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get outlet dropdown.
+      tags:
+      - web(shipment_report)-dropdown
+  /web/shipment-report/product:
+    get:
+      description: Return product code dropdown.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ProductCodeDropdown'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get product code dropdown.
+      tags:
+      - web(shipment_report)-dropdown
+  /web/shipment-report/reason:
+    get:
+      description: Return reason for dropdown.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ReasonDropdown'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get reason dropdown.
+      tags:
+      - web(shipment_report)-dropdown
+  /web/shipment-report/reject:
+    get:
+      description: Return shipment report reject.
+      parameters:
+      - description: start_date
+        in: query
+        name: start_date
+        type: string
+      - description: end_date
+        in: query
+        name: end_date
+        type: string
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      - description: outlet
+        in: query
+        name: outlet
+        type: string
+      - description: driver
+        in: query
+        name: driver
+        type: string
+      - description: pcode
+        in: query
+        name: pcode
+        type: string
+      - description: reason
+        in: query
+        name: reason
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ShipmentReportReject'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get shipment report reject.
+      tags:
+      - web(shipment_report)
+  /web/shipment-report/shipment:
+    get:
+      description: Return shipment_no dropdown.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ShipmentNoDropdown'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get shipment no drop down.
+      tags:
+      - web(shipment_report)-dropdown
+  /web/shipment-report/summary:
+    get:
+      description: Return shipment report summary.
+      parameters:
+      - description: start_date
+        in: query
+        name: start_date
+        type: string
+      - description: end_date
+        in: query
+        name: end_date
+        type: string
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      - description: driver_name
+        in: query
+        name: driver_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ShipmentReportSummary'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: get shipment report summary.
+      tags:
+      - web(shipment_report)
+  /web/shipments:
+    get:
+      description: Return list of shipments.
+      parameters:
+      - description: shipment_no
+        in: query
+        name: shipment_no
+        type: string
+      - description: cust_id
+        in: query
+        name: cust_id
+        type: string
+      - description: delivery_date
+        in: query
+        name: delivery_date
+        type: string
+      - description: driver_id
+        in: query
+        name: driver_id
+        type: string
+      - description: vehicle_id
+        in: query
+        name: vehicle_id
+        type: string
+      - description: driver_name
+        in: query
+        name: driver_name
+        type: string
+      - description: outlet_name
+        in: query
+        name: outlet_name
+        type: string
+      - description: start_date
+        in: query
+        name: start_date
+        type: string
+      - description: end_date
+        in: query
+        name: end_date
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.ShipmentResponse'
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get all shipments.
+      tags:
+      - web(shipment)
+    post:
+      description: Save shipment data to db.
+      parameters:
+      - description: Create manual shipment and example value delivery_date = 2006-01-02
+          (yyyy-mm-dd)
+        in: body
+        name: shipment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateShipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonCreated'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Create manual shipment
+      tags:
+      - web(shipment)
+  /web/shipments/{shipmentNo}:
+    delete:
+      description: Remove shipment data by shipment_no.
+      parameters:
+      - description: ShipmentNo
+        in: path
+        name: shipmentNo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Delete shipment.
+      tags:
+      - web(shipment)
+    get:
+      description: Return the shipments.
+      parameters:
+      - description: ShipmentNo
+        in: path
+        name: shipmentNo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ShipmentPreviewResponse'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get shipment by shipment_no.
+      tags:
+      - web(shipment)
+  /web/shipments/auto:
+    post:
+      description: catatan untuk attr longitude dan latitude itu harus numeric!!!.
+      parameters:
+      - description: Create auto shipment and example value delivery_date = 2006-01-02
+          (yyyy-mm-dd)
+        in: body
+        name: shipment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateShipmentAutoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonCreated'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      security:
+      - Bearer: []
+      summary: Create auto shipment
+      tags:
+      - web(shipment)
+  /web/shipments/bulk:
+    post:
+      description: delete bulk shipment.
+      parameters:
+      - description: delete bulk shipment
+        in: body
+        name: shipment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.DeleteShipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Delete bulk shipment
+      tags:
+      - web(shipment)
+  /web/shipments/invoices/{shipmentNo}:
+    get:
+      description: Return the shipments.
+      parameters:
+      - description: ShipmentNo
+        in: path
+        name: shipmentNo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.ShipmentPickList'
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Get shipment by order_no.
+      tags:
+      - web(shipment)
+  /web/shipments/submit:
+    patch:
+      description: Update route_id in Db.
+      parameters:
+      - description: Submit shipment preview
+        in: body
+        name: shipment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SubmitShipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.JsonSuccess'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Validation error
+          schema:
+            $ref: '#/definitions/entity.JsonBadRequest'
+        "404":
+          description: Data not found
+          schema:
+            $ref: '#/definitions/entity.JsonNotFound'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/entity.JsonInternalServerError'
+      summary: Submit shipment preview
+      tags:
+      - web(shipment)
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

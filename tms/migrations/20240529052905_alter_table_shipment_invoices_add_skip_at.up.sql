@@ -1,0 +1,2 @@
+ALTER TABLE tms.shipment_invoices
+ADD COLUMN IF NOT EXISTS skip_at BIGINT DEFAULT NULL;

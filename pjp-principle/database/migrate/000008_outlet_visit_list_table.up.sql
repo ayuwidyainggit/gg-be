@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS pjp_principles.outlet_visit_list (
+	id serial4 NOT NULL,
+	"year" int8 NULL,
+	week int8 NULL,
+	"date" timestamp NULL,
+	"day" varchar(125) NULL,
+	route_code int8 NULL,
+	outlet_code varchar(125) NULL,
+	pjp_id int8 NULL,
+	pjp_code int8 NULL,
+	"start" int8 NULL,
+	finish int8 NULL,
+	arrive_at int8 NULL,
+	skip_at int8 NULL,
+	leave_at int8 NULL,
+	outlet_id int8 NULL,
+	on_hold int8 NULL,
+	skip_reason varchar(125) DEFAULT NULL::character varying NULL,
+	resume_at int8 NULL,
+	is_planned bool DEFAULT true NULL,
+
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	updated_at timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	CONSTRAINT outlet_visit_list_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_route_pop_daily_pjp FOREIGN KEY (pjp_id) REFERENCES pjp_principles.permanent_journey_plans(id) ON DELETE CASCADE ON UPDATE CASCADE
+);

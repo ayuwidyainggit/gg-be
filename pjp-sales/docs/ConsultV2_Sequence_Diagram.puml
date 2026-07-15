@@ -1,0 +1,259 @@
+@startuml ConsultV2 Sequence Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam sequenceArrowThickness 2
+skinparam sequenceMessageAlign center
+
+actor Client
+participant "PromotionService" as Service
+participant "PromotionV2Repository" as Repo
+participant "Conversion Method" as Conversion
+
+== Phase 1: Initial Quantity Conversion ==
+Client -> Service: ConsultV2(req: ConsultPromoV2Req)
+activate Service
+
+loop For each detail in req.Details
+    Service -> Service: Create detailConversion (CustId, ProductId, Qty1, Qty2, Qty3)
+    Service -> Conversion: Conversion(detailConversion, custID, parentCustID)
+    activate Conversion
+    Conversion --> Service: conversionResult (OrderConversionResponse)
+    deactivate Conversion
+    
+    alt Conversion successful
+        Service --> Service: Update detail.Qty1, Qty2, Qty3\nwith converted values
+    else Conversion error
+        Service --> Service: Log error, continue to next detail
+    end
+end
+
+== Phase 2: Outlet & Salesman Validation ==
+Service -> Repo: FindOutletByID(outletID, custID)
+activate Repo
+Repo --> Service: outlet (OutletPromo)
+deactivate Repo
+
+alt Outlet not found
+    Service --> Client: Error: Outlet ID not found
+    deactivate Service
+else
+    Service -> Repo: FindSalesmanByID(salesmanID, custID)
+    activate Repo
+    Repo --> Service: salesman (SalesmanPromo)
+    deactivate Repo
+    
+    alt Salesman not found
+        Service --> Client: Error: Salesman ID not found
+        deactivate Service
+    else
+        Service -> Repo: FindWarehouseByID(whID, custID)
+        activate Repo
+        Repo --> Service: warehouse (WarehousePromo)
+        deactivate Repo
+        
+        alt Warehouse not found
+            Service --> Client: Error: Warehouse ID not found
+            deactivate Service
+        end
+    end
+end
+
+== Phase 3: Build Attribute Validation Criteria ==
+note right of Service: In v2, we don't build a map\nlike v1, but use outlet criteria directly
+
+== Phase 4: Find & Validate Promotions by Outlet Criteria ==
+Service -> Repo: FindActivePromotionsByOutletCriteria(req, outlet, salesman)
+activate Repo
+Repo --> Service: promotions[] (PromotionV2)
+deactivate Repo
+
+alt No promotions found
+    Service --> Client: Return empty responses[]
+    deactivate Service
+end
+
+Service --> Service: Extract promoIDs from promotions
+
+== Phase 5 & 6: Find and Validate Product Criteria ==
+Service -> Repo: FindProductCriteriasByPromoIDs(promoIDs, parentCustID)
+activate Repo
+Repo --> Service: productCriterias[] (PromotionProductCriteria)
+deactivate Repo
+
+Service --> Service: Group productCriterias by promoID\n(productCriteriaByPromo map)
+
+loop For each promotion
+    Service --> Service: Initialize:\n- validatedPromoProductGroups[promoID]\n- subTotalValidatedPromoProductGroups[promoID]\n- isPromoProductCriteriaValid = false
+    
+    alt No product criteria (all products eligible)
+        Service --> Service: Add all req.Details to\nvalidatedPromoProductGroups[promoID]\nSum all SubTotal
+        Service --> Service: isPromoProductCriteriaValid = true
+    else Has product criteria
+        loop For each productCriteria in promoCriterias
+            Service --> Service: productFound = false
+            
+            loop For each detail in req.Details
+                alt detail.ProID == productCriteria.ProID
+                    Service --> Service: Calculate buyValue:\n- If MinBuyType == Value: buyValue = detail.SubTotal\n- If MinBuyType == Quantity:\n  * UomTypeMiddle: (Qty3 * ConvUnit3) + Qty2\n  * UomTypeSmallest: (Qty3 * ConvUnit3 * ConvUnit2) + (Qty2 * ConvUnit2) + Qty1\n  * Default: Qty3
+                    
+                    Service --> Service: Get minBuyValue from\nMinBuyValue or MinBuyQty
+                    
+                    alt buyValue >= minBuyValue
+                        Service --> Service: productFound = true\nisPromoProductCriteriaValid = true\nAdd detail to validatedPromoProductGroups\nAdd SubTotal to subTotalValidatedPromoProductGroups
+                    end
+                end
+            end
+            
+            alt !productFound
+                Service --> Service: isPromoProductCriteriaValid = false\nbreak loop
+            end
+        end
+        
+        == Check Non-Mandatory Products ==
+        loop For each productCriteria (non-mandatory)
+            loop For each detail in req.Details
+                alt detail.ProID == productCriteria.ProID\nAND buyValue >= minBuyValue
+                    Service --> Service: Add detail to validatedPromoProductGroups\nAdd SubTotal to subTotalValidatedPromoProductGroups
+                end
+            end
+        end
+    end
+    
+    alt isPromoProductCriteriaValid AND\nlen(validatedPromoProductGroups[promoID]) > 0
+        Service --> Service: Add promoID to validatedPromoList
+    else
+        Service --> Service: Delete from validatedPromoProductGroups\nDelete from subTotalValidatedPromoProductGroups
+    end
+end
+
+alt No validated promotions
+    Service --> Client: Return empty responses[]
+    deactivate Service
+end
+
+== Phase 7: Validate Slab Rules ==
+Service -> Repo: FindSlabsByPromoIDs(validatedPromoList, parentCustID)
+activate Repo
+Repo --> Service: slabs[] (PromotionV2Slabs)
+deactivate Repo
+
+Service --> Service: Initialize validatedSlabs map\nInitialize promoSlabMap
+
+loop For each slab
+    Service --> Service: promoSlabMap[slab.PromoID] = slab
+    
+    Service --> Service: Calculate slabRuleValue:\n- If RuleType == Quantity:\n  Sum buyValue for all details\n  (convert based on RuleUom)\n- If RuleType == Value:\n  Sum SubTotal for all details
+    
+    Service --> Service: Check if slabMultiplied flag\nfrom parent promotion
+    
+    alt isMultiplied OR\n(slabRuleValue >= rangeFrom AND\nslabRuleValue <= rangeTo)
+        Service --> Service: validatedSlabs[slab.PromoID] = slab
+    end
+end
+
+== Phase 7b: Validate Strata ==
+Service -> Repo: FindStratasByPromoIDs(validatedPromoList, parentCustID)
+activate Repo
+Repo --> Service: stratas[] (PromotionV2Strata)
+deactivate Repo
+
+Service --> Service: Sort stratas by PromoID, then Ordinal ASC
+
+Service --> Service: Initialize validatedStrata map
+
+loop For each promoID in validatedPromoProductGroups
+    loop For each strata (sorted by ordinal)
+        alt strata.PromoID == promoID
+            Service -> Service: calculateStrataRuleValue(strata, details)
+            activate Service
+            note right: Calculate based on RuleType:\n- Quantity: Sum converted quantities\n- Value: Sum SubTotal
+            Service --> Service: ruleValue
+            deactivate Service
+            
+            alt ruleValue >= strata.RangeFrom AND\nruleValue <= strata.RangeTo
+                Service --> Service: validatedStrata[promoID] = strata\nbreak (take first matching strata)
+            end
+        end
+    end
+end
+
+== Combine Validated Promotions ==
+Service --> Service: Combine promoIDs from:\n- validatedSlabs\n- validatedStrata\n(combinedPromoIDs map)
+
+== Phase 8: Calculate Rewards ==
+loop For each promoID in combinedPromoIDs
+    Service --> Service: Get slab and strata for promoID
+    
+    Service --> Service: Determine rewardType, rewardValue, rewardUom:\n- Priority: strata (if exists)\n- Fallback: slab (if exists)
+    
+    alt No reward type found
+        Service --> Service: continue to next promoID
+    end
+    
+    Service --> Service: Find promotion details by promoID
+    
+    Service --> Service: Create response (ConsultPromoResp):\n- PromoID, PromoDesc\n- SlabID, SlabDesc (if hasSlab)
+    
+    Service --> Service: Calculate SlabReward:\n- RewardTypePercentage: (subTotal * rewardValue) / 100\n- RewardTypeFixedValue: rewardValue\n- Default: 0
+    
+    Service --> Service: slabReward = response.SlabReward
+    
+    == Process Products for Price Rewards ==
+    loop For each proID in validatedPromoProductGroups[promoID]
+        Service --> Service: Add proID to response.Products
+        
+        alt response.SlabReward > 0
+            Service --> Service: Create rewardPrice:\n- ProID, SubTotal\n- Reward = slabReward\n- slabReward -= reward\n- If slabReward <= 0: adjust reward\n- Total = SubTotal - Reward
+            
+            Service --> Service: Add rewardPrice to response.RewardPrice
+        end
+        
+        alt len(response.RewardProduct) > 0 OR\nlen(response.RewardPrice) > 0
+            Service --> Service: Append response to responses[]
+        end
+    end
+    
+    == Handle Product Rewards ==
+    alt rewardType == RewardTypeProduct
+        Service --> Service: Create rewardCtx (RewardContext)\nwith PromoID and RewardUom
+        
+        Service -> Repo: GetAllRewardProductFromStockV2(req, rewardCtx)
+        activate Repo
+        Repo --> Service: rewards[] (PromoRewardProductRead)
+        deactivate Repo
+        
+        Service --> Service: Calculate multipliedValue:\n- If SlabMultiplied: slabRuleValue / slab.RangeTo\n- Default: 1
+        
+        Service --> Service: Calculate totalQtyReward:\n- If rewardValue > 0: rewardValue * multipliedValue\n- Else if multipliedValue > 0: multipliedValue
+        
+        alt totalQtyReward > 0
+            loop For each reward in rewards
+                Service --> Service: qtyReward = min(totalQtyReward, reward.QtyStock)\ntotalQtyReward -= qtyReward
+                
+                Service --> Service: Create rewardProductConversion\nbased on RewardUom
+                
+                Service -> Conversion: Conversion(rewardProductConversion, custID, parentCustID)
+                activate Conversion
+                Conversion --> Service: rewardProductConversionResult
+                deactivate Conversion
+                
+                Service --> Service: Create rewardProduct:\n- ProID\n- Qty1, Qty2, Qty3 (from conversion)
+                
+                Service --> Service: Add rewardProduct to response.RewardProduct
+                
+                alt totalQtyReward <= 0
+                    Service --> Service: break loop
+                end
+            end
+        end
+        
+        alt len(response.RewardProduct) > 0 OR\nlen(response.RewardPrice) > 0
+            Service --> Service: Append response to responses[]
+        end
+    end
+end
+
+Service --> Client: Return responses[] (ConsultPromoResp[])
+deactivate Service
+
+@enduml

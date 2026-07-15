@@ -1,0 +1,8 @@
+@startuml
+allowmixing
+left to right direction
+' top to bottom direction
+skinparam backgroundColor #f1def3
+skinparam Shadowing true
+
+@enduml

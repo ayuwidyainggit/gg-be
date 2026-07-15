@@ -1,0 +1,84 @@
+# HTTP Docs for standard references   
+# https://developer.mozilla.org/en-US/docs/Web/HTTP
+# https://developer.twitter.com/en/docs/api-reference-index
+
+@url = http://127.0.0.1:9100
+
+### PING ###  
+GET {{url}}/ping
+###
+
+### Get Jobs ### | query params filter: q=68593150
+# @name get_jobs
+GET {{url}}/v1/jobs?q=&page=1&limit=10
+Accept: application/json
+###
+
+### Get Detail Job ### | query path: /:c_pro_id
+# @name get_job_detail
+GET {{url}}/v1/jobs/1
+Accept: application/json
+###
+
+### Create Jobs One Time
+# @name create_jobs_one_time
+POST {{url}}/v1/jobs
+Content-Type: application/json
+Accept: application/json
+
+{
+    "job_name": "Database Backup",
+    "job_desc": "One-time backup of the database.",
+    "job_type": "one_time",
+    "run_at": "2025-03-27T04:31:20+07:00",
+    "task": "http_request",
+    "url": "http://localhost:9002/api/v1/salesman/active-inactive",
+    "payload": "{\"test\":\"tes ya\"}",
+    "created_by": "system"
+}
+### End of Create Jobs One Time
+
+### Create Jobs Daily
+# @name create_jobs_daily
+POST {{url}}/v1/jobs
+Content-Type: application/json
+Accept: application/json
+
+{
+    "job_name": "Database Backup",
+    "job_desc": "daily backup of the database.",
+    "job_type": "daily",
+    "time_of_day": "05:11:20",
+    "task": "http_request",
+    "url": "http://localhost",
+    "payload": "{\"test\":\"tes ya\"}",
+    "created_by": "system"
+}
+### End of Create Jobs Daily
+
+### Create Jobs Weekly
+# @name create_jobs_weekly
+POST {{url}}/v1/jobs
+Content-Type: application/json
+Accept: application/json
+
+{
+    "job_name": "Database Backup",
+    "job_desc": "weekly backup of the database.",
+    "job_type": "weekly",
+    "day_of_week_or_month": 1,
+    "time_of_day": "05:08:50",
+    "task": "http_request",
+    "url": "http://localhost",
+    "payload": "{\"test\":\"tes ya\"}",
+    "created_by": "system"
+}
+### End of Create Jobs Weekly
+
+### Delete Jobs
+# @name delete_job
+DELETE  {{url}}/v1/jobs/d702ae9f-4c56-4d62-af16-00adb087a5ff
+Content-Type: application/json
+Accept: application/json
+
+#######################################################

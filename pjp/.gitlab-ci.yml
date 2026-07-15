@@ -1,0 +1,111 @@
+# .gitlab-ci.yml
+# -------------------------- DEFINITION
+variables:
+  TAG_IMAGE: "$CI_COMMIT_BRANCH-$CI_COMMIT_SHA"
+  
+# Define the stages
+stages:
+  - deploy
+  - sync  # Add the sync stage here
+# -------------------------- DEPLOY TO JENKINS 
+
+deploy-staging:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://103.28.219.73:8080"
+    JENKINS_JOB: "scylla-pjp"
+    JENKINS_TOKEN: "scylla-pjp-cicd-token" # Ini adalah Remote Trigger Token di config Job
+  script:
+    - |
+      # connection check
+      echo "credential validation check..."
+      HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "$JENKINS_USERNAME:$JENKINS_PWD" "$JENKINS_URL/api/json")
+      
+      if [ "$HTTP_CODE" != "200" ]; then
+        echo "Error: Credential mis (HTTP $HTTP_CODE). Check JENKINS_PWD in GitLab Variables."
+        exit 1
+      fi
+
+      CRUMB=$(curl -s -u "$JENKINS_USERNAME:$JENKINS_PWD" "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+      
+      curl -f -X POST -H "$CRUMB" -u "$JENKINS_USERNAME:$JENKINS_PWD" \
+      "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN"
+  only:
+    - staging
+
+deploy-demo:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://103.28.219.76:8080"
+    JENKINS_JOB: "scylla-pjp"
+    JENKINS_TOKEN: "scylla-pjp-cicd-token"
+  script:
+    - |
+      # connection check
+      echo "credential validation check..."
+      HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "$JENKINS_USERNAME:$JENKINS_PWD_QA" "$JENKINS_URL/api/json")
+      
+      if [ "$HTTP_CODE" != "200" ]; then
+        echo "Error: Credential mis (HTTP $HTTP_CODE). Check JENKINS_PWD in GitLab Variables."
+        exit 1
+      fi
+
+      CRUMB=$(curl -s -u "$JENKINS_USERNAME:$JENKINS_PWD_QA" "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+      
+      curl -f -X POST -H "$CRUMB" -u "$JENKINS_USERNAME:$JENKINS_PWD_QA" \
+      "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN"
+  only:
+    - demo
+
+deploy-prod:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://110.239.87.116:8080"
+    JENKINS_JOB: "scylla-pjp"
+    JENKINS_TOKEN: "scylla-pjp-cicd-token"
+  script:
+    - |
+      # connection check
+      echo "credential validation check..."
+      HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "$JENKINS_USERNAME:$JENKINS_PWD_MA" "$JENKINS_URL/api/json")
+      
+      if [ "$HTTP_CODE" != "200" ]; then
+        echo "Error: Credential mis (HTTP $HTTP_CODE). Check JENKINS_PWD in GitLab Variables."
+        exit 1
+      fi
+
+      CRUMB=$(curl -s -u "$JENKINS_USERNAME:$JENKINS_PWD_MA" "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+      
+      curl -f -X POST -H "$CRUMB" -u "$JENKINS_USERNAME:$JENKINS_PWD_MA" \
+      "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN"
+  only:
+    - main
+
+
+deploy-ssnx:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    JENKINS_URL: "http://110.239.69.88:8080"
+    JENKINS_JOB: "scylla-pjp"
+    JENKINS_TOKEN: "scylla-pjp-cicd-token"
+  script:
+    - |
+      # connection check
+      echo "credential validation check..."
+      HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -u "$JENKINS_USERNAME:$JENKINS_PWD_SSN" "$JENKINS_URL/api/json")
+      
+      if [ "$HTTP_CODE" != "200" ]; then
+        echo "Error: Credential mis (HTTP $HTTP_CODE). Check JENKINS_PWD in GitLab Variables."
+        exit 1
+      fi
+
+      CRUMB=$(curl -s -u "$JENKINS_USERNAME:$JENKINS_PWD_SSN" "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+      
+      curl -f -X POST -H "$CRUMB" -u "$JENKINS_USERNAME:$JENKINS_PWD_SSN" \
+      "$JENKINS_URL/job/$JENKINS_JOB/buildWithParameters?token=$JENKINS_TOKEN"
+  only:
+    - ssn-prod

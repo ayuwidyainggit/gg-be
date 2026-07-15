@@ -1,0 +1,4336 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "ScyllaX-PJP API-Principle in Go using Gin framework",
+        "title": "ScyllaX-PJP-Principle API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/distributors": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of outlet.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "destination"
+                ],
+                "summary": "Get outlet.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "IsActive",
+                        "name": "is_active",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/list-salesman": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of salesman.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Get list salesman by PJP.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/add-outlets": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "add outlet to route for mobile.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "add outlet to route for mobile.",
+                "parameters": [
+                    {
+                        "description": "save add outlet to route",
+                        "name": "save",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.AddOutletToRouteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/cancel/add-outlets": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "cancel add outlet to route for mobile.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "cancel add outlet to route for mobile.",
+                "parameters": [
+                    {
+                        "description": "cancel add outlet to route",
+                        "name": "save",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CancelAddOutletToRouteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/salesman/report": {
+            "get": {
+                "description": "salesman report and example date(yyyy-mm-dd).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "salesman report mobile.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "salesman_id",
+                        "name": "salesman_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "date",
+                        "name": "date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "year",
+                        "name": "year",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "month",
+                        "name": "month",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/todo/list/{outletVisitId}": {
+            "get": {
+                "description": "todo list arrive and leave.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "todo list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "todo list arrive and leave",
+                        "name": "outletVisitId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/arrive": {
+            "post": {
+                "description": "arrive visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "arrive visit mobile.",
+                "parameters": [
+                    {
+                        "description": "arrive visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ArriveVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/end": {
+            "post": {
+                "description": "end visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "end visit mobile.",
+                "parameters": [
+                    {
+                        "description": "end visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.FinishVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/leave": {
+            "post": {
+                "description": "leave visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "leave visit mobile.",
+                "parameters": [
+                    {
+                        "description": "leave visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LeaveVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/onhold": {
+            "post": {
+                "description": "onhold visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "onhold visit mobile.",
+                "parameters": [
+                    {
+                        "description": "onhold visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.OnholdVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/outlet": {
+            "post": {
+                "description": "outlet visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "outlet visit mobile.",
+                "parameters": [
+                    {
+                        "description": "outlet visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.OutletVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/outlet/list": {
+            "get": {
+                "description": "outlet visit and example date(yyyy-mm-dd).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "outlet visit mobile.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "salesman_code",
+                        "name": "salesman_code",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "cust_id",
+                        "name": "cust_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "date",
+                        "name": "date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/resume": {
+            "post": {
+                "description": "resume visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "resume visit mobile.",
+                "parameters": [
+                    {
+                        "description": "skip visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ResumeVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/skip": {
+            "post": {
+                "description": "skip visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "skip visit mobile.",
+                "parameters": [
+                    {
+                        "description": "skip visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SkipVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/start": {
+            "post": {
+                "description": "start visit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "start visit mobile.",
+                "parameters": [
+                    {
+                        "description": "start visit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.StartVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/status": {
+            "get": {
+                "description": "summary visit and example date(yyyy-mm-dd).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "summary visit Status mobile.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "salesman_code",
+                        "name": "salesman_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "date",
+                        "name": "date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/mobile/visits/summary": {
+            "get": {
+                "description": "summary visit and example date(yyyy-mm-dd).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mobile"
+                ],
+                "summary": "summary visit mobile.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "salesman_code",
+                        "name": "salesman_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "date",
+                        "name": "date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/outlets": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of outlet.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "destination"
+                ],
+                "summary": "Get outlet.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "q",
+                        "name": "q",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/salesman": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of salesman.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Get salesman.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SalesTeamId",
+                        "name": "sales_team_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "IsActive",
+                        "name": "is_active",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/salesman/{empId}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return of salesman by selected Id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sales"
+                ],
+                "summary": "Get salesman By ID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "get salesman by id",
+                        "name": "empId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/approval-routes": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of approval route.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "approval route"
+                ],
+                "summary": "Get all approval route.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "pjp_code",
+                        "name": "pjp_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "route_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "salesman_name",
+                        "name": "salesman_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "salesman_code",
+                        "name": "salesman_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "start date",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/approval-routes-enhance": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of approval route.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "approval route"
+                ],
+                "summary": "Get all approval route.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "pjp_code",
+                        "name": "pjp_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "route_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "salesman_name",
+                        "name": "salesman_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "salesman_code",
+                        "name": "salesman_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "start date",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/approval-routes-enhance/status": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update status in route to approval with propose.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "approval route"
+                ],
+                "summary": "Update status in route to approval with propose.",
+                "parameters": [
+                    {
+                        "description": "update status approval with propose",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateStatusEnhanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/approval-routes/status": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update status in route to approval with propose.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "approval route"
+                ],
+                "summary": "Update status in route to approval with propose.",
+                "parameters": [
+                    {
+                        "description": "update status approval with propose",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route pop permanent.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Get all route pop permanent.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pjp Code",
+                        "name": "pjp_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Salesman Name",
+                        "name": "salesman_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Week",
+                        "name": "week",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save daily route map additional example date(yyyy-mm-dd).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Save daily route map additional.",
+                "parameters": [
+                    {
+                        "description": "save daily route map and example date (2006-01-02 || yyyy-mm-dd)",
+                        "name": "save",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SaveDailyRouteMap"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps/all": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Copy all permanent to daily.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Copy all to daily.",
+                "parameters": [
+                    {
+                        "description": "copy all permanent to daily",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CopyAllRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps/daily": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route pop daily.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Get all route pop daily.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pjp Code",
+                        "name": "pjp_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Salesman Name",
+                        "name": "salesman_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Route Code",
+                        "name": "route_code",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps/partial": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Copy partial permanent to daily.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Copy partial to daily.",
+                "parameters": [
+                    {
+                        "description": "copy partial permanent to daily",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CopyPartialRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps/pjp/{pjpCode}/{routeCode}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route by pjp_code and route_code.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Get all route by pjp_code and route_code.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pjp_code",
+                        "name": "pjpCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "routeCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "date",
+                        "name": "date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps/specific": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Copy specific permanent to daily.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Copy specific to daily.",
+                "parameters": [
+                    {
+                        "description": "copy specific permanent to daily",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RoutesMapping"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/daily-route-maps/to/daily": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Copy route daily to daily.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "daily route map"
+                ],
+                "summary": "Copy route daily to daily.",
+                "parameters": [
+                    {
+                        "description": "copy route daily to daily",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RoutesMapping"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of pjp.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Get all pjp.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Pjp Code (%2C-separated for multiple values)",
+                        "name": "pjp_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "OperationType",
+                        "name": "operation_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "TeamSalesman (%2C-separated for multiple values)",
+                        "name": "team_salesman",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SalesmanName",
+                        "name": "salesman_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "SalesmanCode",
+                        "name": "salesman_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Q",
+                        "name": "q",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Is Active",
+                        "name": "is_active",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Pagination"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save pjp data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Create pjp.",
+                "parameters": [
+                    {
+                        "description": "Create pjp",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.PjpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp-enhance": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save pjp data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp-enhance"
+                ],
+                "summary": "Create pjp.",
+                "parameters": [
+                    {
+                        "description": "Create pjp",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreatePjpEnhanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp-enhance/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get detail of a specific pjp by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp-enhance"
+                ],
+                "summary": "Get pjp by ID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "PJP ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.PjpEnhanceResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update detail of a specific PJP by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp-enhance"
+                ],
+                "summary": "Update pjp by ID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "PJP ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update PJP payload",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreatePjpEnhanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Pjp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp-enhance/{id}/status": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Change status pjp of a specific PJP by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp-enhance"
+                ],
+                "summary": "Change Status pjp by ID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "PJP ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update PJP payload",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateStatusPjpEnhanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Pjp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp/auto": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Create pjp auto data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp auto"
+                ],
+                "summary": "Create pjp auto.",
+                "parameters": [
+                    {
+                        "description": "Create pjp auto summary",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreatePjpAuto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp/list": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of with route for dropdown.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Get all pjp with route for dropdown.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Q",
+                        "name": "q",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Pagination"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp/update/{empId}": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Change status pjp of a specific PJP by EmpID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Change Status pjp by EmpID.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "empId",
+                        "name": "empId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update PJP payload",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateStatusPjpEnhanceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Pjp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp/visit-list": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route with status approve dropdown.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Get all pjp route with status approve dropdown.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Q",
+                        "name": "q",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Pagination"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/pjp/{pjpId}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return the pjp whoes pjpId value mathes id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Get Single pjp by id.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "update pjp by id",
+                        "name": "pjpId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PjpResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Remove pjp data by id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Delete pjp.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "delete pjp by id",
+                        "name": "pjpId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update pjp data.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pjp"
+                ],
+                "summary": "Update pjp.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "update pjp by id",
+                        "name": "pjpId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update pjp",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.PjpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Get all route.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "route_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "is_assign",
+                        "name": "is_assign",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "route_name",
+                        "name": "route_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save route data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Create route.",
+                "parameters": [
+                    {
+                        "description": "Create routes",
+                        "name": "route",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreateRouteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/additional/{routeCode}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route outlet by additional route_code.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Get route outlet by additional routeCode.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "get route outlet by additional route_code",
+                        "name": "routeCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/duplicate": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Duplicate route.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Duplicate route.",
+                "parameters": [
+                    {
+                        "description": "duplicate route",
+                        "name": "raw",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.DuplicateRoute"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/new-route": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "New route propose.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "New route propose.",
+                "parameters": [
+                    {
+                        "description": "new route with propose",
+                        "name": "raw",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.NewRouteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/outlets": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save assign outlet to routeCode data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Assign outlet to routeCode.",
+                "parameters": [
+                    {
+                        "description": "save assign outlet to routeCode data in Db",
+                        "name": "outlet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SaveOutletRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/outlets-additional/update": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete outlet additional in assign route.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Delete outlet additional in assign route.",
+                "parameters": [
+                    {
+                        "description": "delete outlet additional in assign route",
+                        "name": "outlet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.DeleteOutletAdditionalRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/outlets/update": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete outlet in assign route.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Delete outlet in assign route.",
+                "parameters": [
+                    {
+                        "description": "delete outlet in assign route",
+                        "name": "outlet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.DeleteOutletRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/pjp": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save assign outlet to pjpCode data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Assign outlet to pjpCode.",
+                "parameters": [
+                    {
+                        "description": "save assign outlet to pjpCode data in Db",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SavePjpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update pjpId in route route outlet.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Update pjp in route outlet.",
+                "parameters": [
+                    {
+                        "description": "update pjp in route outlet",
+                        "name": "pjp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdatePjpInRouteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/pjp/{pjpCode}/{routeCode}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route by pjp_code and route_code.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Get all route by pjp_code and route_code.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pjp_code",
+                        "name": "pjpCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "routeCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/remove/route": {
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Delete route in pjp.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Delete route in pjp.",
+                "parameters": [
+                    {
+                        "description": "delete pjp code \u0026 pjp id in route",
+                        "name": "route",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.DeletePjpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/save/route": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Save route confirmation in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Save route confirmation.",
+                "parameters": [
+                    {
+                        "description": "save route confirmation",
+                        "name": "raw",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SaveRouteConfirmationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/{routeCode}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route outlet by route_code.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Get route outlet by routeCode.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "routeCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/{routeCode}/{pjpCode}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of route outlet by route_code.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Get route outlet by routeCode and pjpCode.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "route_code",
+                        "name": "routeCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "pjp_code",
+                        "name": "pjpCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/route-mappings/{routeId}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Remove route data by id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Delete route.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "remove route data by id",
+                        "name": "routeId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update route data.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route mapping"
+                ],
+                "summary": "Update route.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "update route by id",
+                        "name": "routeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update route",
+                        "name": "route",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateRoutesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/web/visit-day-maps": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Return list of visit day map.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "visit day map"
+                ],
+                "summary": "Get all visit day map.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pjp_code",
+                        "name": "pjp_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Recurring for all week,biweekly,next weekly.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "visit day map"
+                ],
+                "summary": "Save weeklys.",
+                "parameters": [
+                    {
+                        "description": "save recurring week and example date (2006-01-02 || yyyy-mm-dd)",
+                        "name": "approval",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SaveWeeklyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.Destination": {
+            "type": "object",
+            "properties": {
+                "avg_sales_week": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "destination_address": {
+                    "type": "string"
+                },
+                "destination_code": {
+                    "type": "string"
+                },
+                "destination_id": {
+                    "type": "integer"
+                },
+                "destination_name": {
+                    "type": "string"
+                },
+                "destination_status": {
+                    "type": "string"
+                },
+                "destination_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "old_pjp_code": {
+                    "type": "integer"
+                },
+                "old_pjp_id": {
+                    "type": "integer"
+                },
+                "old_route_code": {
+                    "type": "integer"
+                },
+                "old_route_name": {
+                    "type": "string"
+                },
+                "outlet_visit_list_id": {
+                    "description": "alias column",
+                    "type": "integer"
+                },
+                "pjp": {
+                    "$ref": "#/definitions/model.Pjp"
+                },
+                "pjpOld": {
+                    "$ref": "#/definitions/model.Pjp"
+                },
+                "pjp_code": {
+                    "type": "integer"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route": {
+                    "$ref": "#/definitions/model.Route"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "route_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "verified_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Pjp": {
+            "type": "object",
+            "required": [
+                "approval_status"
+            ],
+            "properties": {
+                "approval_status": {
+                    "type": "string",
+                    "enum": [
+                        "In Review",
+                        "Draft",
+                        "Approved",
+                        "Approved With Propose",
+                        "Reject"
+                    ]
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "emp_code": {
+                    "description": "EmpCode       string `gorm:\"column:emp_code;type:varchar(125);null\" json:\"emp_code\"`",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operation_type": {
+                    "type": "string"
+                },
+                "pjp_code": {
+                    "type": "integer"
+                },
+                "pjp_mode": {
+                    "type": "string"
+                },
+                "routeOutlets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Destination"
+                    }
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "integer"
+                },
+                "salesman_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "team_salesman": {
+                    "type": "string"
+                },
+                "total_destinations": {
+                    "type": "integer"
+                },
+                "total_outlet": {
+                    "type": "integer"
+                },
+                "total_route": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "warehouse_id": {
+                    "type": "integer"
+                },
+                "warehouse_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Route": {
+            "type": "object",
+            "properties": {
+                "avg_sales_week": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "destinations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Destination"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "outlet_address": {
+                    "type": "string"
+                },
+                "outlet_code": {
+                    "type": "string"
+                },
+                "outlet_id": {
+                    "description": "IsAssign           bool      `gorm:\"column:is_assign;type:bool;default:false\" json:\"is_assign\"`\nIsAssignPjp        bool      `gorm:\"-\u003e\" json:\"is_assign_pjp\"`",
+                    "type": "integer"
+                },
+                "outlet_name": {
+                    "type": "string"
+                },
+                "outlet_status": {
+                    "type": "string"
+                },
+                "outlet_type": {
+                    "type": "string"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "route_name": {
+                    "type": "string"
+                },
+                "route_pop_status": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "total_outlet": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.AddOutletToRouteData": {
+            "type": "object",
+            "required": [
+                "outlets",
+                "pjp_code",
+                "pjp_id",
+                "route_code"
+            ],
+            "properties": {
+                "outlets": {
+                    "description": "Date      string `validate:\"required,date\"    json:\"date\"`",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Outlets"
+                    }
+                },
+                "pjp_code": {
+                    "type": "string",
+                    "example": "2"
+                },
+                "pjp_id": {
+                    "type": "integer",
+                    "example": 53
+                },
+                "route_code": {
+                    "type": "integer",
+                    "example": 7170
+                }
+            }
+        },
+        "request.AddOutletToRouteRequest": {
+            "type": "object",
+            "required": [
+                "data"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.AddOutletToRouteData"
+                    }
+                }
+            }
+        },
+        "request.ArriveVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "id",
+                "salesman_code"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.CancelAddOutletToRouteData": {
+            "type": "object",
+            "required": [
+                "outlet_code",
+                "pjp_id",
+                "route_code"
+            ],
+            "properties": {
+                "outlet_code": {
+                    "type": "string",
+                    "example": "20241126"
+                },
+                "pjp_id": {
+                    "type": "integer",
+                    "example": 53
+                },
+                "route_code": {
+                    "type": "integer",
+                    "example": 7170
+                }
+            }
+        },
+        "request.CancelAddOutletToRouteRequest": {
+            "type": "object",
+            "required": [
+                "data"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.CancelAddOutletToRouteData"
+                    }
+                }
+            }
+        },
+        "request.CopyAllRequest": {
+            "type": "object",
+            "required": [
+                "pjp_code"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "request.CopyPartialRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.RoutesData"
+                    }
+                }
+            }
+        },
+        "request.CreatePjpAuto": {
+            "type": "object",
+            "required": [
+                "Day",
+                "Route",
+                "Sales"
+            ],
+            "properties": {
+                "Day": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"Monday\"",
+                        "\"Monday\"",
+                        "\"Sunday\"",
+                        "\"Sunday\"]"
+                    ]
+                },
+                "Route": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/request.OutletReq"
+                        }
+                    }
+                },
+                "Sales": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.PjpAutoRequest"
+                    }
+                }
+            }
+        },
+        "request.CreatePjpEnhanceRequest": {
+            "type": "object",
+            "required": [
+                "approval_status",
+                "operation_type",
+                "pjp_code",
+                "routes",
+                "salesman_code",
+                "salesman_name",
+                "salesman_team",
+                "warehouse_name"
+            ],
+            "properties": {
+                "approval_status": {
+                    "description": "Status         string              `validate:\"required,oneof=true false\"   json:\"is_active\"`",
+                    "type": "string",
+                    "enum": [
+                        "Need Review",
+                        "Draft"
+                    ],
+                    "example": "Need Review"
+                },
+                "operation_type": {
+                    "type": "string",
+                    "example": "GT"
+                },
+                "pjp_code": {
+                    "type": "integer",
+                    "maximum": 9999,
+                    "minimum": 1
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.RoutesCreatePjp"
+                    }
+                },
+                "salesman_code": {
+                    "type": "string",
+                    "example": "3456"
+                },
+                "salesman_id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 4
+                },
+                "salesman_name": {
+                    "type": "string",
+                    "example": "Budi"
+                },
+                "salesman_team": {
+                    "type": "string",
+                    "example": "Canvas"
+                },
+                "visit_day": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.VisitDayCreatePjp"
+                    }
+                },
+                "warehouse_id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1
+                },
+                "warehouse_name": {
+                    "type": "string",
+                    "example": "Gudang"
+                }
+            }
+        },
+        "request.CreateRouteRequest": {
+            "type": "object",
+            "required": [
+                "route_name"
+            ],
+            "properties": {
+                "route_name": {
+                    "type": "string",
+                    "maxLength": 125,
+                    "minLength": 2
+                }
+            }
+        },
+        "request.DeleteOutletAdditionalRequest": {
+            "type": "object",
+            "required": [
+                "date",
+                "outlet_code",
+                "route_code",
+                "week"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "outlet_code": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "week": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.DeleteOutletRequest": {
+            "type": "object",
+            "required": [
+                "outlet_code",
+                "route_code"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "outlet_code": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "week": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.DeletePjpRequest": {
+            "type": "object",
+            "required": [
+                "pjp_code",
+                "pjp_id",
+                "route_code"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.Destination": {
+            "type": "object",
+            "required": [
+                "address",
+                "code",
+                "id",
+                "latitude",
+                "longitude",
+                "name",
+                "type"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "mampang"
+                },
+                "avg_sales_week": {
+                    "type": "number",
+                    "example": 100
+                },
+                "code": {
+                    "type": "string",
+                    "example": "OUT 5"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "latitude": {
+                    "type": "string",
+                    "example": "-6.200000"
+                },
+                "longitude": {
+                    "type": "string",
+                    "example": "106.816666"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Outlet okok"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "outlet",
+                        "distributor"
+                    ],
+                    "example": "outlet"
+                }
+            }
+        },
+        "request.DuplicateRoute": {
+            "type": "object",
+            "required": [
+                "route_code"
+            ],
+            "properties": {
+                "route_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.FinishVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "salesman_code"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.LeaveVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "id",
+                "salesman_code"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.NewRouteBody": {
+            "type": "object",
+            "required": [
+                "old_pjp_code",
+                "old_pjp_id",
+                "old_route_code",
+                "old_route_name",
+                "outlet_code",
+                "outlet_id",
+                "pjp_code",
+                "pjp_id",
+                "route_code",
+                "route_name"
+            ],
+            "properties": {
+                "old_pjp_code": {
+                    "type": "integer"
+                },
+                "old_pjp_id": {
+                    "type": "integer"
+                },
+                "old_route_code": {
+                    "type": "integer"
+                },
+                "old_route_name": {
+                    "type": "string"
+                },
+                "outlet_code": {
+                    "type": "string"
+                },
+                "outlet_id": {
+                    "type": "integer"
+                },
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "route_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.NewRouteRequest": {
+            "type": "object",
+            "required": [
+                "new_route_propose"
+            ],
+            "properties": {
+                "new_route_propose": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.NewRouteBody"
+                    }
+                }
+            }
+        },
+        "request.OnholdVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "id",
+                "salesman_code"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.OutletReq": {
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "string",
+                    "example": "29.355400"
+                },
+                "longitude": {
+                    "type": "string",
+                    "example": "-98.445857"
+                },
+                "outlet_address": {
+                    "type": "string",
+                    "example": "Semarang"
+                },
+                "outlet_code": {
+                    "type": "string",
+                    "example": "OUT10"
+                },
+                "outlet_id": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "outlet_name": {
+                    "type": "string",
+                    "example": "Outlet 10"
+                },
+                "outlet_status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "request.OutletVisitRequest": {
+            "type": "object",
+            "required": [
+                "cust_id",
+                "date",
+                "salesman_code"
+            ],
+            "properties": {
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.Outlets": {
+            "type": "object",
+            "required": [
+                "destination_address",
+                "destination_code",
+                "destination_id",
+                "destination_name",
+                "destination_status",
+                "destination_type",
+                "latitude",
+                "longitude"
+            ],
+            "properties": {
+                "avg_sales_week": {
+                    "type": "number",
+                    "example": 100
+                },
+                "destination_address": {
+                    "type": "string",
+                    "example": "mampang"
+                },
+                "destination_code": {
+                    "type": "string",
+                    "example": "OUT 5"
+                },
+                "destination_id": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "destination_name": {
+                    "type": "string",
+                    "example": "Destination okok"
+                },
+                "destination_status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "destination_type": {
+                    "type": "string",
+                    "example": "outlet"
+                },
+                "latitude": {
+                    "type": "string",
+                    "example": "-6.200000"
+                },
+                "longitude": {
+                    "type": "string",
+                    "example": "106.816666"
+                }
+            }
+        },
+        "request.PjpAutoRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "pjp_code",
+                "salesman_name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 18
+                },
+                "pjp_code": {
+                    "type": "string",
+                    "example": "1000"
+                },
+                "salesman_name": {
+                    "type": "string",
+                    "example": "DEN BEI"
+                }
+            }
+        },
+        "request.PjpRequest": {
+            "type": "object",
+            "required": [
+                "is_active",
+                "operation_type",
+                "pjp_code",
+                "salesman_code",
+                "salesman_name",
+                "salesman_team",
+                "warehouse_name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "is_active": {
+                    "type": "string",
+                    "enum": [
+                        "true",
+                        "false"
+                    ]
+                },
+                "operation_type": {
+                    "type": "string"
+                },
+                "pjp_code": {
+                    "type": "integer",
+                    "maximum": 9999,
+                    "minimum": 1
+                },
+                "salesman_code": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "salesman_name": {
+                    "type": "string"
+                },
+                "salesman_team": {
+                    "type": "string"
+                },
+                "warehouse_id": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "warehouse_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.ResumeVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "id",
+                "salesman_code"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.Route": {
+            "type": "object",
+            "required": [
+                "latitude",
+                "longitude",
+                "outlet_address",
+                "outlet_code",
+                "outlet_id",
+                "outlet_name",
+                "outlet_status",
+                "route_code"
+            ],
+            "properties": {
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "outlet_address": {
+                    "type": "string"
+                },
+                "outlet_code": {
+                    "type": "string"
+                },
+                "outlet_id": {
+                    "type": "integer"
+                },
+                "outlet_name": {
+                    "type": "string"
+                },
+                "outlet_status": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.RouteDailyData": {
+            "type": "object",
+            "required": [
+                "destinations",
+                "pjp_code",
+                "pjp_id",
+                "route_code",
+                "weeks"
+            ],
+            "properties": {
+                "destinations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Outlets"
+                    }
+                },
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "weeks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Week"
+                    }
+                }
+            }
+        },
+        "request.RouteData": {
+            "type": "object",
+            "required": [
+                "pjp_code",
+                "pjp_id",
+                "route_code",
+                "weeks"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "weeks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Week"
+                    }
+                }
+            }
+        },
+        "request.Routes": {
+            "type": "object",
+            "required": [
+                "route_code"
+            ],
+            "properties": {
+                "route_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.RoutesCreatePjp": {
+            "type": "object",
+            "required": [
+                "destinations",
+                "route_name"
+            ],
+            "properties": {
+                "destinations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Destination"
+                    }
+                },
+                "id": {
+                    "description": "digunakan untuk update/delete",
+                    "type": "integer",
+                    "example": 2
+                },
+                "route_code": {
+                    "description": "optional untuk referensi",
+                    "type": "integer",
+                    "example": 234
+                },
+                "route_name": {
+                    "type": "string",
+                    "example": "Rute senin"
+                }
+            }
+        },
+        "request.RoutesData": {
+            "type": "object",
+            "required": [
+                "pjp_code"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "integer"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Routes"
+                    }
+                }
+            }
+        },
+        "request.RoutesMapping": {
+            "type": "object",
+            "required": [
+                "date",
+                "day",
+                "pjp_code",
+                "pjp_id",
+                "route_code",
+                "week",
+                "year"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "day": {
+                    "type": "string"
+                },
+                "pjp_code": {
+                    "type": "integer"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Routes"
+                    }
+                },
+                "week": {
+                    "type": "integer"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.SaveDailyRouteMap": {
+            "type": "object",
+            "required": [
+                "data"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.RouteDailyData"
+                    }
+                }
+            }
+        },
+        "request.SaveOutletRequest": {
+            "type": "object",
+            "required": [
+                "outlets",
+                "route_code"
+            ],
+            "properties": {
+                "outlets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Outlets"
+                    }
+                },
+                "route_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.SavePjpRequest": {
+            "type": "object",
+            "required": [
+                "pjp_code",
+                "pjp_id",
+                "route_code"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "request.SaveRouteConfirmationRequest": {
+            "type": "object",
+            "properties": {
+                "new_routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.Route"
+                    }
+                }
+            }
+        },
+        "request.SaveWeeklyRequest": {
+            "type": "object",
+            "required": [
+                "data"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/request.RouteData"
+                    }
+                }
+            }
+        },
+        "request.SkipVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "id",
+                "salesman_code",
+                "skip_reason"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                },
+                "skip_reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.StartVisitRequest": {
+            "type": "object",
+            "required": [
+                "current_time",
+                "cust_id",
+                "date",
+                "salesman_code"
+            ],
+            "properties": {
+                "current_time": {
+                    "type": "integer"
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "salesman_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UpdatePjpInRouteRequest": {
+            "type": "object",
+            "required": [
+                "pjp_code",
+                "route_code"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "request.UpdateRoutesRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "route_name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "route_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UpdateStatusEnhanceRequest": {
+            "type": "object",
+            "required": [
+                "pjp_code",
+                "status"
+            ],
+            "properties": {
+                "pjp_code": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UpdateStatusPjpEnhanceRequest": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "request.UpdateStatusRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "status"
+            ],
+            "properties": {
+                "id": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.VisitDayCreatePjp": {
+            "type": "object",
+            "required": [
+                "date",
+                "day",
+                "id",
+                "indexDay",
+                "isInCurrentYear",
+                "startWeek",
+                "visit",
+                "week",
+                "year"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "2022-01-01"
+                },
+                "day": {
+                    "type": "string",
+                    "example": "Senin"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "indexDay": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isInCurrentYear": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "startWeek": {
+                    "type": "string",
+                    "example": "2022-01-01"
+                },
+                "visit": {
+                    "$ref": "#/definitions/request.RoutesCreatePjp"
+                },
+                "week": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "year": {
+                    "type": "integer",
+                    "example": 2022
+                }
+            }
+        },
+        "request.Week": {
+            "type": "object",
+            "required": [
+                "week",
+                "year"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "day": {
+                    "type": "string"
+                },
+                "week": {
+                    "type": "integer"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.Meta": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "total_data": {
+                    "type": "integer"
+                },
+                "total_page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.Pagination": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "meta": {
+                    "$ref": "#/definitions/response.Meta"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "trace_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.Pjp": {
+            "type": "object",
+            "required": [
+                "approval_status"
+            ],
+            "properties": {
+                "approval_status": {
+                    "type": "string",
+                    "enum": [
+                        "In Review",
+                        "Draft",
+                        "Approved",
+                        "Approved With Propose",
+                        "Reject"
+                    ]
+                },
+                "cust_id": {
+                    "type": "string"
+                },
+                "emp_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operation_type": {
+                    "type": "string"
+                },
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_mode": {
+                    "type": "string"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "salesman_code": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "integer"
+                },
+                "salesman_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "team_salesman": {
+                    "type": "string"
+                },
+                "warehouse_id": {
+                    "type": "integer"
+                },
+                "warehouse_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.PjpEnhanceResponse": {
+            "type": "object",
+            "properties": {
+                "pjp": {
+                    "$ref": "#/definitions/response.Pjp"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.Routes"
+                    }
+                },
+                "visit_day": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.VisitDay"
+                    }
+                }
+            }
+        },
+        "response.PjpResponse": {
+            "type": "object",
+            "properties": {
+                "approval_status": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operation_type": {
+                    "type": "string"
+                },
+                "pjp_code": {
+                    "type": "string"
+                },
+                "pjp_mode": {
+                    "type": "string"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.RoutesEntity"
+                    }
+                },
+                "salesman_code": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "integer"
+                },
+                "salesman_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "team_salesman": {
+                    "description": "EmployeeCode      string         `json:\"emp_code\"`",
+                    "type": "string"
+                },
+                "total_destinations": {
+                    "type": "integer"
+                },
+                "total_route": {
+                    "type": "integer"
+                },
+                "warehouse_id": {
+                    "type": "integer"
+                },
+                "warehouse_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "meta": {
+                    "$ref": "#/definitions/response.Meta"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "trace_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.Routes": {
+            "type": "object",
+            "properties": {
+                "cust_id": {
+                    "description": "IsAssign       bool      `gorm:\"column:is_assign;type:bool;default:false\" json:\"is_assign\"`\nIsAssignPjp    bool      `gorm:\"-\u003e\" json:\"is_assign_pjp\"`\nRoutePopStatus string    `gorm:\"-\u003e\" json:\"route_pop_status\"`",
+                    "type": "string"
+                },
+                "destinations": {
+                    "type": "array",
+                    "items": {}
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "route_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.RoutesEntity": {
+            "type": "object",
+            "properties": {
+                "route_code": {
+                    "type": "integer"
+                },
+                "total_outlet": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.RoutesHistory": {
+            "type": "object",
+            "properties": {
+                "cust_id": {
+                    "type": "string"
+                },
+                "destinations": {
+                    "type": "array",
+                    "items": {}
+                },
+                "route_code": {
+                    "type": "integer"
+                },
+                "route_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.VisitDay": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "2022-01-01"
+                },
+                "day": {
+                    "type": "string",
+                    "example": "Senin"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "indexDay": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isInCurrentYear": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "startWeek": {
+                    "type": "string",
+                    "example": "2022-01-01"
+                },
+                "visit": {
+                    "$ref": "#/definitions/response.RoutesHistory"
+                },
+                "week": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "year": {
+                    "type": "integer",
+                    "example": 2022
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

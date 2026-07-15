@@ -1,0 +1,152 @@
+version: "3"
+
+name: scylla
+
+services:  
+  scylla-system:
+    container_name: scylla-system-app
+    image: idetama/scylla-system
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    environment:
+      DB_HOST: 10.10.12.11
+      DB_PORT: 5433
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+      REDIS_HOST: 10.10.12.11
+      REDIS_PORT: 6379
+      REDIS_DEBUG: true
+
+  scylla-master:
+    container_name: scylla-master-app
+    image: idetama/scylla-master
+    restart: unless-stopped
+    ports:
+      - "9002:9002"
+    environment:
+      DB_HOST: 10.10.12.11
+      DB_PORT: 5433
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+      DB_DEBUG: true
+      REDIS_HOST: 10.10.12.11
+      REDIS_PORT: 6379
+      REDIS_DEBUG: true
+      RABBITMQ_HOST: 10.10.12.11
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: admin
+      RABBITMQ_PASSWORD: aremania
+      RABBITMQ_DEBUG: true
+
+  scylla-inventory:
+    container_name: scylla-inventory-app
+    image: idetama/scylla-inventory
+    restart: unless-stopped
+    ports:
+      - "9003:9003"
+    environment:
+      DB_HOST: 10.10.12.11
+      DB_PORT: 5433
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+
+  scylla-sales:
+    container_name: scylla-sales-app
+    image: idetama/scylla-sales
+    restart: unless-stopped
+    ports:
+      - "9004:9004"
+    environment:
+      DB_HOST: 10.10.12.11
+      DB_PORT: 5433
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+
+  scylla-finance:
+    container_name: scylla-finance-app
+    image: idetama/scylla-finance
+    restart: unless-stopped
+    ports:
+      - "9005:9005"
+    environment:
+      DB_HOST: 10.10.12.11
+      DB_PORT: 5433
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+
+  scylla-mobile:
+    container_name: scylla-mobile-app
+    image: idetama/scylla-mobile
+    restart: unless-stopped
+    ports:
+      - "9008:9008"
+    environment:
+      DB_HOST: 10.10.12.11
+      DB_PORT: 5433
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+      REDIS_HOST: 10.10.12.11
+      REDIS_PORT: 6379
+      REDIS_DEBUG: true
+
+  loki:
+    container_name: scylla-loki
+    image: grafana/loki:2.0.0
+    ports:
+      - "3100:3100"
+    volumes:
+      - "./etc/loki:/mnt/config"
+    command: -config.file=/mnt/config/loki-config.yaml
+
+  promtail:
+    container_name: scylla-promtail
+    image: grafana/promtail:2.5.0
+    volumes:
+      - "./etc/promtail:/mnt/config"
+      # to read container labels and logs
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/containers:/var/lib/docker/containers"
+    command: -config.file=/mnt/config/promtail-config.yaml
+
+  grafana:
+    container_name: scylla-grafana
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./var/grafana/grafana_data:/var/lib/grafana"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=foobar
+      - GF_USERS_ALLOW_SIGN_UP=false
+    user: "0"
+
+
+networks:
+  default:
+    name: scylla-net
+    external: true

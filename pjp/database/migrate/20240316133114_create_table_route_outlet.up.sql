@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS pjp.route_outlet (
+    id SERIAL PRIMARY KEY,
+    route_code BIGINT NOT NULL,
+    route_name VARCHAR(125) NOT NULL,
+    outlet_id BIGINT,
+    outlet_code VARCHAR(125),
+    outlet_name VARCHAR(125),
+    longitude VARCHAR(125),
+    latitude VARCHAR(125),
+    outlet_status VARCHAR(125),
+    outlet_address VARCHAR(125),
+    pjp_id BIGINT,
+    pjp_code BIGINT,
+    cust_id VARCHAR(125) DEFAULT NULL,
+    status VARCHAR(125) DEFAULT 'approve',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_route_outlet_pjp FOREIGN KEY (pjp_id) REFERENCES pjp.permanent_journey_plans (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_route_outlet_routes FOREIGN KEY (route_code) REFERENCES pjp.routes (route_code) ON UPDATE CASCADE ON DELETE CASCADE
+);

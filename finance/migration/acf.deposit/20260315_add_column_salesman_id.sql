@@ -1,0 +1,7 @@
+BEGIN;
+
+ALTER TABLE acf.deposit
+    ALTER COLUMN salesman_id DROP NOT NULL;
+
+ROLLBACK;
+COMMIT;

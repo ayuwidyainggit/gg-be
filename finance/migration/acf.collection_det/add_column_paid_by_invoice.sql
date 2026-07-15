@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE acf.collection_det
+ADD COLUMN paid_by_invoice NUMERIC(20, 4) DEFAULT 0 NOT NULL;
+
+COMMIT;

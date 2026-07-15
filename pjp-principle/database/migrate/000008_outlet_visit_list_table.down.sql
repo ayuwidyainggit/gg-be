@@ -1,0 +1,1 @@
+DROP TABLE pjp_principles.outlet_visit_list;

@@ -1,0 +1,44 @@
+version: "3"
+
+name: scylla
+
+services:  
+  scylla-system:
+    container_name: scylla-system-app
+    image: scylla-system
+    restart: unless-stopped
+    networks:
+      - scylla_default
+    ports:
+      - "9001:9001"
+    depends_on:
+      - scylla-redis-primary
+    links:
+      - scylla-redis-primary
+    environment:
+      DB_HOST: 103.28.219.73
+      DB_PORT: 25431
+      DB_USER: scylla
+      DB_PASS: S0l1dScyll@
+      DB_NAME: scylla_citus_dev
+      DB_MAX_CONNECTIONS: 15
+      DB_MAX_IDLE_CONNECTIONS: 5
+      DB_MAX_LIFETIME_CONNECTIONS: 1
+      REDIS_HOST: scylla-redis-primary
+      REDIS_PORT: 6379
+      REDIS_DEBUG: true
+
+  scylla-redis-primary:
+    container_name: scylla-redis-primary
+    image: redis:7.2.5-alpine
+    restart: always
+    ports:
+      - "6378:6378"
+    networks:
+      - scylla_default
+
+networks:
+ scylla_default:
+  name: scylla_default
+  driver: bridge
+  external: true

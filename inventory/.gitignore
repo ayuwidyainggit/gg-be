@@ -1,0 +1,42 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+vendor/
+
+# air for development
+tmp/*
+tmp/build-errors.log
+tmp/main
+
+# sonarqube tools
+.scannerwork/*
+sonar-project.properties
+
+# intelij idea
+.idea/
+
+# Report sequence storage
+.download_good_receipt_sequence.json
+
+# VS Code settings
+.vscode/
+
+__debug_bin*
+
+# Build
+inventory
+.air.toml
+
+# macOS
+.DS_Store

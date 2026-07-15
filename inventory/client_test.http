@@ -1,0 +1,281 @@
+# @hostname = http://103.28.219.73:5001
+@hostname = http://127.0.0.1
+
+# @path-system = /system
+@path-system = :9001
+
+# @path-master = /master
+@path-master = :9002
+
+# @path-sales = /sales
+@path-sales = :9004
+
+# @path-inventory = /inventory
+@path-inventory = :9003
+
+@host-system = {{hostname}}{{path-system}}
+@host-master = {{hostname}}{{path-master}}
+@host-sales = {{hostname}}{{path-sales}}
+@host-inventory = {{hostname}}{{path-inventory}}
+
+#
+@contentType = application/json
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+
+# users
+@email-principal = princ@idetama.id
+@email-distributor = dist@sda.idetama.id
+@password = admin
+
+### LOKI ###  
+GET http://localhost:3100/loki/api/v1/labels?start=1720546528666000000&end=1720550128666000000
+### END OF LOKI ###  
+
+### PING ###  
+GET http://127.0.0.1:9001/ping
+###
+
+### User Login
+# @name login
+POST {{host-system}}/v1/users/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: en
+
+{
+  "email":"{{email-distributor}}",
+  "password":"{{password}}"
+}
+###
+
+####### MASTER ####################################################################################
+
+####### Consumer Product ########################################
+
+### Get Cons Products ### | query params filter: q=68593150
+# @name get_cons_products
+GET {{host-master}}/v1/cons-products?q=&page=1&limit=10
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Get Detail Cons Product ### | query path: /:c_pro_id
+# @name get_cons_product_detail
+GET {{host-master}}/v1/cons-products/20
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+### Create Cons Products
+# @name create_cons_products
+POST {{host-master}}/v1/cons-products
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "c_pro_code": "WED01",
+    "c_pro_name": "WED satu",
+    "is_active": true
+}
+
+### Update Cons Products
+# @name update_cons_products
+PATCH {{host-master}}/v1/cons-products/20
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "c_pro_name": "Test edit WED01",
+    "is_active": true
+}
+
+### Delete Cons Products
+# @name delete_cons_product
+DELETE {{host-master}}/v1/cons-products/19
+Content-Type: application/json
+Accept: application/json
+Accept-Language: id
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+####### End Of Consumer Product ########################################
+
+####### END OF MASTER #############################################################################
+
+####### INVENTORY ####################################################################################
+
+####### Goods Receipt #######
+# @name get_good_receipt_list
+GET {{host-inventory}}/v1/goods-receipts
+    ?page=1
+    &limit=10
+    # &gr_no=21
+    &q=
+    &from=1704047009
+    &to=1722363809
+    &sort=created_at:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+####### End Of Goods Receipt #######
+
+
+####### Stock #######
+# @name get_stock_list
+GET {{host-inventory}}/v1/stocks
+    ?page=1
+    &limit=10
+    &q=
+    &from=1704067200
+    &to=1735689599
+    &sort=stock_id:asc
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name create_stock
+POST {{host-inventory}}/v1/stocks
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "stock_date": "2024-08-2",
+    "tr_code": "Promo ",
+    "tr_no": "1",
+    "wh_id": 1,
+    "pro_id": 1,
+    "item_cdn": 1,
+    "qty_in": 1,
+    "qty_out": 0,
+    "unit_price": 100,
+    "cogs": 100,
+    "ref_det_id": 1
+}
+###
+
+# @name create_bulk_stock
+POST {{host-inventory}}/v1/stocks/bulk
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "stock": [
+        {
+            "stock_date": "2024-08-02",
+            "tr_code": "GR",
+            "tr_no": "1",
+            "wh_id": 1,
+            "pro_id": 1,
+            "item_cdn": 1,
+            "qty_in": 1,
+            "qty_out": 0,
+            "unit_price": 100,
+            "cogs": 100,
+            "ref_det_id": 1
+        }, 
+        {
+            "stock_date": "2024-08-02",
+            "tr_code": "GR",
+            "tr_no": "1",
+            "wh_id": 1,
+            "pro_id": 1,
+            "item_cdn": 1,
+            "qty_in": 1,
+            "qty_out": 0,
+            "unit_price": 100,
+            "cogs": 100,
+            "ref_det_id": 1
+        }
+    ]
+}
+###
+
+####### End Of Stock #######
+
+####### Stock Opname #######
+
+# @name get_stock_opname_lookup
+GET {{host-inventory}}/v1/stocks/opname-lookup
+    ?wh_id=1
+    &product_hierarchy=1
+    &include_zero_stock=true
+    &is_show_price=false
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_stock_opname_statuses
+GET {{host-inventory}}/v1/stock-opname/statuses
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_stock_opname_product_hierarchy
+GET {{host-inventory}}/v1/stock-opname/product-hierarchy
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name get_stock_opname_list
+GET {{host-inventory}}/v1/stock-opname
+    ?page=1
+    &limit=10
+    &q=
+    &from=1704067200
+    &to=1735689599
+Accept: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+###
+
+# @name create_stock_opname
+POST {{host-inventory}}/v1/stock-opname
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+
+{
+    "wh_id": 63,
+    "notes": "",
+    "scheduled_at": "2024-11-30 11:36:00",
+    "assign_to_emp_id": 203,
+    "product_hierarchy": 1,
+    "include_zero_stock": false,
+    "is_show_current_stock": true
+}
+###
+
+@doc_no = SE2411300008
+# @name get_stock_opname_reports
+GET {{host-inventory}}/v1/stock-opname/{{doc_no}}
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+ 
+###
+
+@doc_no_cancel = SE2411300008
+# @name get_stock_opname_reports
+PATCH {{host-inventory}}/v1/stock-opname/{{doc_no}}/cancel
+Content-Type: application/json
+Accept-Language: en
+Authorization: Bearer {{login.response.body.data.token.access}}
+ 
+###
+
+####### End Of Stock Opname #######
+
+####### END OF INVENTORY #############################################################################

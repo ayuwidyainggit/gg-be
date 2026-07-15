@@ -1,0 +1,60 @@
+###
+GET http://103.28.219.73:5001/sales/v1/invoices?limit=10&salesman_id=261&status=2&status=6
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NDAsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc1MzkzMzAzNCwiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.GA1Utqm3FQ-dK9SsEfzYkikascYFzLWDWTNHrmKsdQM
+
+
+### get
+GET https://bel.scyllax.online/scylla-tms/api/v1/picklists/invoices?limit=99999999&document_type=invoice&emp_id=351&status=4,6&status=4,6&outlet_id=8671
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzI1MDAxMDA1IiwiZGlzdF9wcmljZV9ncnBfaWQiOjAsImRpc3RyaWJ1dG9yX2lkIjo3MiwiZW1haWwiOiJhZG1pbi5tYWRpdW5AdGJzLmNvbSIsImVtcF9pZCI6MzU2LCJleHBpcmVzIjoxNzU2OTcyMTEyLCJpc19hZG1pbiI6dHJ1ZSwibGFuZ19pZCI6ImVuIiwibW9iaWxlX25vIjoiLSIsInBhcmVudF9jdXN0X2lkIjoiQzI1MDAxIiwidXNlcl9mdWxsbmFtZSI6IkFkbWluIE1hZGl1biIsInVzZXJfaWQiOjY2LCJ1c2VyX25hbWUiOiJhZG1pbi5tYWRpdW5AdGJzLmNvbSIsIndoYXRzYXBwIjoiLSJ9.1tazF5owOtrmyoJTWxnBBHv1G7ciKoeRLz0VXxdnHQY
+
+### get
+GET http://127.0.0.1:3000/api/v1/picklists/invoices?limit=99999999&document_type=invoice&outlet_id=7673,7682,7685,7691,7707,7712,7715,7751,7756,7767,7768,7770,7771,7784,7795,7803,7815,7823,7833,7835,7843,7849,7873,7875,7876,7892,7898,7908,7909,7916,7918,7924,7925,7928,7935,7936,7943,7951,7962,7972,7978,7982,7985,7990,8000,8032,8034,8035,8036,8057,8058,8059,8071,8085,8103,8165,8166,8222,8231,8235,8251,8261,8264,8278,8279,8300,8303,8306,8311,8312,8336,8387,8392,8408,8429,8453,8455,8601,8616,8634,8636,8640,8651,8656,8671,8698,8699,8701,8743,8756,8758,8759,8761,8765,8768,8769,8788,8789,8800,8801,8808,8810,8815,8818,8837,8848,8851,8857,8862,8863,8866,8905,9084,9255,9319,9409&emp_id=351
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzI1MDAxMDA1IiwiZGlzdF9wcmljZV9ncnBfaWQiOjAsImRpc3RyaWJ1dG9yX2lkIjo3MiwiZW1haWwiOiJhZG1pbi5tYWRpdW5AdGJzLmNvbSIsImVtcF9pZCI6MzU2LCJleHBpcmVzIjoxNzU2OTcyMTEyLCJpc19hZG1pbiI6dHJ1ZSwibGFuZ19pZCI6ImVuIiwibW9iaWxlX25vIjoiLSIsInBhcmVudF9jdXN0X2lkIjoiQzI1MDAxIiwidXNlcl9mdWxsbmFtZSI6IkFkbWluIE1hZGl1biIsInVzZXJfaWQiOjY2LCJ1c2VyX25hbWUiOiJhZG1pbi5tYWRpdW5AdGJzLmNvbSIsIndoYXRzYXBwIjoiLSJ9.1tazF5owOtrmyoJTWxnBBHv1G7ciKoeRLz0VXxdnHQY
+
+### create picklist
+POST http://127.0.0.1:3000/api/v1/picklists/
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NjcsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc2MTI4MzA1NywiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.wz8EuRSm-QXb-g_r9cgnHw1-3EATPQSpZeLrdeszcus
+
+{"driver":"ABC 04","helper":"ABC 12","updated_by":"Dist IDE Sda","vehicle":"ABC","orders":[{"discount":0,"due_date":"","invoice_date":"","invoice_no":"","order_no":"SO2509250010","outlet_name":"4444","payment_type":"Cash On Delivery","ppn":495000,"salesman":"Firman","total_price":4700000,"total_unpaid":4995000,"total_promo":200000,"products":[{"product_id":532,"product_code":"BS001","product_name":"Busi Astrea","order_id":3541,"ppn":110000,"quantity_1":0,"quantity_2":0,"quantity_3":5,"quantity_unit_1":"PCK","quantity_unit_2":"CRT","quantity_unit_3":"CRT","unit_1_price":20000,"unit_2_price":200000,"unit_3_price":200000,"volume1":11,"volume2":1,"volume3":1,"weight1":1,"weight2":11,"weight3":1},{"product_id":536,"product_code":"BS00040005","product_name":"Lampu Depan Astrea LED","order_id":3542,"ppn":385000,"quantity_1":0,"quantity_2":0,"quantity_3":5,"quantity_unit_1":"PCS","quantity_unit_2":"CRT","quantity_unit_3":"CRT","unit_1_price":70000,"unit_2_price":700000,"unit_3_price":700000,"volume1":1,"volume2":1,"volume3":1,"weight1":1,"weight2":1,"weight3":1},{"product_id":532,"product_code":"BS001","product_name":"Busi Astrea","order_id":3543,"ppn":0,"quantity_1":0,"quantity_2":0,"quantity_3":1,"quantity_unit_1":"PCK","quantity_unit_2":"CRT","quantity_unit_3":"CRT","unit_1_price":20000,"unit_2_price":200000,"unit_3_price":200000,"volume1":11,"volume2":1,"volume3":1,"weight1":1,"weight2":11,"weight3":1}]}]}
+
+### get
+GET https://bel.scyllax.online/sales/v1/invoices?limit=99999999&document_type=invoice&salesman_id=351&status=6&outlet_id=8671
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzI1MDAxMDA1IiwiZGlzdF9wcmljZV9ncnBfaWQiOjAsImRpc3RyaWJ1dG9yX2lkIjo3MiwiZW1haWwiOiJhZG1pbi5tYWRpdW5AdGJzLmNvbSIsImVtcF9pZCI6MzU2LCJleHBpcmVzIjoxNzU2OTcyMTEyLCJpc19hZG1pbiI6dHJ1ZSwibGFuZ19pZCI6ImVuIiwibW9iaWxlX25vIjoiLSIsInBhcmVudF9jdXN0X2lkIjoiQzI1MDAxIiwidXNlcl9mdWxsbmFtZSI6IkFkbWluIE1hZGl1biIsInVzZXJfaWQiOjY2LCJ1c2VyX25hbWUiOiJhZG1pbi5tYWRpdW5AdGJzLmNvbSIsIndoYXRzYXBwIjoiLSJ9.1tazF5owOtrmyoJTWxnBBHv1G7ciKoeRLz0VXxdnHQY
+
+### get
+GET https://www.fresh-hands-open-joyously.a276.dcdg.xyz/sales/v1/invoices/SO2509100002
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NDAsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc1Nzk4MjIxMSwiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.C1yGv3E_tsfylW9RE16UQhABE-pIMPQKpsIZv0O-r0U
+
+### get
+GET http://103.28.219.73:5001/sales/v1/invoices?outlet_id=253&emp_id=210
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NDAsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc1ODM1NjM0MCwiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.DVBPNzaxeoDPWxF6E8EG4-hKqXsZ61WZkrnVtFXWNuw
+
+### get
+GET http://103.28.219.73:5001/sales/v1/orders/SO2509100002
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NDAsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc1Nzk4MjIxMSwiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.C1yGv3E_tsfylW9RE16UQhABE-pIMPQKpsIZv0O-r0U
+
+### get picklist
+GET http://localhost:3000/api/v1/picklists?page=1&limit=10&start_date=2025-10-23&end_date=2025-10-23
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NjcsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc2MTI4MzA1NywiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.wz8EuRSm-QXb-g_r9cgnHw1-3EATPQSpZeLrdeszcus
+### get
+GET https://www.fresh-hands-open-joyously.a276.dcdg.xyz/scylla-tms/api/v1/picklists?page=1&limit=10&start_date=2025-09-16&end_date=2025-09-16
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxMDAwMSIsImRpc3RfcHJpY2VfZ3JwX2lkIjoxLCJkaXN0cmlidXRvcl9pZCI6NDAsImVtYWlsIjoiZGlzdEBzZGEuaWRldGFtYS5pZCIsImVtcF9pZCI6MCwiZXhwaXJlcyI6MTc1Nzk4MjIxMSwiaXNfYWRtaW4iOnRydWUsImxhbmdfaWQiOiJlbiIsIm1vYmlsZV9ubyI6IjA4NTc0ODEyMzEyOCIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkRpc3QgSURFIFNkYSIsInVzZXJfaWQiOjEyLCJ1c2VyX25hbWUiOiJkaXN0QHNkYS5pZGV0YW1hLmlkIiwid2hhdHNhcHAiOiIwODU3NDgxMjMxMjgifQ.C1yGv3E_tsfylW9RE16UQhABE-pIMPQKpsIZv0O-r0U

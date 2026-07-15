@@ -1,0 +1,9 @@
+ALTER TABLE tms.shipment_invoices
+DROP COLUMN total_bruto,
+DROP COLUMN total_volume_disc,
+DROP COLUMN total_promo,
+DROP COLUMN total_ppn,
+DROP COLUMN due_date,
+DROP COLUMN sell_price1,
+DROP COLUMN sell_price2,
+DROP COLUMN sell_price3;
