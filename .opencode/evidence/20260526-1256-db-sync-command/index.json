@@ -1,0 +1,17 @@
+{
+  "task_id": "20260526-1256-db-sync-command",
+  "created_at": "2026-05-26T12:56:12+07:00",
+  "updated_at": "2026-05-26T12:56:12+07:00",
+  "primary_plan": ".opencode/plans/20260526-1256-db-sync-command.md",
+  "evidence": [
+    ".opencode/evidence/20260526-1256-db-sync-command/discovery.md"
+  ],
+  "user_decisions_captured": [
+    "local user postgres with password supplied via runtime env",
+    "local ggn_scyllax may be dropped and recreated",
+    "local Citus is not installed and should be prepared",
+    "automation mode required",
+    "remote database must remain read-only from script perspective"
+  ],
+  "status": "ready_for_implementation"
+}

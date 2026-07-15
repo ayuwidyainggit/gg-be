@@ -1,0 +1,22 @@
+=== RUN   TestParseImportOrders_SX2508_PersistsInvoiceNumberAndDate
+    order_service_test.go:7650: SX-2508: PromoSo1 should equal imported promo=0, got <nil>
+--- FAIL: TestParseImportOrders_SX2508_PersistsInvoiceNumberAndDate (0.01s)
+=== RUN   TestParseImportOrders_SX2508_WithPromoAndVAT
+--- PASS: TestParseImportOrders_SX2508_WithPromoAndVAT (0.00s)
+=== RUN   TestDetailV2_SX2508_MappedOrderReturnsPersistedSoAndFinalTriples
+    order_service_test.go:7728: SX-2508 Red: model.OrderList has no IsSalesMapping field; mapped DetailV2 seam unavailable
+--- FAIL: TestDetailV2_SX2508_MappedOrderReturnsPersistedSoAndFinalTriples (0.00s)
+=== RUN   TestDetailV2_SX2508_NonMappedOrderStillConverts
+    order_service_test.go:7733: SX-2508 Red: DetailV2 with mocked details does not return expected Detail.Normal items
+--- FAIL: TestDetailV2_SX2508_NonMappedOrderStillConverts (0.00s)
+=== RUN   TestFindOneProductByProductIdAndCustId_SX2508_UsesNewestEditedMapping
+    order_service_test.go:7738: SX-2508 Red: FindOneProductByProductIdAndCustId selects with Take() but no freshness order
+--- FAIL: TestFindOneProductByProductIdAndCustId_SX2508_UsesNewestEditedMapping (0.00s)
+=== RUN   TestDetailV2_SX2508_StockBreakdownReturnsCanonicalLargeMediumSmall
+    order_service_test.go:7781: expected 1 normal detail, got 0
+--- FAIL: TestDetailV2_SX2508_StockBreakdownReturnsCanonicalLargeMediumSmall (0.00s)
+=== RUN   TestComputeDisplayedAvailableStockBreakdown_SX2508_ReturnsLargeMediumSmall
+--- PASS: TestComputeDisplayedAvailableStockBreakdown_SX2508_ReturnsLargeMediumSmall (0.00s)
+FAIL
+FAIL	sales/service	0.996s
+FAIL

@@ -1,0 +1,18 @@
+Commit dibuat (tidak push).
+
+Repo: master/.git (submodule, branch bugfix/SX-2454-dev)
+SHA: a13133e
+Title: fix(distributor): support alphanumeric distributor code
+Files: 4 changed, 125 insertions(+), 2 deletions(-)
+
+Files:
+- entity/m_distributor.go (+2 -2)
+- entity/m_distributor_validation_test.go (+58 -0)
+- pkg/validation/validation.go (+36 -0)
+- service/m_distributor_update_partial_test.go (+29 -0)
+
+Pre-commit: tidak ada hook aktif di .git/hooks/.
+Staging: hanya 4 file intended. Tidak ada generated/vendor/untracked ikut.
+
+Push belum dilakukan karena user hanya minta "commit". 
+PR creation di platform terpisah (GitLab/GitHub) tetap menjadi langkah terpisah.

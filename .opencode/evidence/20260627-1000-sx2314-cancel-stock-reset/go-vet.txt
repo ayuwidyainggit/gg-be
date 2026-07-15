@@ -1,0 +1,4 @@
+# sales/controller
+# [sales/controller]
+controller/report_controller.go:54:2: struct field RequestedCustIDs repeats json tag "cust_id" also at report_controller.go:53
+controller/report_controller.go:65:2: struct field RequestedCustIDs repeats json tag "cust_id" also at report_controller.go:64

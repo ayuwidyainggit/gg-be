@@ -1,0 +1,24 @@
+{
+  "task_id": "20260706-sx-2435-2451-sales-order-import",
+  "status": "blocked",
+  "plan_file": ".opencode/plans/20260706-sx-2435-2451-sales-order-import.md",
+  "source_strategy": [
+    "repo-local docs",
+    "repo-local prior plans",
+    "repo-local code search"
+  ],
+  "key_evidence": [
+    ".opencode/docs/ARCHITECTURE.md",
+    ".opencode/docs/QUALITY.md",
+    ".opencode/plans/20260604-1024-sx-2154-order-type.md",
+    ".opencode/plans/20260608-1118-sx-2184-order-type-o-stock.md",
+    ".opencode/plans/20260608-1347-sx-2131-2184-taking-order-audit.md",
+    "sales/controller/order_controller.go",
+    "sales/service/order_type_helper.go"
+  ],
+  "blocking_reason": "SX-2435 and SX-2451 ticket details are not present anywhere in the repo; no existing sales order import endpoint/file flow exists to anchor exact implementation scope safely.",
+  "next_required_input": [
+    "exact SX-2435 acceptance or endpoint target",
+    "exact SX-2451 acceptance or payload/field delta"
+  ]
+}

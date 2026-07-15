@@ -1,0 +1,26 @@
+{
+  "task_id": "20260715-sx-2516",
+  "plan": ".opencode/plans/20260715-sx-2516.md",
+  "status": "RISK_REMEDIATION_COMPLETE_QUALITY_GATE_PENDING",
+  "evidence": [
+    ".opencode/evidence/20260715-sx-2516/risk-remediation-tests.log",
+    ".opencode/evidence/20260715-sx-2516/risk-remediation-vet.log",
+    ".opencode/evidence/20260715-sx-2516/risk-remediation-full-suite.log",
+    ".opencode/evidence/20260715-sx-2516/summary.md",
+    ".opencode/evidence/20260715-sx-2516/C1-F6-implementation.md"
+  ],
+  "changed_files": [
+    "sales/service/order_service_test.go",
+    "sales/controller/report_controller.go",
+    ".opencode/evidence/20260715-sx-2516/summary.md",
+    ".opencode/evidence/20260715-sx-2516/C1-F6-implementation.md",
+    ".opencode/evidence/20260715-sx-2516/index.json"
+  ],
+  "validation": {
+    "focused_tests": "2 passed",
+    "vet": "clean",
+    "full_suite": "320 passed, 9 failed",
+    "build": "success"
+  },
+  "residual_risk": "9 broader sales service tests remain failing; exact names and output are in risk-remediation-full-suite.log"
+}

@@ -1,0 +1,31 @@
+{
+  "task_id": "20260526-1537-sx-2079-dropdown-scope",
+  "created_at": "2026-05-26T15:37:52+07:00",
+  "primary_plan": ".opencode/plans/20260526-1537-sx-2079-dropdown-scope.md",
+  "evidence": [
+    {
+      "path": ".opencode/evidence/20260526-1537-sx-2079-dropdown-scope/discovery.md",
+      "type": "local-discovery",
+      "status": "kept",
+      "reason": "operational handoff evidence for implementation"
+    },
+    {
+      "path": ".opencode/evidence/20260526-1537-sx-2079-dropdown-scope/validation.md",
+      "type": "validation",
+      "status": "kept",
+      "reason": "test command results and coverage summary"
+    },
+    {
+      "path": ".opencode/evidence/20260526-1537-sx-2079-dropdown-scope/local-smoke-db.md",
+      "type": "runtime-smoke-db-validation",
+      "status": "kept",
+      "reason": "local API and database assertions against ggn_scyllax"
+    }
+  ],
+  "source_docs": [
+    "docs/Monitoring Activity - BE.md",
+    ".opencode/docs/ARCHITECTURE.md",
+    ".opencode/docs/QUALITY.md",
+    ".opencode/docs/AGENT_ROUTING.md"
+  ]
+}

@@ -1,0 +1,4 @@
+go test ./service/live_monitoring/... -run 'TestTransformDistributorRows_AssignsLeaveLocation|TestTransformDistributorRows_NilLeaveLocation|TestTransformPrincipalRows_PropagatesFileURL' -v
+PASS
+ok   scyllax-pjp/service/live_monitoring
+exit 0

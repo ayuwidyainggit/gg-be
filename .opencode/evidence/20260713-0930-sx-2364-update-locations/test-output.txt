@@ -1,0 +1,120 @@
+=== RUN   TestGetSubmittedSurveyData_ReturnsSubmittedSurveyGroupedByTitleAndOutlet
+--- PASS: TestGetSubmittedSurveyData_ReturnsSubmittedSurveyGroupedByTitleAndOutlet (0.00s)
+=== RUN   TestGetCollections_AllocatesCollectionPerInvoicePerOutlet
+--- PASS: TestGetCollections_AllocatesCollectionPerInvoicePerOutlet (0.00s)
+=== RUN   TestBuildLiveMonitoringDayRange_UsesJakartaBusinessDate
+--- PASS: TestBuildLiveMonitoringDayRange_UsesJakartaBusinessDate (0.00s)
+=== RUN   TestBuildLiveMonitoringDayRange_ReturnsErrorForInvalidDate
+--- PASS: TestBuildLiveMonitoringDayRange_ReturnsErrorForInvalidDate (0.00s)
+=== RUN   TestIsValidCurrentCoordinate
+=== RUN   TestIsValidCurrentCoordinate/valid_coordinate
+=== RUN   TestIsValidCurrentCoordinate/zero_coordinate
+=== RUN   TestIsValidCurrentCoordinate/zero_latitude
+=== RUN   TestIsValidCurrentCoordinate/zero_longitude
+=== RUN   TestIsValidCurrentCoordinate/longitude_out_of_range
+=== RUN   TestIsValidCurrentCoordinate/latitude_out_of_range
+--- PASS: TestIsValidCurrentCoordinate (0.00s)
+    --- PASS: TestIsValidCurrentCoordinate/valid_coordinate (0.00s)
+    --- PASS: TestIsValidCurrentCoordinate/zero_coordinate (0.00s)
+    --- PASS: TestIsValidCurrentCoordinate/zero_latitude (0.00s)
+    --- PASS: TestIsValidCurrentCoordinate/zero_longitude (0.00s)
+    --- PASS: TestIsValidCurrentCoordinate/longitude_out_of_range (0.00s)
+    --- PASS: TestIsValidCurrentCoordinate/latitude_out_of_range (0.00s)
+=== RUN   TestShouldReplaceCurrentCoordinate
+=== RUN   TestShouldReplaceCurrentCoordinate/attendance_only_selected
+=== RUN   TestShouldReplaceCurrentCoordinate/arrive_after_attendance_selected
+=== RUN   TestShouldReplaceCurrentCoordinate/leave_after_arrive_selected
+=== RUN   TestShouldReplaceCurrentCoordinate/clock_out_after_leave_selected
+=== RUN   TestShouldReplaceCurrentCoordinate/clock_out_with_invalid_coordinate_ignored
+=== RUN   TestShouldReplaceCurrentCoordinate/same_time_prefers_better_source_rank
+--- PASS: TestShouldReplaceCurrentCoordinate (0.00s)
+    --- PASS: TestShouldReplaceCurrentCoordinate/attendance_only_selected (0.00s)
+    --- PASS: TestShouldReplaceCurrentCoordinate/arrive_after_attendance_selected (0.00s)
+    --- PASS: TestShouldReplaceCurrentCoordinate/leave_after_arrive_selected (0.00s)
+    --- PASS: TestShouldReplaceCurrentCoordinate/clock_out_after_leave_selected (0.00s)
+    --- PASS: TestShouldReplaceCurrentCoordinate/clock_out_with_invalid_coordinate_ignored (0.00s)
+    --- PASS: TestShouldReplaceCurrentCoordinate/same_time_prefers_better_source_rank (0.00s)
+=== RUN   TestHasCurrentCoordinate
+--- PASS: TestHasCurrentCoordinate (0.00s)
+=== RUN   TestGetUpdateLocations_ReturnsTimelineForEmployee_PJP
+--- PASS: TestGetUpdateLocations_ReturnsTimelineForEmployee_PJP (0.00s)
+=== RUN   TestGetUpdateLocations_ReturnsTimelineWithNullableDestinationType_PJPPrinciples
+--- PASS: TestGetUpdateLocations_ReturnsTimelineWithNullableDestinationType_PJPPrinciples (0.00s)
+=== RUN   TestGetEmployeeRole_ReturnsEmployeeCustIDWhenFound
+--- PASS: TestGetEmployeeRole_ReturnsEmployeeCustIDWhenFound (0.00s)
+=== RUN   TestGetEmployeeRole_ReturnsNotFoundWhenEmployeeOutsideTenant
+--- PASS: TestGetEmployeeRole_ReturnsNotFoundWhenEmployeeOutsideTenant (0.00s)
+PASS
+ok  	scyllax-pjp/repository/live_monitoring	0.815s
+=== RUN   TestGetDistributorVisitInfo_UsesRepositoryExtraCallAggregation
+--- PASS: TestGetDistributorVisitInfo_UsesRepositoryExtraCallAggregation (0.00s)
+=== RUN   TestBuildVisitSummary_DefaultAndCompleted
+--- PASS: TestBuildVisitSummary_DefaultAndCompleted (0.00s)
+=== RUN   TestGetMonitoringDetail_FiltersExpenseByCollector
+--- PASS: TestGetMonitoringDetail_FiltersExpenseByCollector (0.00s)
+=== RUN   TestGetMonitoringDetail_DifferentCollectorsStayIsolated
+--- PASS: TestGetMonitoringDetail_DifferentCollectorsStayIsolated (0.00s)
+=== RUN   TestGetMonitoringDetail_PrincipalIncludesExtraCallSummary
+--- PASS: TestGetMonitoringDetail_PrincipalIncludesExtraCallSummary (0.00s)
+=== RUN   TestGetMonitoringDetail_PrincipalNoDataReturnsNil
+--- PASS: TestGetMonitoringDetail_PrincipalNoDataReturnsNil (0.00s)
+=== RUN   TestGetMonitoringDetail_PrincipalPassesEmpIDToRepo
+--- PASS: TestGetMonitoringDetail_PrincipalPassesEmpIDToRepo (0.00s)
+=== RUN   TestGetMonitoringDetail_IncludesSurveyData
+--- PASS: TestGetMonitoringDetail_IncludesSurveyData (0.00s)
+=== RUN   TestGetMonitoringDetail_NoSurveyReturnsEmptyList
+--- PASS: TestGetMonitoringDetail_NoSurveyReturnsEmptyList (0.00s)
+=== RUN   TestGetMonitoringDetail_IncludesCollectionPaid
+--- PASS: TestGetMonitoringDetail_IncludesCollectionPaid (0.00s)
+=== RUN   TestGetMonitoringDetail_NoCollectionReturnsEmptyList
+--- PASS: TestGetMonitoringDetail_NoCollectionReturnsEmptyList (0.00s)
+=== RUN   TestGetMonitoringDetail_CollectionUsesRequestDateAndEmpID
+--- PASS: TestGetMonitoringDetail_CollectionUsesRequestDateAndEmpID (0.00s)
+=== RUN   TestGetDistributorMonitoring_UsesChildCustIDsForPrincipalScope
+--- PASS: TestGetDistributorMonitoring_UsesChildCustIDsForPrincipalScope (0.00s)
+=== RUN   TestGetDistributorMonitoring_FallsBackToCurrentCustIDWhenNoChildrenFound
+--- PASS: TestGetDistributorMonitoring_FallsBackToCurrentCustIDWhenNoChildrenFound (0.00s)
+=== RUN   TestGetDistributorMonitoring_PaginatesEmployeeScopeBeforeDetailQueries
+--- PASS: TestGetDistributorMonitoring_PaginatesEmployeeScopeBeforeDetailQueries (0.00s)
+=== RUN   TestEnrichDistributorRowsWithMetadata
+--- PASS: TestEnrichDistributorRowsWithMetadata (0.00s)
+=== RUN   TestEnrichDistributorMonitoringData_SelectsLatestValidCoordinateSource
+--- PASS: TestEnrichDistributorMonitoringData_SelectsLatestValidCoordinateSource (0.00s)
+=== RUN   TestEnrichDistributorMonitoringData_LeavesClockOutEmptyWhenCheckoutMissing
+--- PASS: TestEnrichDistributorMonitoringData_LeavesClockOutEmptyWhenCheckoutMissing (0.00s)
+=== RUN   TestEnrichDistributorMonitoringData_FallsBackWhenCurrentCoordinateOutsideBusinessDay
+--- PASS: TestEnrichDistributorMonitoringData_FallsBackWhenCurrentCoordinateOutsideBusinessDay (0.00s)
+=== RUN   TestEnrichDistributorMonitoringData_ResetsWhenNoAttendanceOnRequestedDate
+--- PASS: TestEnrichDistributorMonitoringData_ResetsWhenNoAttendanceOnRequestedDate (0.00s)
+=== RUN   TestEnrichDistributorRowsWithLatestVisits_AssignsFileURL
+--- PASS: TestEnrichDistributorRowsWithLatestVisits_AssignsFileURL (0.00s)
+=== RUN   TestTransformDistributorRows_AssignsLeaveLocation
+--- PASS: TestTransformDistributorRows_AssignsLeaveLocation (0.00s)
+=== RUN   TestTransformDistributorRows_NilLeaveLocation
+--- PASS: TestTransformDistributorRows_NilLeaveLocation (0.00s)
+=== RUN   TestTransformPrincipalRows_DoesNotDuplicateCrossJoinedDestinationsAfterRepoFix
+--- PASS: TestTransformPrincipalRows_DoesNotDuplicateCrossJoinedDestinationsAfterRepoFix (0.00s)
+=== RUN   TestGetPrincipalMonitoring_PaginatesEmployeeScopeBeforeDetailRows
+--- PASS: TestGetPrincipalMonitoring_PaginatesEmployeeScopeBeforeDetailRows (0.00s)
+=== RUN   TestGetPrincipalMonitoring_FallsBackToCurrentCustIDWhenNoChildrenFound
+--- PASS: TestGetPrincipalMonitoring_FallsBackToCurrentCustIDWhenNoChildrenFound (0.00s)
+=== RUN   TestGetPrincipalMonitoring_PopulatesTopLevelAttendanceAndCurrentFields
+--- PASS: TestGetPrincipalMonitoring_PopulatesTopLevelAttendanceAndCurrentFields (0.00s)
+=== RUN   TestGetPrincipalMonitoring_ResetsTopLevelAttendanceFieldsWhenNoAttendanceOnRequestedDate
+--- PASS: TestGetPrincipalMonitoring_ResetsTopLevelAttendanceFieldsWhenNoAttendanceOnRequestedDate (0.00s)
+=== RUN   TestGetPrincipalMonitoring_PopulatesExtraCallData
+--- PASS: TestGetPrincipalMonitoring_PopulatesExtraCallData (0.00s)
+=== RUN   TestTransformPrincipalRows_PropagatesFileURL
+--- PASS: TestTransformPrincipalRows_PropagatesFileURL (0.00s)
+PASS
+ok  	scyllax-pjp/service/live_monitoring	0.452s
+=== RUN   TestGetDistributorMonitoring_ReturnsMonitoringPayloadWithoutStaleData
+--- PASS: TestGetDistributorMonitoring_ReturnsMonitoringPayloadWithoutStaleData (0.00s)
+=== RUN   TestGetUpdateLocations_ReturnsHappy200ResponseShape
+--- PASS: TestGetUpdateLocations_ReturnsHappy200ResponseShape (0.00s)
+=== RUN   TestGetUpdateLocations_EmptyTimelineReturnsNoData200
+--- PASS: TestGetUpdateLocations_EmptyTimelineReturnsNoData200 (0.00s)
+=== RUN   TestGetUpdateLocations_RecordNotFoundReturns404
+--- PASS: TestGetUpdateLocations_RecordNotFoundReturns404 (0.00s)
+PASS
+ok  	scyllax-pjp/controller/live_monitoring	0.631s

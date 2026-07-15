@@ -1,0 +1,85 @@
+{
+  "data": [
+    {
+      "emp_id": 482,
+      "emp_code": "MS9990",
+      "emp_name": "Jihan Fahira",
+      "distributor_id": 0,
+      "area_id": 0,
+      "region_id": 0,
+      "attendance_longitude": 106.81893,
+      "attendance_latitude": -6.252445,
+      "attendance_at": 1779371454,
+      "clock_out_longitude": 0,
+      "clock_out_latitude": 0,
+      "clock_out_at": null,
+      "current_longitude": 106.854499,
+      "current_latitude": -6.46071,
+      "current_coordinate_at": 1779373238,
+      "current_coordinate_source": "mobile_visit",
+      "pjp_data": [
+        {
+          "pjp_id": 62,
+          "pjp_code": 1265,
+          "approval_status": "Approved",
+          "route_data": [
+            {
+              "route_code": "6520",
+              "route_name": "Route 4",
+              "destination_data": [
+                {
+                  "destination_id": 1322,
+                  "destination_code": "MB260023",
+                  "destination_type": "outlet",
+                  "destination_name": "Toko Akbar",
+                  "destination_address": "Jalan TB Simatupang Pasar Minggu Ragunan South Jakarta City 12550",
+                  "longitude": 106.81889656931162,
+                  "latitude": -6.293810344909328,
+                  "arrive_at": 1779373237996,
+                  "leave_at": 1779373243944,
+                  "arrive_longitude": 106.854499,
+                  "arrive_latitude": -6.46071,
+                  "start": 1779371478457,
+                  "finish": null,
+                  "skip_at": null
+                }
+              ]
+            }
+          ],
+          "extra_call_data": [
+            {
+              "route_code": "6520",
+              "route_name": "Route 4",
+              "destination_data": [
+                {
+                  "destination_id": 1884,
+                  "destination_code": "MB260002",
+                  "destination_type": "outlet",
+                  "destination_name": "Toko Principal",
+                  "destination_address": "Testing Address",
+                  "longitude": -0.12334556,
+                  "latitude": -0.12334556,
+                  "arrive_at": 1779373192179,
+                  "leave_at": 1779373198077,
+                  "arrive_longitude": 106.854483,
+                  "arrive_latitude": -6.46071,
+                  "start": null,
+                  "finish": null,
+                  "skip_at": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "message": "Success",
+  "paging": {
+    "total_record": 1,
+    "page_current": 1,
+    "page_limit": 10,
+    "page_total": 1
+  },
+  "request_id": "REDACTED"
+}

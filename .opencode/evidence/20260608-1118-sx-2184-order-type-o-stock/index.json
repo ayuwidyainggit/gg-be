@@ -1,0 +1,24 @@
+{
+  "task_id": "20260608-1118-sx-2184-order-type-o-stock",
+  "created_at": "2026-06-08T11:18:33+07:00",
+  "mode": "Maintenance Stability Mode",
+  "primary_plan": ".opencode/plans/20260608-1118-sx-2184-order-type-o-stock.md",
+  "evidence": [
+    {
+      "path": ".opencode/evidence/20260608-1118-sx-2184-order-type-o-stock/discovery.md",
+      "kind": "local-discovery",
+      "reason_kept": "Implementer membutuhkan file/line discovery untuk root cause, branch points, dan test targets."
+    }
+  ],
+  "source_strategy": {
+    "local_project_discovery": "used",
+    "official_docs_context7": "skipped: tidak ada library/API eksternal yang version-sensitive untuk bugfix ini",
+    "github": "skipped: tidak bergantung pada upstream repo",
+    "web_search": "skipped: requirement berasal dari Jira/docs user, bukan fakta publik",
+    "browser_or_screenshot": "skipped: backend API task tanpa UI"
+  },
+  "runtime_preflight": {
+    "command": "rtk docker compose -f docker-compose.yml ps",
+    "result_summary": "Berhasil jalan, tidak ada service running; warning rtk filters untrusted dan compose version obsolete."
+  }
+}

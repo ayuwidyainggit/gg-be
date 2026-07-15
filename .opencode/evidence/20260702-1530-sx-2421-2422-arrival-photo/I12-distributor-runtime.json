@@ -1,0 +1,27 @@
+{
+  "endpoint": "GET /api/v1/live-monitoring-distributor",
+  "base_url": "http://127.0.0.1:8888",
+  "request": {
+    "date": 1782931200,
+    "status": ["Approved", "Need Review"],
+    "emp_id": [228],
+    "auth": "Bearer (locally-generated HS256 token, secret=secret, claims {cust_id:C220010001, parent_cust_id:C22001, distributor_id:67, emp_id:228, user_id:12})"
+  },
+  "destination_match": {
+    "destination_code": "B000005",
+    "expected_file_url": "https://dmsx-dev.obs.ap-southeast-4.myhuaweicloud.com/arriveOutlet/d92tt10estqr3fvcip4g.jpg",
+    "expected_source": "mobile.visits.file_url (latest per cust_id+emp_code+outlet_code+date, ROW_NUMBER=1 by created_at DESC)"
+  },
+  "extracted_destination": {
+    "destination_id": 916,
+    "destination_code": "B000005",
+    "destination_type": "Outlet",
+    "destination_name": "BOEDY 5",
+    "arrive_longitude": 110.332611,
+    "arrive_latitude": -7.905345,
+    "arrive_at": 1782963844769,
+    "file_url": "https://dmsx-dev.obs.ap-southeast-4.myhuaweicloud.com/arriveOutlet/d92tt10estqr3fvcip4g.jpg",
+    "start": 1782963827819
+  },
+  "verification": "PASS — field file_url is present at destination_data level and matches mobile.visits.file_url for B000005 salesman 3012241 on 2026-07-02"
+}

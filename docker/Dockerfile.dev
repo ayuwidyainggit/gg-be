@@ -1,0 +1,25 @@
+# Development Dockerfile
+# Untuk development dengan hot reload menggunakan Air
+FROM golang:1.24-alpine
+
+# Install git dan ca-certificates
+RUN apk update && apk add --no-cache git ca-certificates && update-ca-certificates
+
+# Install Air untuk hot reload (v1.52.3 kompatibel dengan Go 1.24)
+RUN go install github.com/air-verse/air@v1.52.3
+
+# Set working directory
+WORKDIR /app
+
+# Copy go mod files (untuk caching layer)
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Source code akan di-mount via volume di docker-compose
+# COPY . .
+
+# Expose port (akan di-override di docker-compose)
+EXPOSE 8080
+
+# Default command: run dengan air untuk hot reload
+CMD ["/go/bin/air", "-c", ".air.toml"]

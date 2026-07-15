@@ -1,0 +1,43 @@
+{
+  "task_id": "20260709-sx-2499-import-feedback",
+  "plan_id": "20260709-sx-2499-import-feedback",
+  "status": "implementation_complete_after_remediation",
+  "claim_level": "confirmed_repo",
+  "claim_scope": "Sales module maintenance slice for SX-2499 import feedback bugfix",
+  "files_changed": [
+    "sales/service/order_service.go",
+    "sales/repository/order_repository.go",
+    "sales/service/order_service_test.go"
+  ],
+  "validation": {
+    "build": "rtk go build ./... -> Success",
+    "service_tests": "rtk go test ./service/... -count=1 -timeout 240s -> 246 passed",
+    "focused_remediation_tests": "rtk go test ./service/... -count=1 -run 'TestParseImportOrders_(Selects|Zero|Multiple|Blank|SalesmanCode)' -v -> 7 passed",
+    "controller_tests": "rtk go test ./controller/... -count=1 -> 39 passed"
+  },
+  "subissue_fix_mapping": {
+    "2.1_multi_sheet": "parseImportOrders scans all sheets and selects the one whose header row matches orderImportHeaders. Errors on 0 or >1 matches. Covered by direct tests for blank Sheet1, zero matches, and multiple matches. ExportTemplate produces a single sheet named 'Order Template'.",
+    "2.2_document_date": "parseImportDate accepts Excel serial, dd/MM/yyyy, yyyy-MM-dd, and strips a leading apostrophe for backward compat. ExportTemplate sample B2 styled as date (numFmtId=14).",
+    "2.3_optional_fields": "ProCode, Promo, Discount, PPN are optional. parseOptionalNumber returns 0 on blank and invalid-number error otherwise. Blank ProCode skips product lookup and sets detail.ProId=0 (entity field is int, not pointer). Covered by direct tests for blank ProCode and blank Promo/Discount/PPN.",
+    "2.4_salesman_lookup": "FindSalesmanByCode trims input and queries salesman_code against mst.m_salesman. Covered by direct tests for trimmed and not-found SalesmanCode paths."
+  },
+  "deviations_from_plan": [
+    "excelize v2.9.1 Style struct does not expose QuotePrefix at Go API level; the date numFmtId=14 is the critical part and was applied. quotePrefix attribute is only needed for date-looking text, not for typed date values.",
+    "entity.CreateOrderDetBody.ProId is int (not *int), so the plan's ProId=nil was implemented as ProId=0 for blank ProCode rows. If sls.order_detail.pro_id has a foreign key rejecting 0, a schema/follow-up will be needed. This remains unverified at runtime/DB layer."
+  ],
+  "residual_risks": [
+    {
+      "level": "unverified",
+      "risk": "sls.order_detail.pro_id FK may reject 0 for blank ProCode rows; no quick non-destructive local DB fixture was available in this task context to verify persistence safety."
+    },
+    {
+      "level": "confirmed_repo",
+      "risk": "FindSalesmanByCode remains case-sensitive by design, matching existing lookup style in this module."
+    }
+  ],
+  "evidence_paths": {
+    "diff_stat": ".opencode/evidence/20260709-sx-2499-import-feedback/diff-stat.txt",
+    "test_output": ".opencode/evidence/20260709-sx-2499-import-feedback/test-output.txt",
+    "reference_index": ".opencode/evidence/20260709-sx-2499-import-feedback/index.json"
+  }
+}

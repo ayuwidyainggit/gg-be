@@ -1,0 +1,12 @@
+=== RUN   TestProductReport_MissingCustID_Returns400
+--- PASS: TestProductReport_MissingCustID_Returns400 (0.00s)
+=== RUN   TestProductReport_BlankCustID_Returns400
+--- PASS: TestProductReport_BlankCustID_Returns400 (0.00s)
+=== RUN   TestProductReport_InvalidSortBy_Returns400
+--- PASS: TestProductReport_InvalidSortBy_Returns400 (0.00s)
+=== RUN   TestProductReport_InvalidSortOrder_Returns400
+--- PASS: TestProductReport_InvalidSortOrder_Returns400 (0.00s)
+=== RUN   TestProductReport_ValidRequest_CallsService
+--- PASS: TestProductReport_ValidRequest_CallsService (0.00s)
+PASS
+ok  	master/controller	0.430s

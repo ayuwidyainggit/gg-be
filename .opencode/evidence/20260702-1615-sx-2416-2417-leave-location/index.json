@@ -1,0 +1,45 @@
+{
+  "task_id": "20260702-1615-sx-2416-2417-leave-location",
+  "plan_id": "20260702-1615-sx-2416-2417-leave-location",
+  "schema": "evidence_manifest.v1",
+  "owner_lane": "fixer",
+  "review_lane": "quality-gate",
+  "source_strategy": [
+    "repo_local_evidence",
+    "parallel_plan_sx-2421-2422_reuse",
+    "user_confirmed_nullability"
+  ],
+  "files_inspected": [
+    "pjp/router/live_monitoring.go",
+    "pjp/controller/live_monitoring/get_distributor_controller.go",
+    "pjp/controller/live_monitoring/get_principal_controller.go",
+    "pjp/service/live_monitoring/get_distributor_service.go",
+    "pjp/service/live_monitoring/get_principal_service.go",
+    "pjp/repository/live_monitoring/get_distributor_repository.go",
+    "pjp/repository/live_monitoring/get_principal_repository.go",
+    "pjp/repository/live_monitoring/get_principal_extra_call_repository.go",
+    "pjp/model/live_monitoring.go",
+    "pjp/data/response/live_monitoring_response.go",
+    "pjp/data/request/visit_request.go",
+    "pjp/model/outlet_visit_list.go",
+    "pjp/model/outlet_visit_list_principle.go",
+    "pjp/service/live_monitoring/get_distributor_service_test.go",
+    "pjp/service/live_monitoring/get_principal_service_test.go",
+    ".opencode/plans/20260702-1530-sx-2421-2422-arrival-photo.md",
+    ".opencode/evidence/20260702-1530-sx-2421-2422-arrival-photo/discovery.md",
+    "docs/Monitoring Activity - BE.md",
+    ".opencode/docs/ARCHITECTURE.md",
+    ".opencode/docs/SERVICE_MATRIX.md",
+    ".opencode/docs/QUALITY.md"
+  ],
+  "key_references": [
+    "pjp/repository/live_monitoring/get_distributor_repository.go:131-142 (existing ovl.leave_at, ovl.leave_at, ovl.start, ovl.finish already in select)",
+    "pjp/repository/live_monitoring/get_principal_repository.go:106-132 (existing ovl.longitude/latitude selection for arrive_longitude/leave_longitude sibling)",
+    "pjp/repository/live_monitoring/get_principal_extra_call_repository.go:50-75 (extra-call ovl join)",
+    "pjp/model/outlet_visit_list.go:46-47 and pjp/model/outlet_visit_list_principle.go:46-47 (DB columns confirmed)"
+  ],
+  "open_assumptions": [
+    "FE contract Google Docs tidak diverifikasi dari repo lokal; field type + nullability sudah dikonfirmasi oleh user (null)."
+  ],
+  "ready": true
+}

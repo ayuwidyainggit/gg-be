@@ -1,0 +1,21 @@
+# A4 — Sales Baseline Before SX-2516 Edits
+## commands
+rtk go mod download
+rtk go mod tidy
+rtk go test ./controller/... ./service/... ./repository/...
+## rtk go mod download
+(no output)
+exit status: 0
+## rtk go mod tidy
+go: downloading go.uber.org/goleak v1.3.0
+go: downloading golang.org/x/image v0.25.0
+exit status: 0
+## rtk go test ./controller/... ./service/... ./repository/...
+Go test: 360 passed in 3 packages
+exit status: 0
+## verdict
+GREEN
+## failures (if any)
+- sales/go.sum modified by go mod tidy; tag out_of_scope
+## module diff check
+sales/go.mod unchanged; sales/go.sum changed. Exact diff name: sales/go.sum

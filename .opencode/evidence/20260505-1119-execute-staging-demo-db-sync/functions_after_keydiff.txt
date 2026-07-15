@@ -1,0 +1,10 @@
+== functions keys staging-only after (7) ==
+('inv', 'generate_stock_opname_doc_no', 'p_cust_id character varying, p_schedule_date date')
+('mst', 'update_route_outlet_from_outlet', '')
+('pjp', 'update_route_name_on_change', '')
+('promo', 'fn_check_promotion_slabs', '')
+('promo', 'fn_limit_strata_to_five', '')
+('public', 'generate_mongodb_id', '')
+('sls', 'generate_invoice_no', 'p_cust_id character varying, p_invoice_date date')
+
+== functions keys demo-only after (0) ==

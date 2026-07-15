@@ -1,0 +1,50 @@
+{
+  "task_id": "20260713-0930-sx-2364-update-locations",
+  "status": "COMPLETED",
+  "execution_date": "2026-07-13",
+  "changed_files": [
+    "pjp/repository/live_monitoring/update_locations_repository.go",
+    "pjp/repository/live_monitoring/update_locations_repository_test.go",
+    "pjp/repository/live_monitoring/live_monitoring_repository.go",
+    "pjp/service/live_monitoring/update_locations_service.go",
+    "pjp/service/live_monitoring/live_monitoring_service.go",
+    "pjp/controller/live_monitoring/update_locations_controller.go",
+    "pjp/controller/live_monitoring/update_locations_controller_test.go",
+    "pjp/controller/live_monitoring/live_monitoring_controller.go",
+    "pjp/controller/live_monitoring/get_distributor_controller_test.go",
+    "pjp/data/request/live_monitoring_request.go",
+    "pjp/data/response/live_monitoring_response.go",
+    "pjp/model/live_monitoring.go",
+    "pjp/router/live_monitoring.go"
+  ],
+  "evidence_artifacts": [
+    ".opencode/evidence/20260713-0930-sx-2364-update-locations/final-validation.txt",
+    ".opencode/evidence/20260713-0930-sx-2364-update-locations/test-output.txt",
+    ".opencode/evidence/20260713-0930-sx-2364-update-locations/sql-query.txt",
+    ".opencode/evidence/20260713-0930-sx-2364-update-locations/curl-trace.txt",
+    ".opencode/evidence/20260713-0930-sx-2364-update-locations/index.json"
+  ],
+  "validation": {
+    "gofmt": "PASS (no changes)",
+    "go vet": "PASS",
+    "go build": "PASS",
+    "go test": "PASS (full pjp suite; 4 update-locations controller tests)",
+    "repo tests": "PASS (update-locations sqlmock tests)",
+    "service tests": "PASS (existing suite)",
+    "controller tests": "PASS (happy 200, no-data 200, 404, missing emp_id 400)"
+  },
+  "schema_confirmations": [
+    "pjp-principle outlet_visit_list has no destination_type field - confirmed",
+    "Both pjp and pjp_principles branches emit NULL::text destination_type - confirmed",
+    "All arrive_at and leave_at predicates IS NOT NULL preserved - confirmed"
+  ],
+  "preserved_invariants": [
+    "NII1: Route path /monitoring_locations/update-locations",
+    "NII2: Endpoint under existing JWT middleware",
+    "NII4: SQL parameterized with ? placeholders",
+    "NII5: Tenant scope enforced via cust_id IN subquery",
+    "NII6: Principal vs distributor via LENGTH(cust_id) > 6 SQL",
+    "NII8: 30-second context.WithTimeout preserved"
+  ],
+  "known_residuals": []
+}

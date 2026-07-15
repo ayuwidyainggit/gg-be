@@ -1,0 +1,13 @@
+Go test: 59 passed, 4 failed in 1 packages
+═══════════════════════════════════════
+
+service (59 passed, 4 failed)
+  [FAIL] TestParseImportOrders_SX2508_PersistsInvoiceNumberAndDate
+     order_service_test.go:7650: SX-2508: PromoSo1 should equal imported promo=0, got <nil>
+  [FAIL] TestDetailV2_SX2508_MappedOrderReturnsPersistedSoAndFinalTriples
+     order_service_test.go:7728: SX-2508 Red: model.OrderList has no IsSalesMapping field; mapped Deta...
+  [FAIL] TestDetailV2_SX2508_NonMappedOrderStillConverts
+     order_service_test.go:7733: SX-2508 Red: DetailV2 with mocked details does not return expected De...
+  [FAIL] TestDetailV2_SX2508_StockBreakdownReturnsCanonicalLargeMediumSmall
+     order_service_test.go:7781: expected 1 normal detail, got 0
+[full output: ~/Library/Application Support/rtk/tee/1783946483_go_test.log]

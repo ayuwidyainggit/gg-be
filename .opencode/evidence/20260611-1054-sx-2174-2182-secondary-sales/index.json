@@ -1,0 +1,27 @@
+{
+  "task_id": "20260611-1054-sx-2174-2182-secondary-sales",
+  "created_at": "2026-06-11T10:54:20+07:00",
+  "updated_at": "2026-06-11T11:30:00+07:00",
+  "primary_plan": ".opencode/plans/20260611-1054-sx-2174-2182-secondary-sales.md",
+  "status": "implemented_and_validated",
+  "quality_gate": "PASS",
+  "evidence": [
+    {
+      "path": ".opencode/evidence/20260611-1054-sx-2174-2182-secondary-sales/discovery.md",
+      "type": "discovery",
+      "reason": "Repo-local source, test, command, dan prior artifact evidence untuk implementasi SX-2174 + SX-2182."
+    },
+    {
+      "path": ".opencode/evidence/20260611-1054-sx-2174-2182-secondary-sales/validation.md",
+      "type": "validation",
+      "reason": "Sanitized implementation, test, local DB, local API/export, and quality-gate evidence."
+    }
+  ],
+  "source_strategy": {
+    "local_project_discovery": "used",
+    "official_docs_context": "skipped: behavior berasal dari repo/Jira SQL, bukan library eksternal",
+    "github": "skipped: tidak bergantung upstream source",
+    "web_search": "skipped: prompt user sudah berisi Jira/GDocs detail teknis",
+    "browser_screenshot": "skipped: backend API/report task"
+  }
+}

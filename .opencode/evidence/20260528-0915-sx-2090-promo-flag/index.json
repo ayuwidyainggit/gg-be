@@ -1,0 +1,13 @@
+{
+  "task_id": "20260528-0915-sx-2090-promo-flag",
+  "jira": "SX-2090",
+  "primary_plan": ".opencode/plans/20260528-0915-sx-2090-promo-flag.md",
+  "evidence": [
+    ".opencode/evidence/20260528-0915-sx-2090-promo-flag/discovery.md"
+  ],
+  "local_discovery": true,
+  "official_docs_needed": false,
+  "github_needed": false,
+  "web_needed": false,
+  "browser_needed": false
+}

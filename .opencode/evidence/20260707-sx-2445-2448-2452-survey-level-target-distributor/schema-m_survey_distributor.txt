@@ -1,0 +1,22 @@
+                                                           Table "mst.m_survey_distributor"
+         Column          |           Type           | Collation | Nullable |                                  Default                                  
+-------------------------+--------------------------+-----------+----------+---------------------------------------------------------------------------
+ m_survey_distributor_id | integer                  |           | not null | nextval('mst.m_survey_distributor_m_survey_distributor_id_seq'::regclass)
+ cust_id                 | character varying(10)    |           | not null | 
+ survey_id               | integer                  |           | not null | 
+ distributor_id          | integer                  |           | not null | 
+ is_del                  | boolean                  |           |          | false
+ created_at              | timestamp with time zone |           |          | now()
+ created_by              | bigint                   |           |          | 
+ updated_at              | timestamp with time zone |           |          | now()
+ updated_by              | bigint                   |           |          | 
+ deleted_at              | timestamp with time zone |           |          | 
+ deleted_by              | bigint                   |           |          | 
+Indexes:
+    "m_survey_distributor_pkey" PRIMARY KEY, btree (m_survey_distributor_id)
+    "idx_m_survey_distributor_cust_distributor" btree (cust_id, distributor_id)
+    "idx_m_survey_distributor_survey_id" btree (survey_id)
+    "uniq_m_survey_distributor_active" UNIQUE, btree (survey_id, distributor_id) WHERE is_del = false
+Foreign-key constraints:
+    "m_survey_distributor_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+

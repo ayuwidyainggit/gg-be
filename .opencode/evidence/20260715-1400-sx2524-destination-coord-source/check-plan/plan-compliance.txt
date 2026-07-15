@@ -1,0 +1,2 @@
+OK
+  note: delegation log not found: /Users/ujang/Projects/Geekgarden/scylla-be/.opencode/state/20260715-1400-sx2524-destination-coord-source/delegation.jsonl

@@ -1,0 +1,34 @@
+# SX-2516 Regression Remediation Log
+
+## Root cause
+
+Three independent regressions introduced by SX-2516 test changes:
+
+1. **`mockOrderRepositoryStore.FindWarehouseStockByWhIdAndProIds` default removed.**  
+   Original baseline had safe default returning 1B stock for any proID. SX-2516 edit replaced it with nil-check-only returning empty map, causing "Insufficient Stock" for all Store tests without explicit stock fn.  
+   Fix: restored 1B default when `findWarehouseStockByWhIdAndProIdsFn` is nil.
+
+2. **`TestStore_DeterminesNeedReviewForRestrictedCreditLimit` outlet fixture stripped.**  
+   SX-2516 edit removed `restricted` variable and `CreditLimitAction: &restricted` from outlet mock. Test expected `NEED_REVIEW` data_status from restricted credit limit, but got nil.  
+   Fix: restored `restricted` variable and `CreditLimitAction: &restricted` in outlet mock.
+
+3. **`TestDetailV2_PreRolloutWithoutSnapshot_MustConsultV2ByTab` slab range changed.**  
+   SX-2516 edit changed `RangeTo: 100` to `RangeTo: 1`, causing slab validation to reject the first-tab consult (qty=2 > range 0-1).  
+   Fix: restored `RangeTo: 100`.
+
+4. **`createOrderDetailFromSalesOrder` final promo flag logic.**  
+   `TestCreateOrderDetailFromSalesOrder_DefaultsFinalPromoFlagIndependently` expects `IsProductPromotionFinal` to default false when only `IsProductPromotionSo` is set. Production code was copying `IsProductPromotionSo` to `finalPromotionFlag`.  
+   Fix: `finalPromotionFlag` now always false (independent default), matching test expectation and correct semantics.
+
+## Changed files
+
+- `sales/service/order_service_test.go` — restored baseline mock defaults and fixture values
+- `sales/service/order_service.go` — fixed `createOrderDetailFromSalesOrder` final promo flag default
+
+## Validation
+
+- `rtk go test ./service/... -count=1`: **256 passed** (full service green)
+- `rtk go test ./... -count=1`: **329 passed in 22 packages** (full sales suite green)
+- `rtk go vet ./...`: no issues
+- `rtk go build ./...`: success
+- Focused SX coverage: `validateImportDate` 100%, `importSecondarySales` 91.5%

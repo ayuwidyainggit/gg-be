@@ -1,0 +1,11 @@
+FAIL (10 issues across 1 payload(s)):
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: plan_id
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: source_basis
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: must_preserve
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: do_not_touch
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: validation
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: exit_criteria
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: evidence_required
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: claim_scope
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: depends_on
+  - [20260709-sx-2499-import-feedback.md#22829] missing recommended field: context_bundle

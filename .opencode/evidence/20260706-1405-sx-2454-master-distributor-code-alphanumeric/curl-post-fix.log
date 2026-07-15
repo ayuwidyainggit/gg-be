@@ -1,0 +1,5 @@
+curl post-fix not executed in this session.
+
+Alasan: lihat curl-pre-fix.log dan staging-verify.md.
+
+Akan dijalankan oleh operator/QA terhadap environment staging `best.staging.scyllax.online` setelah merge.

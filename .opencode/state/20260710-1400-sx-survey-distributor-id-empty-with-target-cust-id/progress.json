@@ -1,0 +1,97 @@
+{
+  "task_id": "20260710-1400-sx-survey-distributor-id-empty-with-target-cust-id",
+  "plan_path": ".opencode/plans/20260710-1400-sx-survey-distributor-id-empty-with-target-cust-id.md",
+  "created": "2026-07-10T14:06:00.627763",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    }
+  ]
+}

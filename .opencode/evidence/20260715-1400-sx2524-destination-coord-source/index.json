@@ -1,0 +1,51 @@
+{
+  "task_id": "20260715-1400-sx2524-destination-coord-source",
+  "evidence_kind": "discovery",
+  "scope": "GET /scylla-pjp/api/v1/live-monitoring-distributor",
+  "files_inspected": [
+    "pjp/router/live_monitoring.go:13",
+    "pjp/controller/live_monitoring/get_distributor_controller.go:33",
+    "pjp/service/live_monitoring/get_distributor_service.go:24",
+    "pjp/repository/live_monitoring/get_distributor_repository.go:107",
+    "pjp/repository/live_monitoring/get_distributor_repository.go:169",
+    "pjp/model/live_monitoring.go:38-77",
+    "pjp/data/response/live_monitoring_response.go:51-70",
+    "pjp/service/live_monitoring/get_distributor_service_test.go:1-598",
+    "pjp/controller/live_monitoring/get_distributor_controller_test.go:44-145",
+    "pjp/data/request/live_monitoring_request_test.go:12-117",
+    ".opencode/docs/PROJECT_STACK.md",
+    ".opencode/docs/PROJECT_COMMANDS.md",
+    ".opencode/docs/FRAMEWORK_PLAYBOOK.md",
+    ".opencode/docs/PROJECT_DETECTED_TOOLS.md"
+  ],
+  "commands_checked": [
+    "rtk docker compose -f docker-compose.yml ps",
+    "cd pjp && rtk go test ./... -run Distributor -v",
+    "cd pjp && rtk go build ./..."
+  ],
+  "constraints": [
+    "PJP module is Gin-based, not Fiber; do not bring fiber.Ctx into this work",
+    "Repository style is GORM; preserve existing GORM query patterns",
+    "Controller -> Service -> Repository layering is mandatory",
+    "All destination_data fields other than longitude/latitude are out of scope",
+    "Principal endpoint /scylla-pjp/v1/live-monitoring-principal is OUT of scope; pjp_principles schema differs",
+    "Multi-schema ARCHITECTURE rules apply; do not widen tenant scope"
+  ],
+  "risks": [
+    "Naive column swap (roh -> mst.m_outlet) may null coordinates if roh.outlet_id cannot join to mst.m_outlet (data drift)",
+    "Cast safety: mst.m_outlet.longitude/latitude is varchar(125); keep existing COALESCE/CAST to FLOAT pattern",
+    "Existing tests assert shapes, not coordinates; coordinate change is silent unless regression test added",
+    "Live test against Staging requires FE coordination; do not claim done before FE re-test"
+  ],
+  "confirmed_vs_assumed": [
+    {"claim": "destination_data.longitude/latitude sourced from roh.longitude/roh.latitude", "level": "confirmed_repo", "evidence": "pjp/repository/live_monitoring/get_distributor_repository.go:129-130"},
+    {"claim": "arrive_* filled later from mobile.visits (not from main query)", "level": "confirmed_repo", "evidence": "pjp/repository/live_monitoring/get_distributor_repository.go:133-134 + GetDistributorLatestVisitCoordinates at line 169"},
+    {"claim": "leave_* sourced from outlet_visit_list (ovl)", "level": "confirmed_repo", "evidence": "pjp/repository/live_monitoring/get_distributor_repository.go:135-136"},
+    {"claim": "pjp_data and extra_call_data share same query/model; split by is_extra_call", "level": "confirmed_repo", "evidence": "service transformDistributorRows:398 routes IsExtraCall rows to ExtraCallData"},
+    {"claim": "Controller route path", "level": "confirmed_repo", "evidence": "pjp/router/live_monitoring.go:13"},
+    {"claim": "Staging is env 1.0.0 (153) and creds adminbm@gmail.com / Admin123", "level": "user_confirmed", "evidence": "ticket SX-2524 issue body"},
+    {"claim": "Principal endpoint out of scope", "level": "user_confirmed", "evidence": "ticket focused comment only targets distributor endpoint"},
+    {"claim": "mst.m_outlet.longitude/latitude is varchar(125)", "level": "confirmed_docs", "evidence": "ticket doc snippet (GDoc 19NxHFOBpqT5XO2X6RmLyBC8JRANkbHnwoGzRg6ldK-Y)"},
+    {"claim": "Live smoke can run on Staging with provided JWT", "level": "user_confirmed", "evidence": "ticket cURL block"}
+  ]
+}

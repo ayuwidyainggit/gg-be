@@ -1,0 +1,6 @@
+== triggers keys staging-only after (3) ==
+('pjp', 'routes', 'trg_update_route_name')
+('promo', 'promotion_slabs', 'trg_check_promotion_slabs')
+('promo', 'promotion_strata', 'trg_limit_strata_to_five')
+
+== triggers keys demo-only after (0) ==

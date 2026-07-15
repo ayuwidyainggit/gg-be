@@ -1,0 +1,22 @@
+?   	sales	[no test files]
+?   	sales/adapter	[no test files]
+ok  	sales/controller	0.541s
+?   	sales/entity	[no test files]
+?   	sales/model	[no test files]
+?   	sales/pkg/config	[no test files]
+?   	sales/pkg/config/env	[no test files]
+?   	sales/pkg/constant	[no test files]
+?   	sales/pkg/conversion	[no test files]
+?   	sales/pkg/errmsg	[no test files]
+?   	sales/pkg/jwthelper	[no test files]
+?   	sales/pkg/middleware	[no test files]
+?   	sales/pkg/rabbitmq	[no test files]
+?   	sales/pkg/responsebuild	[no test files]
+?   	sales/pkg/server	[no test files]
+?   	sales/pkg/sql_helper	[no test files]
+?   	sales/pkg/str	[no test files]
+?   	sales/pkg/structs	[no test files]
+ok  	sales/pkg/texttranslator	1.892s
+?   	sales/pkg/validation	[no test files]
+ok  	sales/repository	0.359s
+ok  	sales/service	0.638s

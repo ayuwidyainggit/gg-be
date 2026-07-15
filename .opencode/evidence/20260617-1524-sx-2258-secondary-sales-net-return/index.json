@@ -1,0 +1,16 @@
+{
+  "task_id": "20260617-1524-sx-2258-secondary-sales-net-return",
+  "created_at": "2026-06-17T15:24:54+07:00",
+  "repo_root": "/Users/ujang/Projects/Geekgarden/scylla-be",
+  "evidence": [
+    {
+      "path": ".opencode/evidence/20260617-1524-sx-2258-secondary-sales-net-return/discovery.md",
+      "type": "discovery",
+      "purpose": "Repo-local endpoint/query/test discovery for SX-2258"
+    }
+  ],
+  "commands": [
+    "rtk docker compose -f docker-compose.yml ps"
+  ],
+  "status": "kept_for_implementation_replay"
+}

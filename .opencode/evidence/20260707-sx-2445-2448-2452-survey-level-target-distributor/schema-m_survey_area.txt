@@ -1,0 +1,17 @@
+                                                 Table "mst.m_survey_area"
+     Column     |         Type          | Collation | Nullable |                          Default                          
+----------------+-----------------------+-----------+----------+-----------------------------------------------------------
+ survey_area_id | integer               |           | not null | nextval('mst.m_survey_area_survey_area_id_seq'::regclass)
+ survey_id      | integer               |           | not null | 
+ area_id        | integer               |           | not null | 
+ is_del         | boolean               |           |          | false
+ distributor_id | integer               |           | not null | 
+ target_cust_id | character varying(10) |           |          | 
+Indexes:
+    "m_survey_area_pkey" PRIMARY KEY, btree (survey_area_id)
+    "idx_m_survey_area_distributor_id" btree (distributor_id)
+    "idx_m_survey_area_survey_id" btree (survey_id)
+    "idx_m_survey_area_target_cust_id" btree (target_cust_id)
+Foreign-key constraints:
+    "m_survey_area_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+

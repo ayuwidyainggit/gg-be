@@ -1,0 +1,385 @@
+{
+    "info": {
+        "_postman_id": "sales-target-collection-uuid",
+        "name": "Sales Target & Distributor Collection",
+        "description": "Collection for testing Sales Target and Sales Target Distributor endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.data && jsonData.data.token && jsonData.data.token.access) {",
+                                    "    pm.environment.set(\"access_token\", jsonData.data.token.access);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{system_url}}/v1/users/login",
+                            "host": [
+                                "{{system_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "users",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Sales Target Distributor",
+            "item": [
+                {
+                    "name": "List Sales Target Distributor",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target-distributor?page=1&limit=10",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target-distributor"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "year",
+                                    "value": "2025",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "1",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Detail Sales Target Distributor",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target-distributor/:id",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target-distributor",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Sales Target Distributor",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"year\": 2025,\n    \"area_id\": 1,\n    \"region_id\": 1,\n    \"distributor_id\": 1,\n    \"yearly_target\": 120000000,\n    \"status\": 1,\n    \"data\": [\n        {\n            \"month\": 1,\n            \"monthly_target\": 10000000\n        },\n        {\n            \"month\": 2,\n            \"monthly_target\": 10000000\n        },\n        {\n            \"month\": 3,\n            \"monthly_target\": 10000000\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target-distributor",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target-distributor"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Sales Target Distributor",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"yearly_target\": 150000000,\n    \"data\": [\n        {\n            \"month\": 1,\n            \"monthly_target\": 12500000\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target-distributor/:id",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target-distributor",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Sales Target (Salesman)",
+            "item": [
+                {
+                    "name": "List Sales Target",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target?page=1&limit=10",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "year",
+                                    "value": "2025",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Detail Sales Target",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target/:id",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Sales Target",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"sales_target_distributor_yearly_id\": 1,\n    \"sales_target_distributor_monthly_id\": 1,\n    \"month\": 1,\n    \"year\": 2025,\n    \"allocated_total\": 10000000,\n    \"monthly_target\": 10000000,\n    \"remaining\": 0,\n    \"status\": 1,\n    \"data\": [\n        {\n            \"salesman_id\": 1,\n            \"sales_team_id\": 1,\n            \"allocated\": 5000000\n        },\n        {\n            \"salesman_id\": 2,\n            \"sales_team_id\": 1,\n            \"allocated\": 5000000\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Sales Target",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"sales_target_distributor_yearly_id\": 1,\n    \"sales_target_distributor_monthly_id\": 1,\n    \"month\": 1,\n    \"year\": 2025,\n    \"allocated_total\": 12000000,\n    \"monthly_target\": 12000000,\n    \"remaining\": 0,\n    \"status\": 1,\n    \"data\": [\n        {\n            \"salesman_id\": 1,\n            \"sales_team_id\": 1,\n            \"allocated\": 6000000\n        },\n        {\n            \"salesman_id\": 2,\n            \"sales_team_id\": 1,\n            \"allocated\": 6000000\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{master_url}}/v1/sales-target/:id",
+                            "host": [
+                                "{{master_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "sales-target",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "system_url",
+            "value": "http://localhost:9001",
+            "type": "string"
+        },
+        {
+            "key": "master_url",
+            "value": "http://localhost:9002",
+            "type": "string"
+        },
+        {
+            "key": "access_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "email",
+            "value": "dist@sda.idetama.id",
+            "type": "string"
+        },
+        {
+            "key": "password",
+            "value": "admin",
+            "type": "string"
+        }
+    ]
+}

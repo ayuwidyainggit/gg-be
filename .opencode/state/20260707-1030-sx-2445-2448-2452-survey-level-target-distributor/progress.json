@@ -1,0 +1,107 @@
+{
+  "task_id": "20260707-1030-sx-2445-2448-2452-survey-level-target-distributor",
+  "plan_path": ".opencode/plans/20260707-1030-sx-2445-2448-2452-survey-level-target-distributor.md",
+  "created": "2026-07-07T11:50:00.735908",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A4",
+      "title": "Task A4",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A5",
+      "title": "Task A5",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A6",
+      "title": "Task A6",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A7",
+      "title": "Task A7",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A8",
+      "title": "Task A8",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A9",
+      "title": "Task A9",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "A10",
+      "title": "Task A10",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    }
+  ]
+}

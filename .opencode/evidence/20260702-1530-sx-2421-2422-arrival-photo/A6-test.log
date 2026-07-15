@@ -1,0 +1,2 @@
+rtk go test ./service/live_monitoring/... -run 'TestEnrichDistributorRowsWithLatestVisits_AssignsFileURL|TestTransformPrincipalRows_PropagatesFileURL|TestTransformPrincipalRows_DoesNotDuplicateCrossJoinedDestinationsAfterRepoFix|TestEnrichDistributorRowsWithMetadata' -v
+Go test: 4 passed in 1 packages

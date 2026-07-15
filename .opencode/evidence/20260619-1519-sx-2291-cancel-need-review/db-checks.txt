@@ -1,0 +1,137 @@
+# DB + Docker Validation — SX-2291
+
+## Runtime
+
+- Docker containers running: `scylla-sales`, `scylla-system`, `scylla-redis`, `scylla-rabbitmq`.
+- Sales service: `http://localhost:9004`, route prefix local is `/v1`, not `/sales/v1`.
+- Login user: `adminbm@gmail.com`.
+- Login result: success, `cust_id = C260020001`, `user_id = 141`.
+
+## Important note about Jira sample order
+
+`SO2606190005` in local DB:
+
+```sql
+SELECT ro_no, cust_id, data_status, order_type, opr_type, wh_id, updated_at
+FROM sls."order"
+WHERE ro_no = 'SO2606190005';
+```
+
+Local result: `cust_id = C220010001`, `data_status = 6`.
+
+It is not owned by `adminbm@gmail.com` (`cust_id = C260020001`) and not `Need Review`, so it was not used for local cancel validation.
+
+## Local validation order
+
+Used `SO2606180003` because:
+
+- `cust_id = C260020001`
+- `data_status = 1`
+- `opr_type = O`
+- `qty_po*` exists
+- no `inv.stock` rows exist before cancel
+
+Pre-check detail:
+
+```sql
+SELECT order_detail_id, cust_id, ro_no, pro_id, item_type, qty, qty_po, qty_final,
+       qty1, qty2, qty3, qty_po1, qty_po2, qty_po3, qty1_final, qty2_final, qty3_final
+FROM sls.order_detail
+WHERE cust_id='C260020001' AND ro_no='SO2606180003';
+```
+
+Relevant result:
+
+```text
+order_detail_id=7449, pro_id=10807, qty=0, qty_po=5, qty_final=0, qty_po3=1
+```
+
+## API validation
+
+Request:
+
+```bash
+curl -X PATCH http://localhost:9004/v1/orders/status \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <adminbm-token>" \
+  -d '{"orders":[{"ro_no":"SO2606180003","data_status":9}]}'
+```
+
+Response:
+
+```json
+{"message":"Updated Status Successfully","request_id":"01e3b04a-d2f4-4db1-9ac7-400ac0c222a7"}
+```
+
+HTTP status: `200`.
+
+## DB validation after cancel
+
+Order status:
+
+```sql
+SELECT data_status, updated_at
+FROM sls."order"
+WHERE ro_no='SO2606180003' AND cust_id='C260020001';
+```
+
+Result:
+
+```text
+data_status = 9
+updated_at = 2026-06-19 09:05:47.868864
+```
+
+Stock rows:
+
+```sql
+SELECT cust_id, stock_id, stock_date, tr_code, tr_no, wh_id, pro_id, item_cdn,
+       qty_in, qty_out, qty_in_order, qty_out_order, ref_det_id, created_at
+FROM inv.stock
+WHERE cust_id='C260020001'
+  AND tr_no IN ('SO2606180003','SO2606180003-CO')
+ORDER BY stock_id;
+```
+
+Result:
+
+```text
+0 rows
+```
+
+Expected for this local case: no stock rows because `Need Review` order had no source `inv.stock` movement. Fix skips stock write and still updates order status.
+
+Warehouse stock snapshot:
+
+```sql
+SELECT cust_id, wh_id, pro_id, qty, qty_on_order
+FROM inv.warehouse_stock
+WHERE cust_id='C260020001' AND wh_id=350 AND pro_id=10807;
+```
+
+Result:
+
+```text
+C260020001 | 350 | 10807 | -1 | 1
+```
+
+No warehouse stock mutation occurred during cancel, as expected for no source stock movement.
+
+## Service logs evidence
+
+Sales log showed:
+
+```text
+BulkUpdateStatus cancel skip stock reversal due empty/no-outstanding basis for need review order: SO2606180003
+UPDATE "sls"."order" SET "ro_no"='SO2606180003',"data_status"=9,"updated_by"=141,"updated_at"='2026-06-19 09:05:47.868' WHERE (ro_no='SO2606180003' AND cust_id = 'C260020001') AND "order"."deleted_at" IS NULL
+commit transaction
+```
+
+## Full test suite note
+
+`docker exec scylla-sales sh -c "cd /app && go test ./..."` returned failure from unrelated existing tests:
+
+- `TestPromoV2Only_CSVAcceptanceCoverageForReferenceSOs`: missing `/app/service/docs/test promo integrasi sales order - Request mas angga.csv`
+- `TestSyncFinalOrderFields_UsesNoProformaPromoSyncSQL`: expected local Postgres inside container at `[::1]:5432`, connection refused
+
+Targeted SX-2291 tests pass; full suite blocked by existing fixture/environment issues unrelated to this change.

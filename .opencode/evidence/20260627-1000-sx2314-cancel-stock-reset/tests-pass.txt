@@ -1,0 +1,10 @@
+=== RUN   TestGetCancelStockBasisQuery_UsesOutstandingReservationFormula
+--- PASS: TestGetCancelStockBasisQuery_UsesOutstandingReservationFormula (0.00s)
+=== RUN   TestGetCancelStockBasisQuery_IncludesRewardLine
+--- PASS: TestGetCancelStockBasisQuery_IncludesRewardLine (0.00s)
+=== RUN   TestGetCancelStockBasisQuery_LegacySORowsIncludedInCancelAgg
+--- PASS: TestGetCancelStockBasisQuery_LegacySORowsIncludedInCancelAgg (0.00s)
+=== RUN   TestGetCancelStockBasisQuery_POQtyFallback
+--- PASS: TestGetCancelStockBasisQuery_POQtyFallback (0.00s)
+PASS
+ok  	sales/repository	0.578s

@@ -1,0 +1,14 @@
+=== 200 happy path (emp_id=466, date=2026-07-10) ===
+{"data":{"timeline":[{"sequence":1,"type":"gps","latitude":-6.2614547,"longitude":106.8525108,"destination_id":null,"destination_type":null,"destination_name":null,"recorded_at":"2026-07-09T18:38:51.411983Z"},{"sequence":2,"type":"gps","latitude":-6.2554633,"longitude":106.8437585,"destination_id":null,"destination_type":null,"destination_name":null,"recorded_at":"2026-07-09T18:47:26.071787Z"},{"sequence":3,"type":"gps","latitude":-6.2524786,"longitude":106.8189365,"destination_id":null,"destination_type":null,"destination_name":null,"recorded_at":"2026-07-09T19:04:41.323206Z"},{"sequence":4,"type":"clock_in","latitude":-6.2614456,"longitude":106.8525067,"destination_id":null,"destination_type":null,"destination_name":null,"recorded_at":"2026-07-10T01:38:07.39939Z"},{"sequence":5,"type":"clock_out","latitude":-6.2524696,"longitude":106.8189316,"destination_id":null,"destination_type":null,"destination_name":null,"recorded_at":"2026-07-10T10:08:27.878824Z"}]},"message":"Success","request_id":"95141e3d-4f03-4d4d-b194-6795ae1a55a4"}
+=== 200 no-data (future date) ===
+{"data":{"timeline":[]},"message":"No Data","request_id":"8ec14a94-0594-43be-af40-dae83b7c9ed0"}
+=== 200 default date (today) ===
+status=200
+=== 404 unknown emp ===
+HTTP/1.1 404 Not Found
+{"message":"Not Found","request_id":"2c53acb3-e2da-4276-90f4-05bf93d5fdde"}
+=== 400 missing emp_id ===
+HTTP/1.1 400 Bad Request
+{"message":"Invalid request parameters: Key: 'UpdateLocationsRequest.EmpID' Error:Field validation for 'EmpID' failed on the 'required' tag","request_id":"d8782ad1-2dfd-4abb-8efe-09e3445f7c9f"}
+=== 401 no JWT ===
+status=401

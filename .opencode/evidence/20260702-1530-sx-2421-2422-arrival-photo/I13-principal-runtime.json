@@ -1,0 +1,19 @@
+{
+  "endpoint": "GET /api/v1/live-monitoring-principal",
+  "base_url": "http://127.0.0.1:8888",
+  "request": {
+    "date": 1782259200,
+    "status": ["Approved"],
+    "emp_id": [221],
+    "auth": "Bearer (locally-generated HS256 token, secret=secret, claims {cust_id:C22001, parent_cust_id:C22001, distributor_id:0, emp_id:482, user_id:1})"
+  },
+  "sample_response_destination": {
+    "destination_code": "2001",
+    "destination_type": "distributor",
+    "arrive_longitude": 0,
+    "arrive_latitude": 0,
+    "file_url": null
+  },
+  "verification": "PASS — field file_url is present at destination_data level for principal response. In this local DB sample (cust_id C22001, salesman_id 221, date 2026-06-24), there is no matching mobile.visits row with the required join keys, so null is the correct runtime result.",
+  "note": "This validates the null-safe branch of SX-2422 at runtime. A non-null principal example is not available in local DB ggn_scyllax because no pjp_principles route row currently overlaps a mobile.visits row on cust_id + emp_code + outlet_code + date."
+}

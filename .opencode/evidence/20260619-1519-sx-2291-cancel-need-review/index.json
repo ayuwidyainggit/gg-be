@@ -1,0 +1,9 @@
+{
+  "task_id": "20260619-1519-sx-2291-cancel-need-review",
+  "jira": "SX-2291",
+  "evidence_files": [
+    ".opencode/evidence/20260619-1519-sx-2291-cancel-need-review/discovery.md"
+  ],
+  "primary_plan": ".opencode/plans/20260619-1519-sx-2291-cancel-need-review.md",
+  "readiness": "ready-for-implementation"
+}

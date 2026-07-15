@@ -1,0 +1,14 @@
+PLAN DEPTH REPORT
+file: .opencode/plans/20260715-sx-2516.md
+profile: maintenance (requested: maintenance)
+- goal_words: 86 / 20 => PASS
+- requirements_count: 18 / 8 => PASS
+- acceptance_count: 15 / 6 => PASS
+- implementation_steps: 29 / 4 => PASS
+- validation_commands: 10 / 3 => PASS
+- grounding_contract: 1 / 1 => PASS
+- handoff_contract: 1 / 1 => PASS
+- evidence_requirements: 1 / 1 => PASS
+- done_criteria: 1 / 1 => PASS
+
+RESULT: PASS

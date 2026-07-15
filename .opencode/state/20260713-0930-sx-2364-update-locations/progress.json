@@ -1,0 +1,127 @@
+{
+  "task_id": "20260713-0930-sx-2364-update-locations",
+  "plan_path": ".opencode/plans/20260713-0930-sx-2364-update-locations.md",
+  "created": "2026-07-13T10:42:27.653497",
+  "tasks": [
+    {
+      "id": "W1",
+      "title": "Task W1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.699174",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W2",
+      "title": "Task W2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.742638",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W3",
+      "title": "Task W3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.779096",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W4",
+      "title": "Task W4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.813426",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W5",
+      "title": "Task W5",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.858991",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W6",
+      "title": "Task W6",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.894854",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W7",
+      "title": "Task W7",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.929811",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W8",
+      "title": "Task W8",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.964060",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W9",
+      "title": "Task W9",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:27.996570",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    },
+    {
+      "id": "W10",
+      "title": "Task W10",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-13T10:42:28.028582",
+      "evidence": [
+        ".opencode/evidence/20260713-0930-sx-2364-update-locations/"
+      ]
+    }
+  ]
+}

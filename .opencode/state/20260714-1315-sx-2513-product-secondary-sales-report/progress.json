@@ -1,0 +1,79 @@
+{
+  "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "plan_path": ".opencode/plans/20260714-1315-sx-2513-product-secondary-sales-report.md",
+  "created": "2026-07-15T11:40:25.294267",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T11:59:05.072063",
+      "evidence": [
+        ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A1-controller.log"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T11:59:05.512376",
+      "evidence": [
+        ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A2-repository.log"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T11:59:05.745242",
+      "evidence": [
+        ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A3-runtime.md"
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Task A4",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T11:59:06.003631",
+      "evidence": [
+        ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A4-runtime.md"
+      ]
+    },
+    {
+      "id": "A5",
+      "title": "Task A5",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": "2026-07-15T11:40:25.652638",
+      "completed": "2026-07-15T11:53:06.628291",
+      "evidence": [
+        ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A5-runtime.md"
+      ]
+    },
+    {
+      "id": "Q1",
+      "title": "Task Q1",
+      "status": "completed",
+      "owner": "@quality-gate",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T11:58:39.647045",
+      "evidence": [
+        ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/Q1-review.md"
+      ]
+    }
+  ]
+}

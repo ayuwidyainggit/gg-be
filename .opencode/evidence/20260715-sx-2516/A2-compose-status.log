@@ -1,0 +1,42 @@
+# A2 — Local Compose and DB Reachability
+## compose status
+[rtk] WARNING: untrusted project filters (.rtk/filters.toml)
+[rtk] Filters NOT applied. Run `rtk trust` to review and enable.
+time="2026-07-15T10:10:55+07:00" level=warning msg="docker-compose.yml: the attribute `version` is obsolete, it will be ignored"
+NAME               SERVICE     STATUS
+scylla-cronjob     cronjob     Up 13 hours
+scylla-finance     finance     Up 22 seconds
+scylla-inventory   inventory   Up 22 seconds
+scylla-master      master      Up 13 hours
+scylla-mobile      mobile      Up 21 seconds
+scylla-pjp         pjp         Up 22 seconds
+scylla-rabbitmq    rabbitmq    Up 13 hours (healthy)
+scylla-redis       redis       Up 13 hours (healthy)
+scylla-sales       sales       Up 13 hours
+scylla-system      system      Up 13 hours
+scylla-tms         tms         Up 22 seconds
+## up -d result (if run)
+[rtk] WARNING: untrusted project filters (.rtk/filters.toml)
+[rtk] Filters NOT applied. Run `rtk trust` to review and enable.
+Containers already running; health dependencies healthy.
+## DB reachability
+Compose has no postgres service. `rtk pg_isready -h host.docker.internal -p 5432 -U postgres -d ggn_scyllax` returned:
+host.docker.internal:5432 - no response
+Host-local verification `pg_isready -h localhost -p 5432 -U postgres -d ggn_scyllax` returned:
+localhost:5432 - accepting connections
+`psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c 'SELECT 1 AS reachable;'` returned:
+ reachable
+-----------
+         1
+(1 row)
+## verdict
+reachability: ok
+Local Postgres is reachable on localhost:5432 for database ggn_scyllax. Compose stack and sales service are running. Compose does not define postgres; host.docker.internal:5432 specifically returned no response, while localhost:5432 accepted connections and SELECT 1 succeeded.
+## command log
+- `rtk docker compose -f docker-compose.yml ps`
+- `rtk docker compose -f docker-compose.yml up -d`
+- `rtk docker compose -f docker-compose.yml config --services`
+- `rtk pg_isready -h host.docker.internal -p 5432 -U postgres -d ggn_scyllax`
+- `pg_isready -h localhost -p 5432 -U postgres -d ggn_scyllax`
+- `psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c 'SELECT 1 AS reachable;'`
+- `rtk docker compose -f docker-compose.yml exec -T postgres pg_isready -U postgres -h localhost -d ggn_scyllax` (not run successfully: no postgres service)

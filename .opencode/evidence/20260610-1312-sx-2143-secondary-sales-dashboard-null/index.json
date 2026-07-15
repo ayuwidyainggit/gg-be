@@ -1,0 +1,100 @@
+{
+  "task_id": "20260610-1312-sx-2143-secondary-sales-dashboard-null",
+  "created_at": "2026-06-10T13:12:23+07:00",
+  "updated_at": "2026-06-10T22:12:00+07:00",
+  "mode": "Maintenance Stability Mode",
+  "artifacts": [
+    {
+      "path": ".opencode/evidence/20260610-1312-sx-2143-secondary-sales-dashboard-null/discovery.md",
+      "type": "discovery",
+      "kept": true,
+      "reason": "Operational discovery evidence for implementor and quality-gate replay."
+    },
+    {
+      "path": ".opencode/evidence/20260610-1312-sx-2143-secondary-sales-dashboard-null/db-check.md",
+      "type": "db_check",
+      "kept": true,
+      "reason": "Read-only local DB evidence showing facts empty but source sls data exists for C260020001 in June 2026."
+    },
+    {
+      "path": ".opencode/evidence/20260610-1312-sx-2143-secondary-sales-dashboard-null/implementation.md",
+      "type": "implementation_evidence",
+      "kept": true,
+      "reason": "Implementation, validation, DB smoke sample, and first quality-gate risk evidence."
+    },
+    {
+      "path": ".opencode/evidence/20260610-1312-sx-2143-secondary-sales-dashboard-null/risk-remediation-group.md",
+      "type": "risk_remediation",
+      "kept": true,
+      "reason": "Final group source-table remediation evidence that closes quality-gate risk."
+    },
+    {
+      "path": ".opencode/evidence/20260610-1312-sx-2143-secondary-sales-dashboard-null/authenticated-smoke.md",
+      "type": "authenticated_http_smoke",
+      "kept": true,
+      "reason": "Authenticated local cURL-equivalent smoke evidence for principal/distributor dashboard endpoints without persisting tokens."
+    },
+    {
+      "path": ".opencode/plans/20260610-1312-sx-2143-secondary-sales-dashboard-null.md",
+      "type": "primary_plan",
+      "kept": true,
+      "reason": "Source of truth for implementation."
+    }
+  ],
+  "commands": [
+    "rtk docker compose -f docker-compose.yml ps",
+    "git status --short (sales)",
+    "rtk go test ./service ./repository ./controller (sales)",
+    "psql read-only checks against local ggn_scyllax for report facts and sls source rows",
+    "rtk go test ./repository -run 'TestSecondarySalesReport(SumReportByMonth|ReturnSumReportByMonth|Group)'",
+    "rtk go test ./service -run 'TestSecondarySalesReport(SumReportByMonth|GroupSales)'",
+    "rtk go test ./controller -run 'TestSecondaryReportSales'",
+    "rtk go test ./service ./repository ./controller",
+    "rtk go test ./...",
+    "git diff --check",
+    "semgrep scan changed source files",
+    "psql read-only source outlet group smoke for C260020001 June 2026",
+    "authenticated local HTTP smoke: system login and sales sum-date/group endpoints for principal/distributor"
+  ],
+  "validation_final": {
+    "repository_targeted": "Go test: 10 passed in 1 packages",
+    "service_targeted": "Go test: 11 passed in 1 packages",
+    "controller_targeted": "Go test: 13 passed in 1 packages",
+    "service_repository_controller": "Go test: 241 passed in 3 packages",
+    "full_sales_module": "Go test: 244 passed in 22 packages",
+    "diff_check": "no output",
+    "semgrep_changed_source": "0 findings, 0 errors",
+    "authenticated_http_smoke": "principal/distributor login status=200; sum-date status=200 with no numeric nulls; group status=200 rows=11; distributor parent scope denied status=403",
+    "quality_gate": "PASS"
+  },
+  "db_findings": {
+    "report_dim_dates_june_2026_rows": 2,
+    "report_fact_orders_c260020001_june_2026_rows": 0,
+    "report_fact_returns_c260020001_june_2026_rows": 0,
+    "sls_orders_c260020001_june_2026_rows": 15,
+    "sls_order_details_valid_status_rows": 18,
+    "sls_returns_c260020001_june_2026_rows": 1,
+    "source_outlet_group_rows_june_2026": 11,
+    "source_outlet_grouped_net_sales_june_2026": 5403946260,
+    "group_code_enhancement_present": true
+  },
+  "http_smoke_findings": {
+    "principal_sum_date_c260020001_june_2026_status": 200,
+    "principal_sum_date_c260020001_june_2026_numeric_null_fields": [],
+    "principal_group_outlet_c260020001_june_2026_status": 200,
+    "principal_group_outlet_c260020001_june_2026_rows": 11,
+    "principal_group_outlet_c260020001_june_2026_sum_net_sales": 5403946260,
+    "distributor_sum_date_own_scope_status": 200,
+    "distributor_group_own_scope_status": 200,
+    "distributor_parent_scope_denied_status": 403,
+    "distributor_parent_scope_denied_message": "cust_id is outside authorized scope",
+    "tokens_persisted": false
+  },
+  "source_strategy": {
+    "local_project_discovery": "used",
+    "official_docs_context7": "skipped; repo-local patterns sufficient and no version-sensitive API behavior",
+    "github": "skipped; no upstream dependency behavior needed",
+    "web_search": "skipped; Jira/Google Docs likely credentialed and prompt supplied relevant excerpts",
+    "browser_screenshot": "skipped; backend API issue"
+  }
+}

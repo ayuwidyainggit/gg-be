@@ -1,0 +1,3 @@
+# D5 Rollback
+
+All-or-nothing: `importSecondarySales` uses single `WithinTransaction`. If any step fails (lock, delete, insert), the entire transaction rolls back. No partial state possible.

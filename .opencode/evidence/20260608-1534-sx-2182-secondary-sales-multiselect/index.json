@@ -1,0 +1,46 @@
+{
+  "task_id": "20260608-1534-sx-2182-secondary-sales-multiselect",
+  "created_at": "2026-06-08T15:34:37+07:00",
+  "updated_at": "2026-06-08T17:13:00+07:00",
+  "mode": "Maintenance Stability Mode",
+  "quality_gate": "PASS",
+  "artifacts": [
+    {
+      "path": ".opencode/evidence/20260608-1534-sx-2182-secondary-sales-multiselect/discovery.md",
+      "type": "discovery",
+      "kept": true,
+      "reason": "Repo-local endpoint, DTO, service, repository, and test evidence for implementation handoff."
+    },
+    {
+      "path": ".opencode/evidence/20260608-1534-sx-2182-secondary-sales-multiselect/verification.md",
+      "type": "verification",
+      "kept": true,
+      "reason": "Implementation verification, validation commands, diff boundary notes, quality-gate remediation, and residual risks."
+    },
+    {
+      "path": ".opencode/evidence/20260608-1534-sx-2182-secondary-sales-multiselect/runtime-curl-db.md",
+      "type": "runtime-curl-db-validation",
+      "kept": true,
+      "reason": "Local Docker cURL validation and ggn_scyllax DB cross-checks requested by user."
+    }
+  ],
+  "source_strategy": {
+    "local_project_discovery": "used",
+    "jira_prompt_reference": "used",
+    "official_docs_context7": "skipped_not_material",
+    "github": "skipped_not_material",
+    "web_search": "skipped_not_material",
+    "browser_runtime": "skipped_not_material"
+  },
+  "validation": {
+    "preflight": "rtk docker compose -f docker-compose.yml ps passed with warnings",
+    "master_targeted": "passed",
+    "master_full": "339 passed in 23 packages",
+    "sales_targeted": "passed",
+    "sales_full": "227 passed in 22 packages",
+    "local_curl": "passed",
+    "local_db_ggn_scyllax": "passed",
+    "manual_export_file_download": "skipped_not_needed_for_requested_db_validation"
+  },
+  "auto_commit": "skipped_workspace_not_git_repository"
+}

@@ -1,0 +1,15 @@
+A4 repository validation
+
+Commands:
+- cd master && rtk go test ./repository -run 'Product.*Report' -v
+  Result: PASS; 9 tests passed.
+- cd master && rtk go test ./...
+  Result: PASS; 409 tests passed in 23 packages.
+- cd master && rtk go build ./...
+  Result: PASS; build success.
+
+Implementation:
+- Replaced raw mst.m_distributor join with derived relation grouped by cust_id.
+- Derived flag uses BOOL_OR(COALESCE(allow_upload_secondary_sales, false)).
+- Added SQLMock cardinality regression for C22001: count=1 and one scanned row.
+- No DB write commands run.

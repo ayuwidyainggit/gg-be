@@ -1,0 +1,32 @@
+version: '3.8'
+
+name: scylla
+services:
+  postgres-citus:
+    image: citusdata/citus:latest
+    platform: linux/amd64
+    container_name: scylla-postgres-citus
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: scylla_db
+    ports:
+      - "54321:5432"
+    volumes:
+      - postgres_citus_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scylla-network
+
+volumes:
+  postgres_citus_data:
+    driver: local
+
+networks:
+  scylla-network:
+    driver: bridge

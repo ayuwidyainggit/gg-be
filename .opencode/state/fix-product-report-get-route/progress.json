@@ -1,0 +1,67 @@
+{
+  "task_id": "fix-product-report-get-route",
+  "plan_path": ".opencode/plans/fix-product-report-get-route.md",
+  "created": "2026-07-15T14:39:12.962428",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T14:39:52.219594",
+      "evidence": [
+        ".opencode/evidence/fix-product-report-get-route/diff-summary.md"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T14:39:52.320321",
+      "evidence": [
+        ".opencode/evidence/fix-product-report-get-route/diff-summary.md"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T14:39:52.471268",
+      "evidence": [
+        ".opencode/evidence/fix-product-report-get-route/test-output.txt"
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Task A4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T14:39:53.183677",
+      "evidence": [
+        ".opencode/evidence/fix-product-report-get-route/test-output.txt"
+      ]
+    },
+    {
+      "id": "A5",
+      "title": "Task A5",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T14:39:53.560161",
+      "evidence": [
+        ".opencode/evidence/fix-product-report-get-route/runtime-curl.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "task_id": "20260715-1400-sx2524-destination-coord-source",
+  "plan_id": "20260715-1400-sx2524-destination-coord-source",
+  "caller": "orchestrator",
+  "callee": "plan-validator",
+  "scope": "Validate and mechanically repair only .opencode/plans/20260715-1400-sx2524-destination-coord-source.md.",
+  "mode": "check-and-fix",
+  "claim_level": "scoped",
+  "claim_scope": "Return PASS, PASS_FOR_SLICE, NEEDS_DEPTH, or BLOCKED. In check-and-fix mode, may append or fill missing mechanical plan-contract fields only; never invent scope or requirements.",
+  "source_basis": [
+    ".opencode/plans/20260715-1400-sx2524-destination-coord-source.md",
+    "~/.config/opencode/scripts/validate-plan-depth.py",
+    "~/.config/opencode/scripts/plan-compliance-check.py",
+    "~/.config/opencode/scripts/subagent-handoff-check.py",
+    "~/.config/opencode/scripts/plan_remediation_loop.py"
+  ],
+  "must_preserve": [
+    "Existing plan content stays intact; append or fill only.",
+    "No scope, requirement, reference, or claim-label invention.",
+    "Do not remove or rewrite existing plan content.",
+    "Run validators after every safe mechanical repair.",
+    "Use Maintenance Stability Mode for this defect plan; auto profile incorrectly infers greenfield from generic text."
+  ],
+  "do_not_touch": [
+    "Any path outside .opencode/plans/20260715-1400-sx2524-destination-coord-source.md",
+    "Implementation source",
+    "Configs outside .opencode/",
+    "Non-.opencode files",
+    ".env, secrets, JWTs"
+  ],
+  "validation": [
+    "python3 ~/.config/opencode/scripts/validate-plan-depth.py .opencode/plans/20260715-1400-sx2524-destination-coord-source.md --mode maintenance",
+    "python3 ~/.config/opencode/scripts/plan-compliance-check.py --project-root . --plan .opencode/plans/20260715-1400-sx2524-destination-coord-source.md --task-id 20260715-1400-sx2524-destination-coord-source",
+    "python3 ~/.config/opencode/scripts/subagent-handoff-check.py --plan .opencode/plans/20260715-1400-sx2524-destination-coord-source.md",
+    "python3 ~/.config/opencode/scripts/plan_remediation_loop.py 20260715-1400-sx2524-destination-coord-source --project-root . --mode maintenance"
+  ],
+  "exit_criteria": [
+    "Return deterministic status.",
+    "Persist command outputs and summary under .opencode/evidence/20260715-1400-sx2524-destination-coord-source/check-plan/.",
+    "List auto_fixes and requires_planner explicitly.",
+    "If no safe repair exists, leave plan unchanged and report NEEDS_DEPTH or BLOCKED."
+  ],
+  "evidence_required": [
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/check-plan/validate-plan-depth.txt",
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/check-plan/plan-compliance.txt",
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/check-plan/subagent-handoff.txt",
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/check-plan/summary.md"
+  ],
+  "depends_on": ["none"],
+  "context_bundle": [
+    ".opencode/plans/20260715-1400-sx2524-destination-coord-source.md",
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/check-plan/",
+    "task_id=20260715-1400-sx2524-destination-coord-source"
+  ]
+}

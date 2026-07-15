@@ -1,0 +1,5 @@
+ total_legacy_rows | distinct_tenants | distinct_tr_nos 
+-------------------+------------------+-----------------
+               118 |                4 |              92
+(1 row)
+

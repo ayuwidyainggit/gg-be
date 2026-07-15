@@ -1,0 +1,329 @@
+version: "3.8"
+
+name: scylla
+services:
+  # PostgreSQL with Citus Extension
+  postgres-citus:
+    image: citusdata/citus:latest
+    platform: linux/amd64
+    container_name: scylla-postgres-citus
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: scylla_citus_dev
+    ports:
+      - "54321:5432"
+    volumes:
+      - postgres_citus_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Redis (for services that need it)
+  redis:
+    image: redis:7-alpine
+    container_name: scylla-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # System Service
+  system:
+    build:
+      context: ./system
+      dockerfile: Dockerfile
+    container_name: scylla-system
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9001
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9001:9001"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Master Service
+  master:
+    build:
+      context: ./master
+      dockerfile: Dockerfile
+    container_name: scylla-master
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9002
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9002:9002"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Inventory Service
+  inventory:
+    build:
+      context: ./inventory
+      dockerfile: Dockerfile
+    container_name: scylla-inventory
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9003
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9003:9003"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Sales Service
+  sales:
+    build:
+      context: ./sales
+      dockerfile: Dockerfile
+    container_name: scylla-sales
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9004
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9004:9004"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Finance Service
+  finance:
+    build:
+      context: ./finance
+      dockerfile: Dockerfile
+    container_name: scylla-finance
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9005
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9005:9005"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Mobile Service
+  mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+    container_name: scylla-mobile
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9008
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9008:9008"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # PJP Service
+  pjp:
+    build:
+      context: ./pjp
+      dockerfile: Dockerfile
+    container_name: scylla-pjp
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9010
+      PORT: "9010"
+      POSTGRES_HOST: postgres-citus
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: scylla_citus_dev
+      KONG_URL: http://scylla-master:9002
+    ports:
+      - "9010:9010"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Cronjob Service
+  cronjob:
+    build:
+      context: ./cronjob
+      dockerfile: Dockerfile
+    container_name: scylla-cronjob
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9100
+      DB_HOST: postgres-citus
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: scylla_citus_dev
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      INTERVAL_RELOAD_JOBS_IN_SECOND: "30"
+    ports:
+      - "9100:9100"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # TMS Service
+  tms:
+    build:
+      context: ./tms
+      dockerfile: Dockerfile-staging
+    container_name: scylla-tms
+    environment:
+      SERVER_HOST: 0.0.0.0
+      PORT: "9006"
+      POSTGRES_HOST: postgres-citus
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: scylla_citus_dev
+      BE_URL: http://scylla-master:9002
+      BE_URL_SALES: http://scylla-sales:9004
+      BE_URL_MOBILE: http://scylla-mobile:9008
+      ENVIRONMENT: production
+    ports:
+      - "9006:9006"
+    depends_on:
+      postgres-citus:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+volumes:
+  postgres_citus_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  scylla-network:
+    driver: bridge

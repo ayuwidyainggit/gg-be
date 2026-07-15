@@ -1,0 +1,6 @@
+{"type":"entity","name":"task::20260702-1530-sx-2421-2422-arrival-photo","entityType":"project_task_memory","observations":["task_id: 20260702-1530-sx-2421-2422-arrival-photo"]}
+{"type":"entity","name":"task::20260713-0930-sx-2364-update-locations","entityType":"project_task_memory","observations":["task_id: 20260713-0930-sx-2364-update-locations"]}
+{"type":"entity","name":"task::20260713-1400-sx-2508-import-order-values","entityType":"project_task_memory","observations":["task_id: 20260713-1400-sx-2508-import-order-values"]}
+{"type":"entity","name":"task::init-harness-scylla-be","entityType":"project_task_memory","observations":["task_id: init-harness-scylla-be"]}
+{"type":"entity","name":"task::20260714-1315-sx-2513-product-secondary-sales-report","entityType":"project_task_memory","observations":["task_id: 20260714-1315-sx-2513-product-secondary-sales-report"]}
+{"type":"entity","name":"task::fix-product-report-get-route","entityType":"project_task_memory","observations":["task_id: fix-product-report-get-route"]}

@@ -1,0 +1,19 @@
+{
+  "task_id": "20260612-1122-sx-2225-deposit-export-expense-name",
+  "ticket": "SX-2225",
+  "primary_plan": ".opencode/plans/20260612-1122-sx-2225-deposit-export-expense-name.md",
+  "kept_evidence": [
+    {
+      "path": ".opencode/evidence/20260612-1122-sx-2225-deposit-export-expense-name/discovery.md",
+      "reason": "Berisi bukti discovery kode, root cause, file yang diinspeksi, dan test pattern untuk implementor."
+    }
+  ],
+  "source_strategy": {
+    "local_project_discovery": "used",
+    "official_docs": "skipped: tidak ada perilaku library eksternal/version-sensitive yang material",
+    "github": "skipped: tidak bergantung upstream repo/issue",
+    "web_search": "skipped: bug repo-local",
+    "browser_screenshot": "skipped: backend export; manual UI repro direncanakan setelah fix"
+  },
+  "readiness": "ready-for-implementation"
+}

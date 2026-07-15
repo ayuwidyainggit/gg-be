@@ -1,0 +1,108 @@
+service/order_service.go | 85 +++++++++++++++---------------------------------
+ 1 file changed, 27 insertions(+), 58 deletions(-)
+
+--- Changes ---
+
+service/order_service.go
+  @@ -2838,23 +2838,16 @@ func (service *orderServiceImpl) DetailV2(RoNo string, custID string, parentCust
+  -		stockQtyConv := &conversion.Qty{
+  -			Qty:       int(whStockQty),
+  -			ConvUnit2: convUnit2,
+  -			ConvUnit3: convUnit3,
+  -		}
+  -		stockConverted := stockQtyConv.ConvToQtyConversion()
+  -		qty1Stok := float64(stockConverted.Qty1)
+  -		qty2Stok := float64(stockConverted.Qty2)
+  -		qty3Stok := float64(stockConverted.Qty3)
+  -		if !useWarehouseCurrentOnly {
+  -			qty1Stok += getValueOrDefault(detailData.Qty1, 0)
+  -			qty2Stok += getValueOrDefault(detailData.Qty2, 0)
+  -			qty3Stok += getValueOrDefault(detailData.Qty3, 0)
+  -		}
+  -		detailData.Qty1Stok = &qty1Stok
+  -		detailData.Qty2Stok = &qty2Stok
+  -		detailData.Qty3Stok = &qty3Stok
+  +		stockBreakdown := computeDisplayedAvailableStockBreakdown(
+  +			int(whStockQty),
+  +			getValueOrDefault(detailData.Qty3, 0),
+  +			getValueOrDefault(detailData.Qty2, 0),
+  +			getValueOrDefault(detailData.Qty1, 0),
+  +			!useWarehouseCurrentOnly,
+  +			convUnit2,
+  +			convUnit3,
+  +		)
+  +		applyStockBreakdownToPointers(&detailData.Qty1Stok, &detailData.Qty2Stok, &detailData.Qty3Stok, stockBreakdown)
+   
+   		qtyOrder := int(getValueOrDefault(detailData.Qty, 0))
+   		qtyFinal := int(getValueOrDefault(detailData.QtyFinal, 0))
+  @@ -3048,23 +3041,16 @@ func (service *orderServiceImpl) DetailV2(RoNo string, custID string, parentCust
+  -		stockQtyConvFinal := &conversion.Qty{
+  -			Qty:       int(whStockQtyFinal),
+  -			ConvUnit2: convUnit2Final,
+  -			ConvUnit3: convUnit3Final,
+  -		}
+  -		stockConvertedFinal := stockQtyConvFinal.ConvToQtyConversion()
+  -		qty1StokFinal := float64(stockConvertedFinal.Qty1)
+  -		qty2StokFinal := float64(stockConvertedFinal.Qty2)
+  -		qty3StokFinal := float64(stockConvertedFinal.Qty3)
+  -		if !useWarehouseCurrentOnly {
+  -			qty1StokFinal += getValueOrDefault(detailData.Qty1, 0)
+  -			qty2StokFinal += getValueOrDefault(detailData.Qty2, 0)
+  -			qty3StokFinal += getValueOrDefault(detailData.Qty3, 0)
+  -		}
+  -		detailData.Qty1Stok = &qty1StokFinal
+  -		detailData.Qty2Stok = &qty2StokFinal
+  -		detailData.Qty3Stok = &qty3StokFinal
+  +		stockBreakdownFinal := computeDisplayedAvailableStockBreakdown(
+  +			int(whStockQtyFinal),
+  +			getValueOrDefault(detailData.Qty3, 0),
+  +			getValueOrDefault(detailData.Qty2, 0),
+  +			getValueOrDefault(detailData.Qty1, 0),
+  +			!useWarehouseCurrentOnly,
+  +			convUnit2Final,
+  +			convUnit3Final,
+  +		)
+  +		applyStockBreakdownToPointers(&detailData.Qty1Stok, &detailData.Qty2Stok, &detailData.Qty3Stok, stockBreakdownFinal)
+   
+   		if detailData.ItemType == 1 {
+   			if isActiveDetailForTab(detail, promoSnapshotTabFinalOrder) {
+  @@ -4122,20 +4108,8 @@ func (service *orderServiceImpl) Update(roNo string, request entity.UpdateOrderB
+  -						stockQty := &conversion.Qty{
+  -							Qty:       int(currentStock),
+  -							ConvUnit2: int(product.ConvUnit2),
+  -							ConvUnit3: int(product.ConvUnit3),
+  -						}
+  -						stockConversion := stockQty.ConvToQtyConversion()
+  -
+  -						q1Stok := float64(stockConversion.Qty1)
+  -						q2Stok := float64(stockConversion.Qty2)
+  -						q3Stok := float64(stockConversion.Qty3)
+  -
+  -						roDetModel.Qty1Stok = &q1Stok
+  -						roDetModel.Qty2Stok = &q2Stok
+  -						roDetModel.Qty3Stok = &q3Stok
+  +						stockBreakdown := canonicalAPIStockBreakdown(int(currentStock), int(product.ConvUnit2), int(product.ConvUnit3))
+  +						applyStockBreakdownToPointers(&roDetModel.Qty1Stok, &roDetModel.Qty2Stok, &roDetModel.Qty3Stok, stockBreakdown)
+   					}
+   				}
+   			}
+  @@ -5405,16 +5379,11 @@ func (service *orderServiceImpl) UpdateEnhance(ctx context.Context, roNo string,
+  -						stockQty := &conversion.Qty{
+  -							Qty:       int(currentStock),
+  -							ConvUnit2: int(productForStock.ConvUnit2),
+  -							ConvUnit3: int(productForStock.ConvUnit3),
+  -						}
+  -						stockConversion := stockQty.ConvToQtyConversion()
+  -
+  -						updates["qty1_stok"] = float64(stockConversion.Qty1)
+  -						updates["qty2_stok"] = float64(stockConversion.Qty2)
+  -						updates["qty3_stok"] = float64(stockConversion.Qty3)
+  +						stockBreakdown := canonicalAPIStockBreakdown(int(currentStock), int(productForStock.ConvUnit2), int(productForStock.ConvUnit3))
+  +
+  +						updates["qty1_stok"] = stockBreakdown.Qty1
+  +						updates["qty2_stok"] = stockBreakdown.Qty2
+  +						updates["qty3_stok"] = stockBreakdown.Qty3
+   					}
+   				}
+   			}
+  +27 -58

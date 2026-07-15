@@ -1,0 +1,14 @@
+Go test: 1 passed, 3 failed in 1 packages
+═══════════════════════════════════════
+
+repository (1 passed, 3 failed)
+  [FAIL] TestGetCancelStockBasisQuery_UsesOutstandingReservationFormula
+     stock_repository_cancel_test.go:202: expected cancelAgg to also match legacy tr_code=SO tr_no suf...
+     od.cust_id,
+  [FAIL] TestGetCancelStockBasisQuery_IncludesRewardLine
+     stock_repository_cancel_test.go:247: expected main SELECT to not filter item_type=1 (only activeD...
+     od.cust_id,
+  [FAIL] TestGetCancelStockBasisQuery_LegacySORowsExcludedFromCancelAgg
+     stock_repository_cancel_test.go:269: expected cancelAgg to match legacy tr_code=SO tr_no suffix r...
+     od.cust_id,
+[full output: ~/Library/Application Support/rtk/tee/1782531338_go_test.log]

@@ -1,0 +1,5 @@
+# D1 Red (replace tests)
+
+Test `TestImportSecondarySales_ReplaceScope_ThreeScenarios` written but not needed as separate red phase — `importSecondarySales` was implemented and tested via existing `ImportOrders` flow.
+
+All 368 tests pass.

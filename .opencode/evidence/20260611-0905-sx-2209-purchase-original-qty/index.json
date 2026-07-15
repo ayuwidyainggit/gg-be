@@ -1,0 +1,46 @@
+{
+  "task_id": "20260611-0905-sx-2209-purchase-original-qty",
+  "created_at": "2026-06-11T09:05:17+07:00",
+  "updated_at": "2026-06-11T09:22:00+07:00",
+  "mode": "maintenance-stability-implementation",
+  "primary_plan": ".opencode/plans/20260611-0905-sx-2209-purchase-original-qty.md",
+  "evidence": [
+    {
+      "path": ".opencode/evidence/20260611-0905-sx-2209-purchase-original-qty/discovery.md",
+      "type": "local-discovery",
+      "reason": "Repo-local flow, bug candidate, reuse candidates, constraints, and test patterns for SX-2209."
+    },
+    {
+      "path": ".opencode/evidence/20260611-0905-sx-2209-purchase-original-qty/verification.md",
+      "type": "implementation-verification",
+      "reason": "Changed files, Go validation, local ggn_scyllax DB query result, and plan compliance checkpoint."
+    }
+  ],
+  "sources_used": [
+    "AGENTS.md",
+    ".opencode/docs/index.md",
+    ".opencode/docs/ARCHITECTURE.md",
+    ".opencode/docs/QUALITY.md",
+    ".opencode/docs/AGENT_ROUTING.md",
+    "sales/controller/order_controller.go",
+    "sales/service/order_service.go",
+    "sales/service/order_service_test.go",
+    "sales/model/order_detail.go",
+    "sales/entity/order_detail.go",
+    "sales/repository/order_repository.go",
+    "sales/migration/sls.order/add_order_type_and_original_qty_po_fields.sql",
+    "local database ggn_scyllax via psql"
+  ],
+  "sources_skipped": {
+    "atlassian_web": "Prompt already includes Jira evidence and Atlassian likely requires credentials.",
+    "context7_or_external_docs": "No unfamiliar or version-sensitive library/API behavior is central to the fix.",
+    "api_curl_smoke": "Token-based API smoke was optional and no token was used or stored; local DB validation and Go tests covered the rule."
+  },
+  "validation": {
+    "targeted_tests": "passed",
+    "full_sales_go_test": "245 passed in 22 packages",
+    "local_db": "ggn_scyllax connected and sample SO2606100013 row 7273 validates should_display_purchase=true"
+  },
+  "quality_gate": "PASS",
+  "readiness": "implemented"
+}

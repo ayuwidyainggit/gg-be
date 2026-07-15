@@ -1,0 +1,17 @@
+{
+  "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "plan_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "caller": "@orchestrator",
+  "callee": "backend",
+  "scope": "A2 remediation only: synchronize product_report_controller_test.go fake ProductService.ReportList signature with the A2 service interface; rerun controller and repository report tests. No behavioral scope expansion.",
+  "claim_level": "scoped",
+  "claim_scope": "A2 exits only when controller fake compiles against service.ProductService and targeted controller/repository tests pass.",
+  "source_basis": "master/service/product_service.go:27-31,104-106; master/controller/product_report_controller_test.go; A1/A2 plan handoffs.",
+  "must_preserve": "Existing A1 assertions, request scope invariants, route behavior, A2 repository implementation, no JWT locals scope substitution.",
+  "do_not_touch": "Production controller behavior, repository SQL, migrations, JWT middleware, other modules, go.mod, go.sum, compose/env.",
+  "validation": "cd master && rtk go test ./controller -run 'Product.*Report' -v && rtk go test ./repository -run 'Product.*Report' -v",
+  "exit_criteria": "Stub matches interface; 5 controller tests and 8 repository tests pass; append results to A2-repository.log; update A2-notes.md.",
+  "evidence_required": ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A2-repository.log",
+  "depends_on": "A1",
+  "context_bundle": "confirmed_repo: LSP found fake ReportList has ([]ProductReportResponse,error) while service interface needs ([]ProductReportResponse,int,int,error). Fix test double only. A2 remains in_progress. Execute only; do not change production signature."
+}

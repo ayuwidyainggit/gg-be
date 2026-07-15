@@ -1,0 +1,16 @@
+{
+  "task_id": "20260713-1400-sx-2508-import-order-values",
+  "status": "pass",
+  "evidence": [
+    {"path": "discovery.md", "purpose": "repo discovery, source strategy, confirmed-vs-assumed audit"},
+    {"path": "A1-red.log", "purpose": "A1 Red regression evidence for parser, DetailV2, and stock defects"},
+    {"path": "A2-parser.log", "purpose": "A2 parser/mapping fix evidence"},
+    {"path": "A3-detail-stock.log", "purpose": "A3 DetailV2 mapped/non-mapped remap and stock display evidence"},
+    {"path": "A4-validation.md", "purpose": "A4 local build/test validation"},
+    {"path": "A5-quality-gate.md", "purpose": "Earlier quality-gate verdict, superseded by final gate"},
+    {"path": "A6-runtime-remediation.md", "purpose": "Redacted local import and SQL proof for invoice fields and qty_po NULL"},
+    {"path": "A7-full-suite-remediation.md", "purpose": "DetailV2 fixture correction and full sales suite/build evidence"},
+    {"path": "A8-final-quality-gate.md", "purpose": "Final quality gate PASS verdict and AC reconciliation"}
+  ],
+  "sensitive_data": "No staging token, Authorization header, or staging response body stored."
+}

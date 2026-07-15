@@ -1,0 +1,401 @@
+{
+    "info": {
+        "_postman_id": "b6a8d7e4-1234-4321-abcd-1234567890ab",
+        "name": "Scylla Mobile - Outlet Management Enhancement",
+        "description": "Collection untuk testing fitur Outlet Management berdasarkan docs 'Add Outlet & Manage Outlet_BE.md'. Mencakup Upload File, Create Outlet (with file_url), Outlet List, dan Remove Outlet.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Login (Get Token)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.data && jsonData.data.token && jsonData.data.token.access) {",
+                                    "    pm.environment.set(\"token\", jsonData.data.token.access);",
+                                    "    console.log(\"Token updated\");",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"dist@sda.idetama.id\",\n    \"password\": \"admin\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/v1/users/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "users",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Outlet Management",
+            "description": "Endpoints sesuai docs 'Add Outlet & Manage Outlet_BE.md'",
+            "item": [
+                {
+                    "name": "1. Upload File",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData.data && jsonData.data.url) {",
+                                    "    pm.environment.set(\"file_url\", jsonData.data.url);",
+                                    "    console.log(\"File URL captured: \" + jsonData.data.url);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/files/uploads",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "files",
+                                "uploads"
+                            ]
+                        },
+                        "description": "API eksisting untuk upload file. Response berisi URL file yang bisa digunakan di field file_url saat create outlet."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "2. Create New Outlet (Enhanced with file_url)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"outlet_name\": \"Outlet1\",\n    \"created_by\": 120,\n    \"address\": \"Jalan Nangka III Kecamatan Depok Maguwoharjo Kabupaten Sleman 55281\",\n    \"phone_no\": \"098977778888\",\n    \"building_own\": 1,\n    \"latitude\": \"-7.7671403\",\n    \"longitude\": \"110.4243715\",\n    \"file_url\": \"{{file_url}}\",\n    \"details\": {\n        \"contact\": [\n            {\n                \"contact_name\": \"jojo\",\n                \"job_title\": \"Outlet Manager\",\n                \"phone_no\": \"0878655666\",\n                \"wa_no\": \"0878655666\",\n                \"email\": \"jojo@gmail.com\",\n                \"identity_no\": null\n            }\n        ]\n    }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/m-outlets",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "m-outlets"
+                            ]
+                        },
+                        "description": "Enhanced: Tambahkan field file_url yang berisi URL dari response upload file. URL disimpan di mst.m_outlet.file_url"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "3. Get Outlet List (New Endpoint)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/outlet-list?q=&page=1&limit=10&sort=outlet_code:asc&outlet_status=1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "outlet-list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "",
+                                    "description": "Search by outlet_name dan outlet_code"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number (default: 1)"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "description": "Items per page (default: 9999)"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "outlet_code:asc",
+                                    "description": "Sort format field:direction (default: outlet_code:asc)"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "1",
+                                    "description": "Array<int> - Filter by outlet status (1=Active, 2=Covered, 3=Non Active, 4=Closed)"
+                                }
+                            ]
+                        },
+                        "description": "New endpoint sesuai docs. Response: outlet_id, outlet_code, outlet_name, address1, longitude, latitude"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "3b. Get Outlet List (Multiple Status)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/outlet-list?q=&page=1&limit=10&sort=created_date:desc&outlet_status=1&outlet_status=2",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "outlet-list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "",
+                                    "description": "Search by outlet_name dan outlet_code"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "description": "Items per page"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "created_date:desc",
+                                    "description": "Sort by created_date descending"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "1",
+                                    "description": "Active outlets"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "2",
+                                    "description": "Covered outlets"
+                                }
+                            ]
+                        },
+                        "description": "Example dengan multiple outlet_status filter"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "4. Get Outlet Detail",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/m-outlets/:outlet_id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "m-outlets",
+                                ":outlet_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "outlet_id",
+                                    "value": "123",
+                                    "description": "ID Outlet"
+                                }
+                            ]
+                        },
+                        "description": "Get detail outlet termasuk file_url"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "5. Remove Outlet (Soft Delete via outlet-list)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/outlet-list/:outlet_id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "outlet-list",
+                                ":outlet_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "outlet_id",
+                                    "value": "123",
+                                    "description": "ID Outlet to delete"
+                                }
+                            ]
+                        },
+                        "description": "Soft delete sesuai docs. Update: is_del=true, deleted_by, deleted_at"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "5b. Remove Outlet (Soft Delete via m-outlets - Legacy)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/mobile/v1/m-outlets/:outlet_id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "mobile",
+                                "v1",
+                                "m-outlets",
+                                ":outlet_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "outlet_id",
+                                    "value": "123",
+                                    "description": "ID Outlet to delete"
+                                }
+                            ]
+                        },
+                        "description": "Legacy endpoint untuk soft delete"
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:9008",
+            "type": "string"
+        },
+        {
+            "key": "token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "file_url",
+            "value": "https://example.com/placeholder.jpg",
+            "type": "string"
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+grep result post-fix:
+master/entity/m_distributor.go:163: DistributorCode validate:"required,alphanumDashUnderscore,max=20"
+master/entity/m_distributor.go:212: DistributorCode validate:"omitempty,alphanumDashUnderscore,max=20"
+
+No remaining `validate:"...alphanum"` (bawaan) on DistributorCode fields.
+All other `alphanum`/`numeric` tags in repo are on different fields (bank, beat, brand, etc.) and are out of scope.

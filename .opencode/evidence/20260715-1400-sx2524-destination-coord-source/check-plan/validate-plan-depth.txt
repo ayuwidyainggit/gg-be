@@ -1,0 +1,14 @@
+PLAN DEPTH REPORT
+file: .opencode/plans/20260715-1400-sx2524-destination-coord-source.md
+profile: maintenance (requested: maintenance)
+- goal_words: 82 / 20 => PASS
+- requirements_count: 8 / 8 => PASS
+- acceptance_count: 6 / 6 => PASS
+- implementation_steps: 16 / 4 => PASS
+- validation_commands: 12 / 3 => PASS
+- grounding_contract: 1 / 1 => PASS
+- handoff_contract: 1 / 1 => PASS
+- evidence_requirements: 1 / 1 => PASS
+- done_criteria: 1 / 1 => PASS
+
+RESULT: PASS

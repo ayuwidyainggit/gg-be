@@ -1,0 +1,34 @@
+{
+  "task_id": "20260702-1530-sx-2421-2422-arrival-photo",
+  "issues": ["SX-2421", "SX-2422", "SX-2356 (parent)"],
+  "endpoints": [
+    "GET /api/v1/live-monitoring-distributor",
+    "GET /api/v1/live-monitoring-principal"
+  ],
+  "source_of_truth": "mobile.visits.file_url",
+  "row_selection_rule": "ROW_NUMBER() OVER (PARTITION BY cust_id, emp_code, outlet_code ORDER BY created_at DESC) = 1",
+  "service_module": "pjp",
+  "discovery_evidence": ".opencode/evidence/20260702-1530-sx-2421-2422-arrival-photo/discovery.md",
+  "files_inspected": [
+    "pjp/router/live_monitoring.go",
+    "pjp/router/router.go",
+    "pjp/controller/live_monitoring/get_distributor_controller.go",
+    "pjp/controller/live_monitoring/get_principal_controller.go",
+    "pjp/service/live_monitoring/get_distributor_service.go",
+    "pjp/service/live_monitoring/get_principal_service.go",
+    "pjp/service/live_monitoring/get_distributor_service_test.go",
+    "pjp/service/live_monitoring/get_principal_service_test.go",
+    "pjp/repository/live_monitoring/get_distributor_repository.go",
+    "pjp/repository/live_monitoring/get_principal_repository.go",
+    "pjp/repository/live_monitoring/get_principal_extra_call_repository.go",
+    "pjp/model/live_monitoring.go",
+    "pjp/data/response/live_monitoring_response.go",
+    "docs/Monitoring Activity - BE.md"
+  ],
+  "open_assumptions": [
+    "Tidak ada constraint DB baru (kolom mobile.visits.file_url sudah ada di schema).",
+    "Tipe pointer *string dipakai untuk membedakan null vs empty; konsisten dengan pattern destination_address (omitempty string) atau skip_at (*int64).",
+    "Field ditambahkan di level destination_data (sama level dengan arrive_longitude/arrive_latitude)."
+  ],
+  "ready_for_implementation": true
+}

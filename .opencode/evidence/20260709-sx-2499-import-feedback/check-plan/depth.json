@@ -1,0 +1,46 @@
+PLAN DEPTH REPORT
+file: .opencode/plans/20260709-sx-2499-import-feedback.md
+- total_lines: 702 / 5000 => FAIL
+- goal_words: 115 / 200 => FAIL
+- requirements_words: 0 / 500 => FAIL
+- requirements_count: 0 / 10 => FAIL
+- acceptance_words: 335 / 300 => PASS
+- acceptance_count: 23 / 8 => PASS
+- ui_pages: 0 / 3 => FAIL
+- ui_page_min_words: 0 / 1000 => FAIL
+- components_count: 0 / 20 => FAIL
+- implementation_steps: 47 / 50 => FAIL
+- validation_commands: 19 / 10 => PASS
+- state_coverage: 0 / 1 => FAIL
+- anti_generic_patterns: 0 / 0 => PASS
+- design_depth_keywords: 0 / 12 => FAIL
+- reference_pack: 1 / 1 => PASS
+- grounding_contract: 0 / 1 => FAIL
+
+DESIGN DEPTH KEYWORDS MISSING:
+  - design read
+  - design_variance
+  - motion_intensity
+  - visual_density
+  - page-by-page
+  - section-level
+  - component inventory
+  - asset/image decision
+  - motion system
+  - reduced-motion
+  - accessibility gate
+  - validation evidence
+
+GROUNDING CONTRACT FAILURES:
+  - missing_source_anatomy
+  - missing_reference_map
+  - missing_decisions_assumptions
+
+PLAN LACKS CONFIRMED-VS-ASSUMED AUDIT.
+Required sections:
+  - ## Source Anatomy (per subsystem/layer)
+  - ## Reference Map (per feature)
+  - Explicit 'confirmed' / 'unverified' / 'assumption' labels
+Do not speculate about repo state. Verify or label as assumption.
+
+RESULT: NEEDS_DEPTH

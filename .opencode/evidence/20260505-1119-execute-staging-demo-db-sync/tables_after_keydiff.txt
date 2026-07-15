@@ -1,0 +1,9 @@
+== tables keys staging-only after (0) ==
+
+== tables keys demo-only after (6) ==
+('inv', '_stock_16042025', 'r')
+('inv', '_warehouse_stock_16042025', 'r')
+('pjp_principles', 'route_distributor', 'r')
+('pjp_principles', 'route_outlet', 'r')
+('pjp_principles', 'route_outlet_additional', 'r')
+('pjp_principles', 'route_pop_daily', 'r')

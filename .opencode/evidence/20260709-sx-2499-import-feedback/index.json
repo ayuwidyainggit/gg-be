@@ -1,0 +1,64 @@
+{
+  "task_id": "20260709-sx-2499-import-feedback",
+  "evidence_kind": "reference_template_inspection",
+  "files": [
+    {
+      "path": "sales_order_template (2).xlsx",
+      "sheets": ["Order Template"],
+      "purpose": "ekspektasi template (SX-2499 sub-issue 2.1 + 2.2): workbook berisi 1 sheet Order Template dengan cell contoh DocumentDate ber-style date (numFmt 14) dan quotePrefix 1",
+      "key_observations": [
+        "sheet list = ['Order Template']",
+        "header row match orderImportHeaders",
+        "B2..B6 (baris contoh) ber-style numFmtId=14 (date) + quotePrefix=1"
+      ]
+    },
+    {
+      "path": "sales_order_template (4).xlsx",
+      "sheets": ["Sheet1", "Order Template", "Instructions"],
+      "purpose": "kondisi current BE (lama): workbook masih punya Sheet1 kosong + Order Template + Instructions",
+      "key_observations": [
+        "sheet list = ['Sheet1', 'Order Template', 'Instructions']",
+        "parser GetSheetName(0) akan jatuh ke Sheet1 kosong"
+      ]
+    },
+    {
+      "path": "sales_order_template (5).xlsx",
+      "sheets": ["Order Template"],
+      "purpose": "ekspektasi import sample (SX-2499 sub-issue 2.3 + 2.4): 1 sheet Order Template, DocumentDate ber-style date, ProCode/Promo/Discount/PPN kosong di baris tertentu",
+      "key_observations": [
+        "sheet list = ['Order Template']",
+        "B2..B5 DocumentDate style 1 (numFmt 14 + quotePrefix)",
+        "row 4: ProCode kosong, ProName=Dragon Hat",
+        "row 5: ProCode kosong, Unit=TON, Promo=300000, PPN=1470000",
+        "SalesmanCode HBL0002 (valid di master)"
+      ]
+    }
+  ],
+  "code_evidence": [
+    {
+      "path": "sales/service/order_service.go:6491",
+      "kind": "ExportTemplate",
+      "note": "current logic generate workbook, masih menghasilkan lebih dari 1 sheet"
+    },
+    {
+      "path": "sales/service/order_service.go:6582",
+      "kind": "parseImportOrders",
+      "note": "parser pakai f.GetRows(f.GetSheetName(0)) (buta first sheet)"
+    },
+    {
+      "path": "sales/service/order_service.go:6722-6800",
+      "kind": "parseRequired chain",
+      "note": "ProCode, Promo, Discount, PPN masih wajib (parseRequired / parseRequiredNumber)"
+    },
+    {
+      "path": "sales/service/order_service.go:7069",
+      "kind": "parseImportDate",
+      "note": "sudah terima DD/MM/YYYY, YYYY-MM-DD, dan Excel serial (46211)"
+    },
+    {
+      "path": "sales/repository/order_repository.go:1067",
+      "kind": "FindSalesmanByCode",
+      "note": "lookup pakai kolom emp_code di tabel mst.m_salesman, padahal kolom aktual di mst.m_salesman adalah salesman_code (model) dan emp_code ada di mst.m_employee"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "task_id": "20260715-1400-sx2524-destination-coord-source",
+  "plan_id": "20260715-1400-sx2524-destination-coord-source",
+  "caller": "orchestrator",
+  "callee": "fixer",
+  "scope": "Patch only pjp distributor monitoring destination longitude/latitude query source and add regression test.",
+  "claim_level": "scoped",
+  "claim_scope": "May claim code patch plus targeted regression test complete. Must not claim Staging verification, FE visual verification, or principal endpoint review.",
+  "source_basis": [
+    ".opencode/plans/20260715-1400-sx2524-destination-coord-source.md",
+    "pjp/repository/live_monitoring/get_distributor_repository.go:107-167",
+    "pjp/service/live_monitoring/get_distributor_service_test.go",
+    "pjp/model/live_monitoring.go",
+    "pjp/data/response/live_monitoring_response.go"
+  ],
+  "must_preserve": [
+    "Change only GetDistributorMonitoring destination longitude/latitude source.",
+    "arrive_longitude/latitude remain main-query zero then mobile.visits enrichment.",
+    "leave_longitude/latitude remain outlet_visit_list fields.",
+    "pjp_data and extra_call_data retain shared query and is_extra_call transform.",
+    "Response shape and field names remain unchanged.",
+    "Use LEFT JOIN mst.m_outlet; preserve orphan route rows with zero fallback.",
+    "No new dependencies."
+  ],
+  "do_not_touch": [
+    "pjp/router/**",
+    "pjp/controller/live_monitoring/** except tests",
+    "pjp/service/live_monitoring/** source except test file",
+    "pjp/model/live_monitoring.go",
+    "pjp/data/response/live_monitoring_response.go",
+    "pjp-principle/**",
+    "master/**",
+    "mobile/**",
+    ".env",
+    "*.key",
+    "*.pem"
+  ],
+  "validation": [
+    "cd pjp && rtk go test ./service/live_monitoring/ -run TestTransformDistributorRows -v",
+    "Inspect exact source diff stays inside pjp/repository/live_monitoring/get_distributor_repository.go and pjp/service/live_monitoring/get_distributor_service_test.go"
+  ],
+  "exit_criteria": [
+    "Query uses mst.m_outlet longitude/latitude with null/empty zero fallback.",
+    "New regression test covers normal pjp_data and IsExtraCall extra_call_data destination coordinates.",
+    "Targeted transform tests pass.",
+    "Write evidence result.md and sql-diff.txt under task evidence directory."
+  ],
+  "evidence_required": [
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/result.md",
+    ".opencode/evidence/20260715-1400-sx2524-destination-coord-source/sql-diff.txt"
+  ],
+  "depends_on": ["none"],
+  "context_bundle": [
+    "pjp/repository/live_monitoring/get_distributor_repository.go:119-145",
+    "pjp/service/live_monitoring/get_distributor_service_test.go:537-598",
+    ".opencode/plans/20260715-1400-sx2524-destination-coord-source.md"
+  ]
+}

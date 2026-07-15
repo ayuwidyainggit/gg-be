@@ -1,0 +1,7 @@
+# B4 Build Log
+
+```
+cd sales && rtk go build ./...
+```
+
+Result: success (no errors)

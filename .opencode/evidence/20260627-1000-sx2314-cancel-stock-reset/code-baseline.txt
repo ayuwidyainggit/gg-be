@@ -1,0 +1,28 @@
+=== R0: code baseline for sales/repository/stock_repository.go ===
+
+cancelStockBasisQuery function spans lines 270-398.
+
+Three subquery builders:
+  - sourceAgg     lines 273-285
+  - cancelAgg     lines 287-297   <-- BUG 2: legacy tr_code='SO' tr_no LIKE '%-CO%' rows not matched
+  - activeDetailAgg lines 299-319  <-- retains item_type = 1 (per R1 decision)
+
+Main SELECT rooted on sls.order_detail od:
+  - Joins sls.order o, mst.m_product mp, sourceAgg s, cancelAgg c, activeDetailAgg ad
+  - Where at line 345: od.cust_id = ? AND od.ro_no = ? AND od.item_type = 1 AND (qty*_final > 0 OR qty* > 0 OR qty_po* > 0)
+                    ^^^^^^^^^^^^^^^^^^^^^ BUG 1: drops reward lines (item_type = 2)
+  - SELECT: includes qty_outstanding, qty_out_smallest, is_missing_source, is_ambiguous, ref_det_id
+
+cancelAgg Where line 296:
+  c.cust_id = ? AND c.tr_no = ? AND c.tr_code = 'CO'
+  -- needs widening to also match legacy c.tr_code='SO' c.tr_no LIKE '%-CO%' rows
+
+Existing test file: sales/repository/stock_repository_cancel_test.go
+  - TestBuildCancelStockMutations_SingleSKU
+  - TestSalesStockUpdates_AllZeroDelta_ShouldReturnWithoutDBWrites
+  - TestSalesStockUpdates_RealDelta_ShouldStillReachWritePath
+  - TestBuildCancelStockMutations_MultiSKUAndIdempotent
+  - TestBuildCancelStockMutations_PartialReverseExistingRefStillBuildsOutstanding
+  - TestGetCancelStockBasisQuery_UsesOutstandingReservationFormula
+  - TestGetCancelStockBasisQuery_POQtyFallback
+  - TestCancelStockBasisFallback_DetailOnlyPOCase

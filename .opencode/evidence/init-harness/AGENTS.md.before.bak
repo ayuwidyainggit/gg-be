@@ -1,0 +1,55 @@
+# AGENTS.md
+
+## Start Here
+- Index: `.opencode/docs/index.md`
+- Routing rules: `.opencode/docs/AGENT_ROUTING.md`
+- Architecture: `.opencode/docs/ARCHITECTURE.md`
+- Quality and evidence: `.opencode/docs/QUALITY.md`
+- Harness evals and replayability: `.opencode/docs/EVALS.md`
+- Security policy: `.opencode/docs/SECURITY.md`
+- Prompt gates: `.opencode/docs/PROMPT_GATES.md`
+- Skills index: `.opencode/docs/SKILLS.md`
+- MCP overview: `.opencode/docs/MCP.md`
+- Golden principles: `.opencode/docs/GOLDEN_PRINCIPLES.md`
+- Agent legibility: `.opencode/docs/AGENT_LEGIBILITY.md`
+- Decisions log: `.opencode/docs/DECISIONS.md`
+- Release and operational readiness: `.opencode/docs/RELEASE.md`
+- Quality score and GC workflow: `.opencode/docs/QUALITY_SCORE.md`, `.opencode/docs/GC_WORKFLOW.md`
+
+## Non-negotiable Rules
+- Use `@orchestrator` first for default execution; it routes and integrates, not as the default implementation lane.
+- Start from repo root with `rtk docker compose -f docker-compose.yml ps`; if needed run `rtk docker compose -f docker-compose.yml up -d`.
+- Compose runtime must target host local Postgres first (`host.docker.internal:5432`, `postgres/postgres`, DB `ggn_scyllax`), never remote dev DB defaults.
+- In this repo, shell workflows stay `rtk`-prefixed because the project-local runtime guidance depends on it.
+- Never commit secrets, tokens, backup dumps, or `.env` files; this repo already contains plaintext credentials in tracked infra files, so do not copy or expand them.
+- Each service is its own Go module; use the target service directory’s `go.mod`, env file, and tests, plus its Makefile when that service defines one.
+- Preserve the service layer contract: Controller → Service → Repository → DB; controllers do not call repositories directly, repositories do not hold business logic.
+- Write operations belong in service-layer transactions and repository writes must honor tx-context extraction.
+- Always apply tenant and schema rules from `.opencode/docs/ARCHITECTURE.md` before changing queries.
+- Use `@quality-gate` for material changes, risky work, prompt/config changes, and security-sensitive work.
+- Keep `AGENTS.md` short; detailed policy belongs in `.opencode/docs/`.
+
+## Default Flow
+User intent → `@orchestrator` → discovery/planning (`@explorer`, `@artifact-planner`) → bounded execution (`@fixer`, `@designer`, helpers) → validation → `@quality-gate` → final summary.
+
+## Harness Posture
+- `.opencode/docs/` is the repo-local system of record; update it when repeated decisions or checks become policy.
+- `AGENTS.md` is a map, not the encyclopedia.
+- Plans live under `.opencode/plans/`; evidence lives under `.opencode/evidence/`.
+- Prefer executable repo facts over chat memory: `README.md`, `docker-compose.yml`, service `go.mod`, service `Makefile`, and `scripts/README.md`.
+- Core ownership: `@orchestrator` routes/integrates, `@artifact-planner` writes plans, `@fixer` implements/tests, `@oracle` reviews architecture/tradeoffs, `@designer` owns UI/UX, `@explorer` and `@librarian` handle discovery/docs, `@architect` advises on material system boundaries, and `@quality-gate` gives final signoff.
+- Do not let multi-file implementation, discovery, or review collapse back into `@orchestrator` by default; use the role matrix in `.opencode/docs/AGENT_ROUTING.md` and `.opencode/docs/SKILLS.md`.
+
+## Risk Triggers
+- Product/platform/data-model/multi-tenant/runtime architecture ambiguity → `@architect` or `@oracle` before implementation.
+- Secrets, auth, tenant isolation, DB safety, uploads, external integrations, and release-risk changes → `@quality-gate` final signoff.
+- User-facing UI, design-system, accessibility, animation, or visual parity work → `@designer` first, then UI review lanes and `@quality-gate` when relevant.
+- Current-library or external API behavior not settled by repo evidence → `@librarian` support research.
+
+## Notes
+- This is a multi-module Go monorepo with compose-managed services: `system`, `master`, `inventory`, `sales`, `finance`, `tms`, `mobile`, `pjp`, `cronjob`, plus `redis`; extra repo modules include `pjp-principle` and `pjp-sales`.
+- `pjp` is Gin-based while the main non-PJP services are Fiber-oriented.
+- Typical validation is per target service: `rtk go mod download && rtk go mod tidy`, `rtk go test ./...`, and `rtk go test ./path/to/pkg -run TestName`; use `rtk make migrateUp` only for services that define migrations.
+- `tms` migrations live in `migrations/`; `pjp` and `pjp-principle` use `database/migrate/`.
+- For substantial UI work, read `DESIGN.md` first if the project adds one later, then any design-system guide, before inventing direction.
+- Future operators should read `.opencode/docs/index.md` first, then `AGENT_ROUTING.md`, `ARCHITECTURE.md`, and `QUALITY.md`.

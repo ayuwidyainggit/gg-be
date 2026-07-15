@@ -1,0 +1,17 @@
+{
+  "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "plan_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "caller": "@orchestrator",
+  "callee": "@backend",
+  "scope": "A2 only: replace A1 ReportList stub with repository-backed parameterized count/data query, report row mapping, service mapping, SQLMock tests for filter/mapping boundaries.",
+  "claim_level": "scoped",
+  "claim_scope": "A2 complete only if parameter binding, count/data query, composite parent join, all mapping categories, and SQLMock expectations pass; no runtime or full test claim.",
+  "source_basis": "Plan sections Requirements 4-17, Existing Patterns/Reuse, Source Anatomy, Invariants, Do Not/Reject If, TDD/Test Plan, A2 handoff; master/repository/product_repository.go; master/repository/product_assignment_repository_test.go; master/service/product_service.go; A1 DTO/controller changes.",
+  "must_preserve": "Request cust_id list only scope; no JWT locals/child expansion; parent join parent.pro_id=mp.parent_pro_id AND parent.cust_id=LEFT(mp.cust_id,6); normalize primary identity only mapping plus allow_upload_secondary_sales=true; parameterize q/cust IDs/limit/offset; closed sort allowlist; response original pointers preserve JSON null.",
+  "do_not_touch": "master migration files; master/pkg/middleware; unrelated repository methods; legacy product List; other modules; go.mod; go.sum; compose/env.",
+  "validation": "cd master && rtk go test ./repository -run 'Product.*Report' -v; cd master && rtk go test ./service -run 'Product.*Report' -v; targeted Semgrep scan for source files if available.",
+  "exit_criteria": "Count/data SQLMock mapping table, parent join, identical filter basis, q/IDs/limit/offset bindings pass. Replace A1 temporary stub. Save A2-repository.log and A2-notes.md. Do not begin A3.",
+  "evidence_required": ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A2-repository.log",
+  "depends_on": "A1",
+  "context_bundle": "confirmed_repo: A1 route/DTO/interface exists; A1 controller tests pass; plan readiness PASS; compose has zero running services, so runtime is A3-only/not-ready. A3 parent-missing behavior remains unresolved: do not invent fallback. Source DDL is unavailable; preserve user-confirmed composite join. Master uses sqlx/pgx pattern and sqlmock tests per plan. Execute only, no replan/redelegate."
+}

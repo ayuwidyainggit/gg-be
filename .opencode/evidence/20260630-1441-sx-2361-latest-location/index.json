@@ -1,0 +1,16 @@
+{
+  "task_id": "20260630-1441-sx-2361-latest-location",
+  "plan": ".opencode/plans/20260630-1441-sx-2361-latest-location.md",
+  "artifacts": [
+    ".opencode/evidence/20260630-1441-sx-2361-latest-location/discovery.md"
+  ],
+  "status": "planned",
+  "source_strategy": {
+    "used": ["repo-local evidence", "explorer subagent", "local read/grep/glob"],
+    "skipped": [
+      {"source": "context7", "reason": "no version-sensitive library decision required yet"},
+      {"source": "web search", "reason": "repo-specific debugging with user-supplied contract"},
+      {"source": "browser evidence", "reason": "backend planning only in this slice"}
+    ]
+  }
+}

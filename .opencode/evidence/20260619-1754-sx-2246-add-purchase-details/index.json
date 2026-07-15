@@ -1,0 +1,14 @@
+{
+  "task_id": "20260619-1754-sx-2246-add-purchase-details",
+  "jira": "SX-2246",
+  "parent": "SX-2242",
+  "commit": "6e441fe",
+  "evidence_files": [
+    ".opencode/evidence/20260619-1754-sx-2246-add-purchase-details/discovery.md",
+    ".opencode/evidence/20260619-1754-sx-2246-add-purchase-details/verification.md",
+    ".opencode/evidence/20260619-1754-sx-2246-add-purchase-details/jira-comment.md"
+  ],
+  "primary_plan": ".opencode/plans/20260619-1754-sx-2246-add-purchase-details.md",
+  "readiness": "implemented-validated-committed",
+  "quality_gate": "PASS_WITH_RISKS_REQUIRED_ITEM_CLOSED"
+}

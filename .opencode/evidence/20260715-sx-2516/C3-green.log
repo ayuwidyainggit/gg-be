@@ -1,0 +1,6 @@
+# C3 Green (7-day rule implementation)
+
+`validateImportDate(documentDate, today time.Time) string` implemented:
+- Truncates both to midnight in Jakarta timezone
+- Returns exact error messages per spec
+- All 4 test cases pass

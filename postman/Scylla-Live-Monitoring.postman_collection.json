@@ -1,0 +1,247 @@
+{
+  "info": {
+    "_postman_id": "live-monitoring-scylla",
+    "name": "Scylla Live Monitoring API",
+    "description": "Collection untuk testing Live Monitoring endpoints setelah alignment dengan docs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Login (Get Token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9001/v1/users/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9001",
+          "path": [
+            "v1",
+            "users",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"princ@idetama.id\",\n  \"password\": \"admin\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Live Monitoring - Principal",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9010/api/v1/live-monitoring-principal?date=1769904000&status[]=Approved&emp_id=9999&region_id=1&area_id=1&distributor_id=999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9010",
+          "path": [
+            "api",
+            "v1",
+            "live-monitoring-principal"
+          ],
+          "query": [
+            {
+              "key": "date",
+              "value": "1769904000",
+              "description": "Epoch timestamp (required)"
+            },
+            {
+              "key": "status[]",
+              "value": "Approved",
+              "description": "Approval status filter (required)"
+            },
+            {
+              "key": "emp_id",
+              "value": "9999",
+              "description": "Employee IDs filter (optional)"
+            },
+            {
+              "key": "region_id",
+              "value": "1",
+              "description": "Region ID filter (optional)"
+            },
+            {
+              "key": "area_id",
+              "value": "1",
+              "description": "Area ID filter (optional)"
+            },
+            {
+              "key": "distributor_id",
+              "value": "999",
+              "description": "Distributor ID filter (optional)"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9010/api/v1/live-monitoring-principal?date=1769904000&status[]=Approved"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"emp_id\": 9999,\n      \"emp_code\": \"SLS9999\",\n      \"emp_name\": \"Salesman Test\",\n      \"distributor_id\": 999,\n      \"area_id\": 1,\n      \"region_id\": 1,\n      \"pjp_data\": [\n        {\n          \"pjp_code\": 8888,\n          \"approval_status\": \"Approved\",\n          \"route_data\": [\n            {\n              \"route_code\": \"8888\",\n              \"route_name\": \"Route Test 8888\",\n              \"destination_data\": [\n                {\n                  \"destination_id\": 1001,\n                  \"destination_code\": \"DEST001\",\n                  \"destination_type\": \"Outlet\",\n                  \"destination_name\": \"Toko Test Principal\",\n                  \"longitude\": -6.17511,\n                  \"latitude\": 106.865036,\n                  \"arrive_at\": null,\n                  \"start\": 1769904000,\n                  \"finish\": 1769907600,\n                  \"skip_at\": null,\n                  \"skip_reason\": \"Toko Tutup\"\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"paging\": {\n    \"total_record\": 1,\n    \"page_current\": 1,\n    \"page_limit\": 10,\n    \"page_total\": 1\n  },\n  \"request_id\": \"xxx\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "3. Live Monitoring - Distributor",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9010/api/v1/live-monitoring-distributor?date=1769904000&status[]=Approved&emp_id=9999&region_id=1&area_id=1&distributor_id=999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9010",
+          "path": [
+            "api",
+            "v1",
+            "live-monitoring-distributor"
+          ],
+          "query": [
+            {
+              "key": "date",
+              "value": "1769904000",
+              "description": "Epoch timestamp (required)"
+            },
+            {
+              "key": "status[]",
+              "value": "Approved",
+              "description": "Approval status filter (required)"
+            },
+            {
+              "key": "emp_id",
+              "value": "9999",
+              "description": "Employee IDs filter (optional)"
+            },
+            {
+              "key": "region_id",
+              "value": "1",
+              "description": "Region ID filter (optional)"
+            },
+            {
+              "key": "area_id",
+              "value": "1",
+              "description": "Area ID filter (optional)"
+            },
+            {
+              "key": "distributor_id",
+              "value": "999",
+              "description": "Distributor ID filter (optional)"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"emp_id\": 9999,\n      \"emp_code\": \"SLS9999\",\n      \"emp_name\": \"Salesman Test\",\n      \"distributor_id\": 999,\n      \"area_id\": 1,\n      \"region_id\": 1,\n      \"pjp_data\": [\n        {\n          \"pjp_id\": 7777,\n          \"approval_status\": \"Approved\",\n          \"route_data\": [\n            {\n              \"route_code\": \"7777\",\n              \"route_name\": \"Route Test 7777\",\n              \"destination_data\": [\n                {\n                  \"destination_id\": 2001,\n                  \"destination_code\": \"OTL001\",\n                  \"destination_type\": \"Outlet\",\n                  \"destination_name\": \"Toko Test Distributor\",\n                  \"longitude\": -6.17511,\n                  \"latitude\": 106.865036,\n                  \"arrive_at\": null,\n                  \"start\": 1769904000,\n                  \"finish\": 1769907600,\n                  \"skip_at\": null\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"paging\": {\n    \"total_record\": 1,\n    \"page_current\": 1,\n    \"page_limit\": 10,\n    \"page_total\": 1\n  },\n  \"request_id\": \"xxx\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "4. Monitoring Detail",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9010/api/v1/monitoring_locations/details?emp_id=9999&date=2026-02-01&distributor_id=999",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9010",
+          "path": [
+            "api",
+            "v1",
+            "monitoring_locations",
+            "details"
+          ],
+          "query": [
+            {
+              "key": "emp_id",
+              "value": "9999",
+              "description": "Employee ID (required)"
+            },
+            {
+              "key": "date",
+              "value": "2026-02-01",
+              "description": "Date in YYYY-MM-DD format (required)"
+            },
+            {
+              "key": "distributor_id",
+              "value": "999",
+              "description": "Distributor ID (optional, determines Principal vs Distributor view)"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"visit_information\": {\n        \"activity_date\": \"2026-02-01\",\n        \"company_name\": \"PT Sukses Makmur\",\n        \"company_code\": \"SM001\",\n        \"level\": \"Distributor\",\n        \"emp_id\": 9999,\n        \"emp_code\": \"SLS9999\",\n        \"emp_name\": \"Salesman Test\",\n        \"activity_time\": \"2026-02-01 08:00:00\",\n        \"planned\": 1,\n        \"on_going\": 0,\n        \"extra_call\": 0,\n        \"visited\": 1,\n        \"skipped\": 0\n      },\n      \"sales\": [\n        {\n          \"outlet_id\": 2001,\n          \"outlet_code\": \"OTL001\",\n          \"outlet_name\": \"Toko Test Distributor\",\n          \"sales_order\": 2500000\n        }\n      ],\n      \"return\": [],\n      \"collection\": [],\n      \"expense\": [\n        {\n          \"expense_type_id\": 1,\n          \"expense_type\": \"Transport\",\n          \"note\": \"Bensin\",\n          \"expense_total\": 100000\n        }\n      ],\n      \"shipment\": [\n        {\n          \"shipment_no\": \"SHP20260201001\",\n          \"status\": \"Delivered\",\n          \"shipment_data\": [\n            {\n              \"outlet_id\": 2001,\n              \"outlet_name\": \"Toko Test Distributor\",\n              \"outlet_code\": \"OTL001\",\n              \"total_netto\": 1250000\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"request_id\": \"xxx\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0X2lkIjoiQzIyMDAxIiwiZGlzdF9wcmljZV9ncnBfaWQiOjAsImRpc3RyaWJ1dG9yX2lkIjo2NywiZW1haWwiOiJwcmluY0BpZGV0YW1hLmlkIiwiZW1wX2lkIjoyNzgsImV4cGlyZXMiOjE3NzAwNDc0ODcsImlzX2FkbWluIjp0cnVlLCJsYW5nX2lkIjoiZW4iLCJtb2JpbGVfbm8iOiIwODExMzIzMjMzMiIsInBhcmVudF9jdXN0X2lkIjoiQzIyMDAxIiwidXNlcl9mdWxsbmFtZSI6IkFkbWluIFByaW5jaXBhbCAxIiwidXNlcl9pZCI6MSwidXNlcl9uYW1lIjoicHJpbmNAaWRldGFtYS5pZCIsIndoYXRzYXBwIjoiMDgxMTMyMzIzMzIifQ.qw2BLthq-FhLIaYUJNrvTQib9WeWlzMlkCsTTtIqGmc",
+      "type": "string"
+    }
+  ]
+}

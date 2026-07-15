@@ -1,0 +1,33 @@
+                                                  Table "mst.m_survey"
+       Column        |           Type           | Collation | Nullable |                     Default                     
+---------------------+--------------------------+-----------+----------+-------------------------------------------------
+ survey_id           | integer                  |           | not null | nextval('mst.m_survey_survey_id_seq'::regclass)
+ cust_id             | character varying(10)    |           | not null | 
+ survey_title        | character varying(150)   |           | not null | 
+ answer_frequency    | character varying(50)    |           | not null | 
+ response_type       | character varying(20)    |           | not null | 
+ target_type         | character varying(20)    |           |          | 
+ emp_id              | integer                  |           |          | 
+ efective_date_start | date                     |           |          | 
+ efective_date_end   | date                     |           |          | 
+ status              | integer                  |           |          | 1
+ is_del              | boolean                  |           |          | false
+ created_at          | timestamp with time zone |           |          | now()
+ created_by          | bigint                   |           |          | 
+ updated_at          | timestamp with time zone |           |          | now()
+ updated_by          | bigint                   |           |          | 
+ deleted_at          | timestamp with time zone |           |          | 
+ deleted_by          | bigint                   |           |          | 
+ level_target        | character varying(20)    |           |          | 
+Indexes:
+    "m_survey_pkey" PRIMARY KEY, btree (survey_id)
+    "idx_m_survey_cust_id" btree (cust_id)
+    "idx_m_survey_level_target" btree (level_target)
+Referenced by:
+    TABLE "mst.survey_answer" CONSTRAINT "fk_survey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+    TABLE "mst.m_survey_area" CONSTRAINT "m_survey_area_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+    TABLE "mst.m_survey_detail" CONSTRAINT "m_survey_detail_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+    TABLE "mst.m_survey_distributor" CONSTRAINT "m_survey_distributor_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+    TABLE "mst.m_survey_outlet" CONSTRAINT "m_survey_outlet_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+    TABLE "mst.m_survey_salesman" CONSTRAINT "m_survey_salesman_survey_id_fkey" FOREIGN KEY (survey_id) REFERENCES mst.m_survey(survey_id)
+

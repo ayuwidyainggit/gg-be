@@ -1,0 +1,48 @@
+{
+  "task_id": "20260615-1530-sx-2214-invoice-final-order",
+  "created_at": "2026-06-15T15:30:41+07:00",
+  "updated_at": "2026-06-17T00:00:00+07:00",
+  "issue": "SX-2214",
+  "artifacts": [
+    {
+      "path": ".opencode/evidence/20260615-1530-sx-2214-invoice-final-order/discovery.md",
+      "kind": "discovery",
+      "status": "kept",
+      "reason": "operational evidence for executor"
+    },
+    {
+      "path": ".opencode/evidence/20260615-1530-sx-2214-invoice-final-order/implementation.md",
+      "kind": "implementation_evidence",
+      "status": "kept",
+      "reason": "implementation, validation, quality gate, PDF trace, and local DB/API evidence"
+    },
+    {
+      "path": ".opencode/plans/20260615-1530-sx-2214-invoice-final-order.md",
+      "kind": "primary_plan",
+      "status": "executed",
+      "reason": "source of truth for implementation"
+    }
+  ],
+  "sources_used": [
+    "repo-local docs",
+    "sales invoice/order code",
+    "user-provided Jira evidence",
+    "targeted Go tests",
+    "quality gate review",
+    "repo-local PDF/download trace",
+    "local ggn_scyllax DB validation",
+    "local system/sales API validation"
+  ],
+  "sources_skipped": {
+    "official_docs": "not needed for repo-local business logic",
+    "github_web": "not needed for repo-local defect",
+    "browser": "not needed; API smoke validated locally"
+  },
+  "validation": {
+    "targeted": "rtk go test ./service -run 'TestInvoice.*Final|TestInvoiceBulkUpdate' => 8 passed",
+    "full": "rtk go test ./... => 262 passed in 22 packages on 2026-06-17 revalidation",
+    "local_db": "SO2606100015 final detail formula => gross 18.600.000, vat 1.860.000, total 20.460.000",
+    "local_api": "invoice list/detail and order v2 final order all returned total 20.460.000",
+    "quality_gate": "PASS on 2026-06-17 final revalidation"
+  }
+}

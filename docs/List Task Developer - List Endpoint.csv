@@ -1,0 +1,82 @@
+No ,Date,Features,Squad,Title,Endpoint ,Method,API Change Detail ,Desc API ,Table,Database change details,Tanggal Deploy 
+30,28 Maret 2026,Sales Order,Squad 1 ,Order List ,/master/v1/salesman?is_active=1&mode=lookup&q=,GET,,,,,
+,,,,,/master/v1/outlets?is_active=1&mode=lookup&q=,GET,,,,,
+,,,,,/sales/v1/orders?page=1&limit=20,GET,,,,,
+,,,,Order Detail ,/sales/v2/orders/SO2603270020,GET,,,,,
+,,,,,/sales/v1/validate-order,POST,,,,,
+,,,,,/master/v1/salesman/346,GET,,,,,
+,,,,"Edit Product (pop up ) 
+https://prnt.sc/xiW_1ab9foI6 ",/sales/v1/orders/minimum-price/749/product?salesman_id=370,GET,,,,,
+,,,,,/inventory/v1/stocks/report?limit=10&page=1&date=2026-03-27&wh_id=319&pro_id=749&show_conversion=true&show_price=true&include_zero_stock=true&active_product_only=true&sort=pro_code:asc,GET,,,,,
+,,,,,/sales/v1/orders/minimum-price/749/product?salesman_id=370,GET,,,,,
+,,,,"Add SKU (Pop Up)
+https://prnt.sc/oZg3TWUh8fvU ","
+/master/v1/products?mode=lookup_dist_price&dist_price_group_id=2&brand_id=118,130&pl_id=111,128&sbrand1_id=137,149&outlet_id=1678&order_date=2026-03-27&q=&page=1&limit=70",GET,,,,,
+,,,,Process Order,"
+/sales/v1/orders/SO2603270015",PATCH ,,,,,
+,,,,,/sales/v1/orders/conversion,POST,,,,,
+,,,,Cancel Order ,/sales/v1/orders/status,PATCH ,,,,,
+,,,,Add Order,"
+/scylla-pjp/api/v1/list-salesman?page=1&limit=100&q=",GET,,,,,
+,,,,,/master/v1/outlets?is_active=1&verification_status=1&outlet_id=1660&page=1&limit=99999,GET,,,,,
+,,,,,"
+/master/v1/products?mode=lookup_dist_price&dist_price_group_id=2&brand_id=105,104,103,107,106,110,109,111,112,113,114,115,116,118,119,124,126,127,128,129,130,132,131,134,133&pl_id=61,62,64,65,66,67,68,82,103,104,105,106,107,109,110,111,113,114,115,120,124,125,128,130&sbrand1_id=123,125,124,127,126,130,129,131,132,133,134,135,137,138,143,145,146,149,147,148&outlet_id=1660&order_date=2026-03-28&q=&page=1&limit=70",GET,,,,,
+,,,,Download Sales Order,/sales/v1/download?start_date=1772298000&end_date=1774976399&salesman_id%5B%5D=382,GET,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,28 Maret 2026,Proforma Invoice ,,lookup salesman,/master/v1/salesman?page=1&limit=100&sort=sales_name:asc&is_active=1&q=,GET ,,,,,
+,,,,lookup outlet ,/master/v1/outlets?q=&page=1&limit=99999,GET ,,,,,
+,,,,proforma invoice list ,/sales/v1/proforma_invoice?page=1&limit=10&sort=created_date:desc&start_date=1772323200&end_date=1775001599&salesman_id%5B%5D=347&outlet_id%5B%5D=1712,GET,,,,,
+,,,,print proforma invoice ,/sales/v1/print_proforma_invoice,GET,,,,,
+,,,,,,,,,,,
+,28 Maret 2026,Invoice List ,,Invoice List ,"/sales/v1/orders?page=1&limit=20&status=3,4,5,6,7&is_invoice=true",GET ,,,,,
+,,,,Print ,"
+/system/v1/cust",GET ,,,,,
+,,,,,/sales/v2/orders/SO2603270020,GET ,,,,,
+,,,,,/sales/v1/invoices/print/INV2603270016,PATCH ,,,,,
+,,,,Generate Invoice ,/sales/v1/invoices,POST,,,,,
+,,,,,,,,,,,
+,28 Maret 2026,Generate Invoice ,,Salesman List ,/master/v1/salesman?is_active=1&q=&page=1&limit=70,GET,,,,,
+,,,,Outlet List ,/master/v1/outlets?is_active=1&page=1&limit=999&q=,GET,,,,,
+,,,,Order List ,"/sales/v1/orders?page=1&limit=10&status=2,4,5&salesman_id=370",GET,,,,,
+,,,,Generate Invoice,/sales/v1/invoices,POST ,,,,,
+,,,,,,,,,,,
+,28 Maret 2026,Manage Survey (Template) ,,List ,"/master/v1/survey_template?page=1&limit=10&sort:created_date:desc&status=1
+",GET ,,,,,
+,,,,Detail ,/master/v1/survey_template/:survey_template_id,GET ,,,,,
+,,,,Add,/master/v1/survey_template,POST ,,,,,
+,,,,Edit ,/master/v1/survey_template/:survey_template_id,PUT,,,,,
+,,,,Delete,/master/v1/template_survey/:survey_template_id,DELETE,,,,,
+,,,,,,,,,,,
+,28 Maret 2026,Create Survey ,,List ,/master/v1/survey?page=1&limit=10&sort:created_date:desc&status=1,GET,,,,,
+,,,,Detail ,/master/v1/survey/:survey_id,GET,,,,,
+,,,,Create ,/master/v1/survey,POST ,,,,,
+,,,,Edit ,/master/v1/survey/:survey_id,PUT ,,,,,
+,,,,Deactive ,/master/v1/survey/:survey_id,PATCH ,,,,,
+,,,,,,,,,,,
+,28 Maret 2026,Master Distributor ,,List ,/master/v1/distributors?page=1&limit=10,GET,,,,,
+,,,,Detail ,"
+/master/v1/distributors/108",GET,,,,,
+,,,,Edit ,"
+/master/v1/regions?mode=lookup&region_id=67",GET,,,,,
+,,,,,"
+/master/v1/areas?mode=lookup&region_id=67&area_id=83",GET,,,,,
+,,,,,/master/v1/channels?mode=lookup&channel_id=44,GET,,,,,
+,,,,,/master/v1/sub-distributor-groups?mode=lookup&sub_distributor_group_id=36,GET,,,,,
+,,,,,"
+/master/v1/distributor-price-groups?mode=lookup&dist_price_grp_id=39",GET,,,,,
+,,,,,/master/v1/distributors/108,PATCH,,,,,
+,,,,,,,,,,,
+,,,,Add,/master/v1/regions?mode=lookup&q=&page=1&limit=70,GET,,,,,
+,,,,,/master/v1/areas?mode=lookup&region_id=67&q=&page=1&limit=70,GET,,,,,
+,,,,,"
+/master/v1/channels?mode=lookup&q=&page=1&limit=70",GET,,,,,
+,,,,,/master/v1/sub-distributor-groups?mode=lookup&q=&page=1&limit=70,GET,,,,,
+,,,,,"
+/master/v1/distributor-price-groups?mode=lookup&q=&page=1&limit=70",GET,,,,,
+,,,,,/master/provinces?mode=lookup&q=&page=1&limit=70,GET,,,,,
+,,,,,/master/regencies?mode=lookup&province_id=01&q=&page=1&limit=70,GET,,,,,
+,,,,,/master/sub-districts?mode=lookup&regency_id=0101&q=&page=1&limit=70,GET,,,,,
+,,,,,/master/wards?mode=lookup&sub_district_id=010101&q=&page=1&limit=70,GET,,,,,
+,,,,,/master/v1/distributors,POST,,,,,
+,,,,Delete,/master/v1/distributors/111,DELETE,,,,,

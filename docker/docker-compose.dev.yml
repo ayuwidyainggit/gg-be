@@ -1,0 +1,369 @@
+version: "3.8"
+
+# Development Docker Compose
+# Menggunakan volume mounting untuk hot reload
+# Code changes di local langsung terupdate di container
+name: scylla
+
+services:
+  # NOTE: PostgreSQL removed - using remote database
+  # Remote DB: 103.28.219.73:25431/scylla_citus_dev
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: scylla-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # System Service (Development Mode with Air Hot Reload)
+  system:
+    image: scylla-system-dev:latest
+    build:
+      context: ../system
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-system-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9001
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-IH6OMLBOLOZW8LZVHNUQ}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-gET8m09YTNwKGV6DyZMdJqScAgsDninW6aVCzGps}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-obs.ap-southeast-4.myhuaweicloud.com}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-dmsx-dev}
+    ports:
+      - "9001:9001"
+    volumes:
+      - ../system:/app
+      - go_modules_system:/go/pkg/mod
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Master Service (Development Mode with Air Hot Reload)
+  master:
+    image: scylla-master-dev:latest
+    build:
+      context: ../master
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-master-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9002
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-IH6OMLBOLOZW8LZVHNUQ}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-gET8m09YTNwKGV6DyZMdJqScAgsDninW6aVCzGps}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-obs.ap-southeast-4.myhuaweicloud.com}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-dmsx-dev}
+    ports:
+      - "9002:9002"
+    volumes:
+      - ../master:/app
+      - go_modules_master:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Inventory Service (Development Mode with Air Hot Reload)
+  inventory:
+    image: scylla-inventory-dev:latest
+    build:
+      context: ../inventory
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-inventory-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9003
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-IH6OMLBOLOZW8LZVHNUQ}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-gET8m09YTNwKGV6DyZMdJqScAgsDninW6aVCzGps}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-obs.ap-southeast-4.myhuaweicloud.com}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-dmsx-dev}
+      MASTER_SERVICE_URL: ${MASTER_SERVICE_URL:-http://scylla-master-dev:9002}
+      MASTER_SERVICE_LIST_PRODUCT_PATH: ${MASTER_SERVICE_LIST_PRODUCT_PATH:-/v1/products}
+    ports:
+      - "9003:9003"
+    volumes:
+      - ../inventory:/app
+      - go_modules_inventory:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Sales Service (Development Mode with Air Hot Reload)
+  sales:
+    image: scylla-sales-dev:latest
+    build:
+      context: ../sales
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-sales-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9004
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-IH6OMLBOLOZW8LZVHNUQ}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-gET8m09YTNwKGV6DyZMdJqScAgsDninW6aVCzGps}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-obs.ap-southeast-4.myhuaweicloud.com}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-dmsx-dev}
+    ports:
+      - "9004:9004"
+    volumes:
+      - ../sales:/app
+      - go_modules_sales:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Finance Service (Development Mode with Air Hot Reload)
+  finance:
+    image: scylla-finance-dev:latest
+    build:
+      context: ../finance
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-finance-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9005
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-IH6OMLBOLOZW8LZVHNUQ}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-gET8m09YTNwKGV6DyZMdJqScAgsDninW6aVCzGps}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-obs.ap-southeast-4.myhuaweicloud.com}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-dmsx-dev}
+    ports:
+      - "9005:9005"
+    volumes:
+      - ../finance:/app
+      - go_modules_finance:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Mobile Service (Development Mode with Air Hot Reload)
+  mobile:
+    image: scylla-mobile-dev:latest
+    build:
+      context: ../mobile
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-mobile-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9008
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-IH6OMLBOLOZW8LZVHNUQ}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-gET8m09YTNwKGV6DyZMdJqScAgsDninW6aVCzGps}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-obs.ap-southeast-4.myhuaweicloud.com}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-dmsx-dev}
+      USE_LOCAL_STORAGE: ${USE_LOCAL_STORAGE:-true}
+      LOCAL_STORAGE_PATH: ${LOCAL_STORAGE_PATH:-/app/uploads}
+      LOCAL_STORAGE_URL: ${LOCAL_STORAGE_URL:-http://localhost:9008/uploads}
+      LOCAL_STORAGE_PUBLIC_PATH: ${LOCAL_STORAGE_PUBLIC_PATH:-/app/public/uploads}
+    ports:
+      - "9008:9008"
+    volumes:
+      - ../mobile:/app
+      - go_modules_mobile:/go/pkg/mod
+      - mobile_uploads:/app/uploads
+      - mobile_public_uploads:/app/public/uploads
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # Cronjob Service (Development Mode with Air Hot Reload)
+  cronjob:
+    image: scylla-cronjob-dev:latest
+    build:
+      context: ../cronjob
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-cronjob-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9100
+      DB_HOST: "103.28.219.73"
+      DB_PORT: "25431"
+      DB_USER: "postgres"
+      DB_PASS: "Ar3m4n1a"
+      DB_NAME: "scylla_citus_dev"
+      DB_DEBUG: "TRUE"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      INTERVAL_RELOAD_JOBS_IN_SECOND: "30"
+    ports:
+      - "9100:9100"
+    volumes:
+      - ../cronjob:/app
+      - go_modules_cronjob:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # TMS Service (Development Mode with Hot Reload)
+  tms:
+    image: scylla-tms-dev:latest
+    build:
+      context: ../tms
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-tms-dev
+    working_dir: /app
+    environment:
+      SERVER_HOST: 0.0.0.0
+      PORT: "9006"
+      POSTGRES_HOST: "103.28.219.73"
+      POSTGRES_PORT: "25431"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "Ar3m4n1a"
+      POSTGRES_DB: "scylla_citus_dev"
+      BE_URL: http://scylla-master-dev:9002
+      BE_URL_SALES: http://scylla-sales-dev:9004
+      BE_URL_MOBILE: http://scylla-mobile-dev:9008
+      ENVIRONMENT: dev
+    ports:
+      - "9006:9006"
+    volumes:
+      - ../tms:/app
+      - go_modules_tms:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # PJP Service (Development Mode with Air Hot Reload)
+  pjp:
+    image: scylla-pjp-dev:latest
+    build:
+      context: ../pjp
+      dockerfile: ../docker/Dockerfile.dev
+    container_name: scylla-pjp-dev
+    working_dir: /app
+    environment:
+      PORT: "9010"
+      POSTGRES_HOST: "103.28.219.73"
+      POSTGRES_PORT: "25431"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "Ar3m4n1a"
+      POSTGRES_DB: "scylla_citus_dev"
+      ENVIRONMENT: "dev"
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-secret}
+      KONG_URL: ${KONG_URL:-}
+      EMAIL_FROM: ${EMAIL_FROM:-}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SWAGGER_HOST: ${SWAGGER_HOST:-localhost:9010}
+      SWAGGER_URL: ${SWAGGER_URL:-/api/v1}
+    ports:
+      - "9010:9010"
+    volumes:
+      - ../pjp:/app
+      - go_modules_pjp:/go/pkg/mod
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+volumes:
+  # postgres_citus_data removed - using remote database
+  redis_data:
+    driver: local
+  go_modules_system:
+    driver: local
+  go_modules_master:
+    driver: local
+  go_modules_inventory:
+    driver: local
+  go_modules_sales:
+    driver: local
+  go_modules_finance:
+    driver: local
+  go_modules_mobile:
+    driver: local
+  go_modules_cronjob:
+    driver: local
+  go_modules_tms:
+    driver: local
+  go_modules_pjp:
+    driver: local
+  mobile_uploads:
+    driver: local
+  mobile_public_uploads:
+    driver: local
+
+networks:
+  scylla-network:
+    driver: bridge

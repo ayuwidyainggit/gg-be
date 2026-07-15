@@ -1,0 +1,63 @@
+{
+  "task_id": "20260706-1405-sx-2454-master-distributor-code-alphanumeric",
+  "artifacts": [
+    {
+      "path": "db-schema-check.md",
+      "kind": "db_verification",
+      "command": "psql -h localhost -p 5432 -U postgres -d ggn_scyllax",
+      "summary": "Verified mst.m_distributor.distributor_code is varchar(20) nullable, no check constraint, no unique on the column. Live INSERT 'DIST-15676761A' succeeds (rollback). DB tidak perlu diubah."
+    },
+    {
+      "path": "discovery.md",
+      "kind": "discovery",
+      "summary": "Root cause confirmed: validate tags use alphanum,max=20 on distributor_code in master/entity/m_distributor.go line 163 and 212."
+    },
+    {
+      "path": "test-entity-A3.log",
+      "kind": "test_log",
+      "command": "cd master && rtk go test ./entity -run Distributor -v",
+      "exit_code": 0,
+      "summary": "22 passed including new TestCreateDistributorBodyValidation_DistributorCodeRules and TestUpdateDistributorRequestValidation_DistributorCodeRules."
+    },
+    {
+      "path": "test-service-A4.log",
+      "kind": "test_log",
+      "command": "cd master && rtk go test ./service -run Distributor -v",
+      "exit_code": 0,
+      "summary": "72 passed including new TestDistributorService_Update_AcceptsAlphanumericCode (DIST-15676761A)."
+    },
+    {
+      "path": "test-full-A5.log",
+      "kind": "test_log",
+      "command": "cd master && rtk go test ./...",
+      "exit_code": 0,
+      "summary": "373 passed in 23 packages. No regression."
+    },
+    {
+      "path": "build-A5.log",
+      "kind": "build_log",
+      "command": "cd master && rtk go build ./...",
+      "exit_code": 0,
+      "summary": "Build success after A1+A2 changes."
+    },
+    {
+      "path": "grep-post-fix.txt",
+      "kind": "grep_evidence",
+      "command": "rg -n distributor_code --glob '*.go' master | rg -i 'validate:\".*alphanum'",
+      "summary": "Only alphanumDashUnderscore remains on DistributorCode fields. No alphanum (bawaan) on DistributorCode. Other fields (bank, beat, etc.) out of scope per plan."
+    },
+    {
+      "path": "staging-verify.md",
+      "kind": "runtime_evidence",
+      "summary": "A6/A7 manual smoke not run by this session (no bearer token, repo not git). Commands and expectations documented for operator/QA."
+    }
+  ],
+  "readiness": "PASS_FOR_SLICE",
+  "notes": [
+    "Slice 1 execution complete: A1-A5 done. A6-A8 left for operator/QA (staging access and PR creation out of session scope).",
+    "0 dependency added: only stdlib regexp + existing go-playground/validator/v10.",
+    "Diff net under 80 baris: validator.go +~30 baris, entity.go 2 baris, test entity +~50 baris, test service +~20 baris.",
+    "Backwards compat verified: 12345 (numeric) and DIST-15676761A (alphanumeric with dash) both pass; DIST 001 and DIST.001 still rejected.",
+    "DB schema, unique constraint, response shape unchanged."
+  ]
+}

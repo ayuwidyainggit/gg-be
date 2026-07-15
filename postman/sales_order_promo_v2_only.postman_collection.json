@@ -1,0 +1,612 @@
+{
+    "info": {
+        "_postman_id": "1f6b46d0-8a3f-4d96-9d9e-72ad73d4f8b1",
+        "name": "Sales Order Promo v2-only Integration",
+        "description": "Collection untuk validasi integrasi Sales Order promo v2-only berdasarkan skenario referensi CSV (SO2603120003, SO2603120004, SO2603120005, SO2603120006).",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "00 Auth",
+            "item": [
+                {
+                    "name": "Login (System Service)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test('Status code is 200', function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "const jsonData = pm.response.json();",
+                                    "const token = jsonData?.data?.token?.access || jsonData?.data?.access_token || jsonData?.data?.token || jsonData?.token || '';",
+                                    "",
+                                    "pm.test('Token exists in login response', function () {",
+                                    "    pm.expect(token, 'token not found in response').to.be.a('string').and.not.empty;",
+                                    "});",
+                                    "",
+                                    "if (token) {",
+                                    "    pm.collectionVariables.set('token', token);",
+                                    "    pm.environment.set('token', token);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url_system}}/v1/users/login",
+                            "host": [
+                                "{{base_url_system}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "users",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "01 Core Flow",
+            "item": [
+                {
+                    "name": "Create Sales Order (POST /sales/v1/orders)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test('Status is success for create order', function () {",
+                                    "    pm.expect([200, 201]).to.include(pm.response.code);",
+                                    "});",
+                                    "",
+                                    "let jsonData = {};",
+                                    "try {",
+                                    "    jsonData = pm.response.json();",
+                                    "} catch (e) {}",
+                                    "",
+                                    "const roNo = jsonData?.data?.ro_no || jsonData?.data?.order_no || '';",
+                                    "if (roNo) {",
+                                    "    pm.collectionVariables.set('ro_no', roNo);",
+                                    "    pm.environment.set('ro_no', roNo);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{{create_payload_active}}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url_sales}}/v1/orders",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "orders"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Enhance - Sales Tab (PATCH /sales/v1/orders/enhance/{ro_no})",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{{enhance_sales_payload}}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url_sales}}/v1/orders/enhance/{{ro_no}}",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "orders",
+                                "enhance",
+                                "{{ro_no}}"
+                            ]
+                        },
+                        "description": "Endpoint enhance tab Sales Order. Sesuaikan order_detail_id pada payload sebelum eksekusi."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Enhance - Final Tab (PATCH /sales/v1/orders/enhance/{ro_no})",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{{enhance_final_payload}}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url_sales}}/v1/orders/enhance/{{ro_no}}",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "orders",
+                                "enhance",
+                                "{{ro_no}}"
+                            ]
+                        },
+                        "description": "Endpoint enhance tab Final Order. Sesuaikan order_detail_id pada payload sebelum eksekusi."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Detail Sales Order v2 (GET /sales/v2/orders/{ro_no}) + Assertions",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test('Status code is 200', function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "const resp = pm.response.json();",
+                                    "const data = resp?.data || {};",
+                                    "const scenario = pm.collectionVariables.get('scenario_so');",
+                                    "const expectedMap = JSON.parse(pm.collectionVariables.get('expected_summary_json') || '{}');",
+                                    "const expected = expectedMap[scenario];",
+                                    "",
+                                    "pm.test('Scenario configuration exists', function () {",
+                                    "    pm.expect(expected, 'set scenario_so first').to.be.an('object');",
+                                    "});",
+                                    "",
+                                    "function normalizeText(v) {",
+                                    "    return String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '');",
+                                    "}",
+                                    "",
+                                    "function addArray(target, arr) {",
+                                    "    if (!Array.isArray(arr)) return;",
+                                    "    arr.forEach(function (x) {",
+                                    "        if (x !== null && x !== undefined && String(x).trim() !== '') target.push(String(x));",
+                                    "    });",
+                                    "}",
+                                    "",
+                                    "function collectRemarks(source) {",
+                                    "    const out = [];",
+                                    "    if (!source || typeof source !== 'object') return out;",
+                                    "",
+                                    "    addArray(out, source?.details?.promo_remarks_so);",
+                                    "    addArray(out, source?.details?.promo_remarks_final);",
+                                    "    addArray(out, source?.details?.promo_remarks_po);",
+                                    "    addArray(out, source?.details_final?.promo_remarks_so);",
+                                    "    addArray(out, source?.details_final?.promo_remarks_final);",
+                                    "    addArray(out, source?.details_final?.promo_remarks_po);",
+                                    "    addArray(out, source?.purchase_details?.promo_remarks_so);",
+                                    "    addArray(out, source?.purchase_details?.promo_remarks_final);",
+                                    "    addArray(out, source?.purchase_details?.promo_remarks_po);",
+                                    "",
+                                    "    const groups = [source?.details, source?.details_final, source?.purchase_details];",
+                                    "    groups.forEach(function (g) {",
+                                    "        ['normal', 'promo'].forEach(function (k) {",
+                                    "            (g?.[k] || []).forEach(function (it) {",
+                                    "                addArray(out, it?.remarks);",
+                                    "                addArray(out, it?.promo_remarks_so);",
+                                    "                addArray(out, it?.promo_remarks_final);",
+                                    "                addArray(out, it?.promo_remarks_po);",
+                                    "            });",
+                                    "        });",
+                                    "    });",
+                                    "",
+                                    "    (source?.remarks || []).forEach(function (r) {",
+                                    "        if (r?.description) out.push(String(r.description));",
+                                    "    });",
+                                    "",
+                                    "    return out;",
+                                    "}",
+                                    "",
+                                    "function pickNumber(values) {",
+                                    "    for (let i = 0; i < values.length; i += 1) {",
+                                    "        const n = Number(values[i]);",
+                                    "        if (Number.isFinite(n)) return n;",
+                                    "    }",
+                                    "    return null;",
+                                    "}",
+                                    "",
+                                    "const allRemarks = collectRemarks(data);",
+                                    "const normalizedRemarks = allRemarks.map(normalizeText).filter(Boolean);",
+                                    "",
+                                    "(expected?.remarks || []).forEach(function (remark) {",
+                                    "    const expectedNorm = normalizeText(remark);",
+                                    "    pm.test('Promo remark contains ' + remark, function () {",
+                                    "        const found = normalizedRemarks.some(function (r) { return r.includes(expectedNorm); });",
+                                    "        pm.expect(found, 'actual remarks: ' + JSON.stringify(allRemarks)).to.equal(true);",
+                                    "    });",
+                                    "});",
+                                    "",
+                                    "const promoBarangActual = pickNumber([",
+                                    "    data?.promo_bg_value,",
+                                    "    data?.promo_bg_value_final,",
+                                    "    data?.promotion_product",
+                                    "]);",
+                                    "",
+                                    "pm.test('Promo barang matches expected', function () {",
+                                    "    pm.expect(promoBarangActual, 'promo barang not found in response').to.not.equal(null);",
+                                    "    pm.expect(promoBarangActual).to.be.closeTo(Number(expected?.promo_barang || 0), 0.5);",
+                                    "});",
+                                    "",
+                                    "const promoUangActual = pickNumber([",
+                                    "    data?.promo_value,",
+                                    "    data?.promo_value_final,",
+                                    "    data?.promotion_money",
+                                    "]);",
+                                    "",
+                                    "pm.test('Promo uang matches expected', function () {",
+                                    "    pm.expect(promoUangActual, 'promo uang not found in response').to.not.equal(null);",
+                                    "    pm.expect(promoUangActual).to.be.closeTo(Number(expected?.promo_uang || 0), 0.5);",
+                                    "});",
+                                    "",
+                                    "if (expected && expected.regular_discount !== null && expected.regular_discount !== undefined) {",
+                                    "    const regularDiscountActual = pickNumber([",
+                                    "        data?.disc_value,",
+                                    "        data?.disc_value_final,",
+                                    "        data?.discount",
+                                    "    ]);",
+                                    "",
+                                    "    pm.test('Regular discount matches expected', function () {",
+                                    "        pm.expect(regularDiscountActual, 'regular discount not found in response').to.not.equal(null);",
+                                    "        pm.expect(regularDiscountActual).to.be.closeTo(Number(expected.regular_discount), 0.5);",
+                                    "    });",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url_sales}}/v2/orders/{{ro_no}}",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "v2",
+                                "orders",
+                                "{{ro_no}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "02 CSV Reference Scenarios",
+            "item": [
+                {
+                    "name": "SO2603120003 - Set Scenario Variables",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.collectionVariables.set('scenario_so', 'SO2603120003');",
+                                    "pm.collectionVariables.set('outlet_id', '244');",
+                                    "pm.collectionVariables.set('ro_no', 'SO2603120003');",
+                                    "pm.collectionVariables.set('create_payload_active', pm.collectionVariables.get('create_payload_SO2603120003'));"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url_sales}}/ping",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "ping"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "SO2603120004 - Set Scenario Variables",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.collectionVariables.set('scenario_so', 'SO2603120004');",
+                                    "pm.collectionVariables.set('outlet_id', '244');",
+                                    "pm.collectionVariables.set('ro_no', 'SO2603120004');",
+                                    "pm.collectionVariables.set('create_payload_active', pm.collectionVariables.get('create_payload_SO2603120004'));"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url_sales}}/ping",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "ping"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "SO2603120005 - Set Scenario Variables",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.collectionVariables.set('scenario_so', 'SO2603120005');",
+                                    "pm.collectionVariables.set('outlet_id', '245');",
+                                    "pm.collectionVariables.set('ro_no', 'SO2603120005');",
+                                    "pm.collectionVariables.set('create_payload_active', pm.collectionVariables.get('create_payload_SO2603120005'));"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url_sales}}/ping",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "ping"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "SO2603120006 - Set Scenario Variables",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.collectionVariables.set('scenario_so', 'SO2603120006');",
+                                    "pm.collectionVariables.set('outlet_id', '245');",
+                                    "pm.collectionVariables.set('ro_no', 'SO2603120006');",
+                                    "pm.collectionVariables.set('create_payload_active', pm.collectionVariables.get('create_payload_SO2603120006'));"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url_sales}}/ping",
+                            "host": [
+                                "{{base_url_sales}}"
+                            ],
+                            "path": [
+                                "ping"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url_system",
+            "value": "http://localhost:9001",
+            "type": "string"
+        },
+        {
+            "key": "base_url_sales",
+            "value": "http://localhost:9004",
+            "type": "string"
+        },
+        {
+            "key": "token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "test_email",
+            "value": "princ@idetama.id",
+            "type": "string"
+        },
+        {
+            "key": "test_password",
+            "value": "admin",
+            "type": "string"
+        },
+        {
+            "key": "outlet_id",
+            "value": "244",
+            "type": "string"
+        },
+        {
+            "key": "ro_no",
+            "value": "SO2603120003",
+            "type": "string"
+        },
+        {
+            "key": "scenario_so",
+            "value": "SO2603120003",
+            "type": "string"
+        },
+        {
+            "key": "expected_summary_json",
+            "value": "{\n  \"SO2603120003\": {\"remarks\": [\"promostrata1\"], \"promo_barang\": 2000000, \"promo_uang\": 0, \"regular_discount\": null},\n  \"SO2603120004\": {\"remarks\": [\"promostrata1\"], \"promo_barang\": 2000000, \"promo_uang\": 0, \"regular_discount\": null},\n  \"SO2603120005\": {\"remarks\": [\"112\", \"BUYBUYBUY\"], \"promo_barang\": 4000000, \"promo_uang\": 1840000, \"regular_discount\": null},\n  \"SO2603120006\": {\"remarks\": [\"112\", \"BUYBUYBUY\"], \"promo_barang\": 4000000, \"promo_uang\": 984000, \"regular_discount\": 628320}\n}",
+            "type": "string"
+        },
+        {
+            "key": "create_payload_active",
+            "value": "{{create_payload_SO2603120003}}",
+            "type": "string"
+        },
+        {
+            "key": "create_payload_SO2603120003",
+            "value": "{\n  \"ro_date\": \"2026-03-12\",\n  \"val_date\": \"2026-03-12\",\n  \"due_date\": \"2026-03-19\",\n  \"salesman_id\": 359,\n  \"wh_id\": 63,\n  \"outlet_id\": 244,\n  \"pay_type\": 3,\n  \"details\": {\n    \"normal\": [\n      {\n        \"pro_id\": 709,\n        \"item_type\": 1,\n        \"qty1\": 5,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      },\n      {\n        \"pro_id\": 710,\n        \"item_type\": 1,\n        \"qty1\": 6,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      }\n    ],\n    \"promo\": []\n  }\n}",
+            "type": "string"
+        },
+        {
+            "key": "create_payload_SO2603120004",
+            "value": "{\n  \"ro_date\": \"2026-03-12\",\n  \"val_date\": \"2026-03-12\",\n  \"due_date\": \"2026-03-19\",\n  \"salesman_id\": 359,\n  \"wh_id\": 63,\n  \"outlet_id\": 244,\n  \"pay_type\": 3,\n  \"details\": {\n    \"normal\": [\n      {\n        \"pro_id\": 709,\n        \"item_type\": 1,\n        \"qty1\": 11,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      },\n      {\n        \"pro_id\": 710,\n        \"item_type\": 1,\n        \"qty1\": 1,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      }\n    ],\n    \"promo\": []\n  }\n}",
+            "type": "string"
+        },
+        {
+            "key": "create_payload_SO2603120005",
+            "value": "{\n  \"ro_date\": \"2026-03-12\",\n  \"val_date\": \"2026-03-12\",\n  \"due_date\": \"2026-03-19\",\n  \"salesman_id\": 359,\n  \"wh_id\": 63,\n  \"outlet_id\": 245,\n  \"pay_type\": 3,\n  \"details\": {\n    \"normal\": [\n      {\n        \"pro_id\": 709,\n        \"item_type\": 1,\n        \"qty1\": 10,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      },\n      {\n        \"pro_id\": 711,\n        \"item_type\": 1,\n        \"qty1\": 5,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 200000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      }\n    ],\n    \"promo\": []\n  }\n}",
+            "type": "string"
+        },
+        {
+            "key": "create_payload_SO2603120006",
+            "value": "{\n  \"ro_date\": \"2026-03-12\",\n  \"val_date\": \"2026-03-12\",\n  \"due_date\": \"2026-03-19\",\n  \"salesman_id\": 359,\n  \"wh_id\": 63,\n  \"outlet_id\": 245,\n  \"pay_type\": 3,\n  \"details\": {\n    \"normal\": [\n      {\n        \"pro_id\": 709,\n        \"item_type\": 1,\n        \"qty1\": 4,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      },\n      {\n        \"pro_id\": 710,\n        \"item_type\": 1,\n        \"qty1\": 4,\n        \"qty2\": 0,\n        \"qty3\": 0,\n        \"sell_price1\": 2000000,\n        \"sell_price2\": 0,\n        \"sell_price3\": 0\n      }\n    ],\n    \"promo\": []\n  }\n}",
+            "type": "string"
+        },
+        {
+            "key": "enhance_sales_payload",
+            "value": "{\n  \"sales_order\": [\n    {\n      \"order_detail_id\": 0,\n      \"qty1\": 5,\n      \"qty2\": 0,\n      \"qty3\": 0,\n      \"sell_price1\": 2000000,\n      \"sell_price2\": 0,\n      \"sell_price3\": 0\n    }\n  ],\n  \"add_sales_order\": []\n}",
+            "type": "string"
+        },
+        {
+            "key": "enhance_final_payload",
+            "value": "{\n  \"final_order\": [\n    {\n      \"order_detail_id\": 0,\n      \"qty1_final\": 5,\n      \"qty2_final\": 0,\n      \"qty3_final\": 0,\n      \"sell_price_final1\": 2000000,\n      \"sell_price_final2\": 0,\n      \"sell_price_final3\": 0\n    }\n  ],\n  \"add_final_order\": []\n}",
+            "type": "string"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "plan_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "caller": "@orchestrator",
+  "callee": "@backend",
+  "scope": "A1 only: add report DTOs, POST /v1/products/report route, request validation/default sort normalization, and controller Red/Green tests.",
+  "claim_level": "scoped",
+  "claim_scope": "A1 complete only if report validates request cust_id list and emits master envelope; A2/A3/Q1 remain untouched.",
+  "source_basis": "Plan .opencode/plans/20260714-1315-sx-2513-product-secondary-sales-report.md sections Existing Patterns/Reuse, Source Anatomy, A1 handoff; master/controller/product_controller.go; master/entity/product.go; master/entity/api.go; master/pkg/responsebuild/response.go; master/controller/dropdown_scope_controller_test.go.",
+  "must_preserve": "Validated request cust_id list is sole scope; POST query-parameter contract; responsebuild envelope and entity.Pagination; no JWT-local scope replacement; Controller -> Service -> Repository layering.",
+  "do_not_touch": "master/pkg/middleware/jwt_middleware.go; migration files; legacy GET product list behavior; other modules; go.mod; go.sum; compose/env.",
+  "validation": "cd master && rtk go test ./controller -run Product.Report -v",
+  "exit_criteria": "Controller route and validation tests pass. Write A1-controller.log. Report changed paths/lines and unresolved facts; do not start A2.",
+  "evidence_required": ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/A1-controller.log",
+  "depends_on": "none",
+  "context_bundle": "confirmed_repo: plan is PASS_FOR_SLICE and readiness PASS; product controller registers /v1/products behind middleware.JWTProtected; compose status has no running services; no generator is detected for Fiber controller/service/repository artifacts; canonical request encoding is cust_id[] and comma compatibility is not promised until test proves it; cap limit only after master convention verification; source plan A1 section lines 293-312 is binding. Execute only, do not reroute/replan/delegate."
+}

@@ -1,0 +1,14 @@
+PLAN DEPTH REPORT
+file: .opencode/plans/20260715-sx-2516.md
+profile: greenfield (requested: auto)
+- goal_words: 301 / 200 => PASS
+- requirements_words: 854 / 500 => PASS
+- requirements_count: 60 / 10 => PASS
+- acceptance_words: 348 / 300 => PASS
+- acceptance_count: 19 / 8 => PASS
+- implementation_steps: 69 / 50 => PASS
+- validation_commands: 15 / 10 => PASS
+- total_lines: 1693 / 5000 => FAIL
+- grounding_contract: 1 / 1 => PASS
+
+RESULT: NEEDS_DEPTH

@@ -1,0 +1,17 @@
+{
+  "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "plan_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+  "caller": "@orchestrator",
+  "callee": "@quality-gate",
+  "scope": "Q1 read-only review: plan conformance, diff boundary, SQL parameterization/allowlist, mapping semantics/tests, A3 evidence, runtime not-ready disclosure, and release blockers.",
+  "claim_level": "scoped",
+  "claim_scope": "Return PASS, PASS_WITH_RISKS, NEEDS_FIX, or BLOCKED with specific file:line findings. Do not edit source.",
+  "source_basis": "Approved plan; implementation paths under master/controller, entity, service, repository; evidence directory A1/A2/A3; tracker progress.json.",
+  "must_preserve": "Read-only review; report mapping parent-missing assumption A3 separately from implemented behavior; do not inflate runtime readiness.",
+  "do_not_touch": "All source files, tracker status, plan, migrations, middleware, package manifests, compose/env.",
+  "validation": "Read changed files and evidence; run/inspect targeted tests and build evidence; grep new SQL for request interpolation; inspect tracker and diff boundary.",
+  "exit_criteria": "Write Q1-review.md with outcome, acceptance matrix, blockers/risks, diff boundary verdict, runtime verdict, and recommendation.",
+  "evidence_required": ".opencode/evidence/20260714-1315-sx-2513-product-secondary-sales-report/Q1-review.md",
+  "depends_on": "A3",
+  "context_bundle": "confirmed_repo/runtime: plan readiness PASS; A1 5 controller tests pass; A2 8 repository tests pass and build pass; A3 full `go test ./...` 408/23 + build success. Compose status empty and token unavailable, runtime smoke documented not-ready. Semgrep tool unavailable (binary absent). Parent-missing/inactive enabled mapping remains plan A3 assumption; implementation LEFT JOIN yields null primary fields in that scenario. Workspace has no Git repository, so diff check is path/evidence-based. Execute review only."
+}

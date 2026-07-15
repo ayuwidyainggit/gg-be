@@ -1,0 +1,123 @@
+# A3 — Schema Inspection (read-only)
+
+## connect sanity
+```text
+ ?column? 
+----------
+        1
+(1 row)
+```
+
+## import.import_history
+```text
+Table "import.import_history"
+     Column      |            Type             | Nullable |                          Default
+-----------------+-----------------------------+----------+-----------------------------------------------------------
+ history_id      | bigint                      | not null | nextval('import.import_history_history_id_seq'::regclass)
+ file_name       | character varying(255)      | not null |
+ uploaded_by     | bigint                      | not null |
+ upload_date     | timestamp without time zone | not null | now()
+ successful_data | integer                     | not null | 0
+ failed_data     | integer                     | not null | 0
+ total_data      | integer                     | not null | 0
+ status          | character varying(50)       | not null | 'COMPLETE'::character varying
+ status_reupload | boolean                     |          | false
+ upload_type     | character varying(50)       |          |
+ cust_id         | character varying           |          |
+Indexes:
+    "import_history_pkey" PRIMARY KEY, btree (history_id)
+Not-null constraints:
+    "import_history_history_id_not_null" NOT NULL "history_id"
+    "import_history_file_name_not_null" NOT NULL "file_name"
+    "import_history_uploaded_by_not_null" NOT NULL "uploaded_by"
+    "import_history_upload_date_not_null" NOT NULL "upload_date"
+    "import_history_successful_data_not_null" NOT NULL "successful_data"
+    "import_history_failed_data_not_null" NOT NULL "failed_data"
+    "import_history_total_data_not_null" NOT NULL "total_data"
+    "import_history_status_not_null" NOT NULL "status"
+```
+### verdict: B3 (alter_import_history) needed? YES — `status`, `upload_type`, and `cust_id` exist with sufficient text widths; `error_message` and `uploaded_by_name` are absent. Plan B3 SQL must add missing columns required by spec. Do not alter during A3.
+### status: column exists, `character varying(50)`, NOT NULL, default `'COMPLETE'`
+### error_message: column absent
+### upload_type: column exists, `character varying(50)`, nullable
+### cust_id: column exists, `character varying`, nullable
+### uploaded_by_name: column absent
+
+## sls.order_detail
+```text
+Table "sls.order_detail"
+           Column           |          Type          | Nullable | Default
+----------------------------+------------------------+----------+-----------------------------
+ cust_id                    | character varying(10)  | not null |
+ ro_no                      | character varying(30)  | not null |
+ seq_no                     | integer                | not null |
+ order_detail_id            | bigint                 | not null | nextval('sls.order_detail_id_seq'::regclass)
+ pro_id                     | bigint                 | not null |
+ item_type                  | smallint               | not null | 1
+ qty1                       | real                   |          | 0
+ qty2                       | real                   |          | 0
+ qty3                       | real                   |          | 0
+ qty4                       | real                   |          | 0
+ qty5                       | real                   |          | 0
+ purch_price1               | numeric(20,4)         |          | 0
+ purch_price2               | numeric(20,4)         |          | 0
+ purch_price3               | numeric(20,4)         |          | 0
+ sell_price1                | numeric(20,4)         |          | 0
+ sell_price2                | numeric(20,4)         |          | 0
+ sell_price3                | numeric(20,4)         |          | 0
+ amount                     | numeric(20,4)         |          |
+ disc_value                 | numeric(20,4)         |          | 0
+ vat                        | numeric(20,4)         |          | 0
+ vat_value                  | numeric(20,4)         |          | 0
+ unit_id1                   | character varying(5)  |          |
+ unit_id2                   | character varying(5)  |          |
+ unit_id3                   | character varying(5)  |          |
+ qty                        | real                   |          | 0
+ qty_final                  | real                   |          | 0
+ amount_final               | numeric(20,4)         |          | 0
+ vat_value_final            | numeric(20,4)         |          | 0
+ disc_value_final           | numeric(20,4)         |          | 0
+ promo_value                | numeric(20,4)         |          | 0
+ promo_value_final          | numeric(20,4)         |          | 0
+```
+Full `\d+` output captured from command; remaining columns are nullable/defaulted unless listed NOT NULL.
+### verdict: FK cascade? NO FK constraint — query returned zero foreign-key rows. No database-enforced CASCADE/RESTRICT/NO ACTION exists; retain detail-first deletion to avoid orphan rows.
+### primary key: no primary key shown by `\d+`
+### NOT NULL columns relevant to import: `cust_id`, `ro_no`, `seq_no`, `order_detail_id`, `pro_id`, `item_type`
+
+## sls.order
+```text
+Table "sls.order"
+      Column       |              Type              | Nullable | Default
+------------------+--------------------------------+----------+---------
+ cust_id          | character varying(10)          | not null |
+ ro_no            | character varying(30)          | not null |
+ ro_date          | date                           |          |
+ data_status      | smallint                       |          | 1
+ data_source      | smallint                       |          |
+ created_by       | integer                        |          |
+ created_at       | timestamp(6) without time zone |          |
+ is_printed       | boolean                        | not null | false
+ validate_stok    | boolean                        |          |
+ is_paid_off      | boolean                        |          | false
+ is_proforma_inv  | boolean                        |          |
+ is_sales_mapping | boolean                        |          | false
+Indexes:
+    "uq_order_cust_invoice_no" UNIQUE, btree (cust_id, invoice_no)
+```
+Full `\d+` output captured from command; omitted columns are unchanged schema output.
+### is_sales_mapping: column exists, `boolean`, nullable, default `false`
+### ro_no / ro_date / cust_id: `ro_no` `character varying(30)` NOT NULL; `ro_date` `date`; `cust_id` `character varying(10)` NOT NULL
+
+## import.sales_update_temp
+### exists: NO — `to_regclass('import.sales_update_temp')` returned NULL/blank. B1 will CREATE TABLE.
+
+## Sanitized command log
+```text
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c 'SELECT 1'
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c '\\d+ import.import_history'
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c '\\d+ sls.order_detail'
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c '\\d+ sls.order'
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c "SELECT conname, pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid = 'sls.order_detail'::regclass AND contype = 'f';"
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c "SELECT to_regclass('import.sales_update_temp') AS sales_update_temp_exists;"
+```

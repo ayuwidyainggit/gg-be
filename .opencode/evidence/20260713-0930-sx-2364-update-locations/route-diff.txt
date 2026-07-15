@@ -1,0 +1,10 @@
+File: pjp/router/live_monitoring.go
+Route registration for GET /v1/monitoring_locations/update-locations
+
+Line 15:
+	router.GET("/monitoring_locations/update-locations", controller.GetUpdateLocations)
+
+Endpoint path: /v1/monitoring_locations/update-locations (prefix /v1 added by router group)
+Method: GET
+Controller method: GetUpdateLocations (implements LiveMonitoringController interface)
+Auth: JWT middleware (inherited from router group)

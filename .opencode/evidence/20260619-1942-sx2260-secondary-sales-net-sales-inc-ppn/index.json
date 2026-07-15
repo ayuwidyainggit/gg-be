@@ -1,0 +1,13 @@
+{
+  "task_id": "20260619-1942-sx2260-secondary-sales-net-sales-inc-ppn",
+  "evidence": [
+    "discovery.md"
+  ],
+  "source_strategy": {
+    "local_project_discovery": "used",
+    "official_docs": "skipped: local Go/SQL change, no version-sensitive API behavior",
+    "github": "skipped: no upstream dependency needed",
+    "web_search": "skipped: Jira/staging URL not accessible without credentials, user provided issue context",
+    "browser": "skipped: backend API/data fix, no UI visual validation"
+  }
+}

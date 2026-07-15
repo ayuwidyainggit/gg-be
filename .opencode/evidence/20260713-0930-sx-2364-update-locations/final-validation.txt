@@ -1,0 +1,65 @@
+## 400 missing emp_id controller test (newly added)
+
+### command: go test ./controller/live_monitoring/... -run TestGetUpdateLocations -count=1 -v
+=== RUN   TestGetUpdateLocations_ReturnsHappy200ResponseShape
+--- PASS: TestGetUpdateLocations_ReturnsHappy200ResponseShape (0.00s)
+=== RUN   TestGetUpdateLocations_EmptyTimelineReturnsNoData200
+--- PASS: TestGetUpdateLocations_EmptyTimelineReturnsNoData200 (0.00s)
+=== RUN   TestGetUpdateLocations_RecordNotFoundReturns404
+--- PASS: TestGetUpdateLocations_RecordNotFoundReturns404 (0.00s)
+=== RUN   TestGetUpdateLocations_MissingEmployeeIDReturns400
+--- PASS: TestGetUpdateLocations_MissingEmployeeIDReturns400 (0.00s)
+PASS
+ok  	scyllax-pjp/controller/live_monitoring	0.256s
+
+### command: go test ./... -count=1 (full pjp suite)
+?   	scyllax-pjp	[no test files]
+?   	scyllax-pjp/config	[no test files]
+?   	scyllax-pjp/constant	[no test files]
+?   	scyllax-pjp/controller	[no test files]
+?   	scyllax-pjp/controller/attendance	[no test files]
+?   	scyllax-pjp/controller/daily	[no test files]
+?   	scyllax-pjp/controller/geotaging	[no test files]
+ok  	scyllax-pjp/controller/live_monitoring	0.195s
+?   	scyllax-pjp/controller/pjp	[no test files]
+?   	scyllax-pjp/controller/pjp_auto	[no test files]
+?   	scyllax-pjp/controller/pjp_enhance	[no test files]
+?   	scyllax-pjp/controller/route	[no test files]
+?   	scyllax-pjp/controller/third_party	[no test files]
+?   	scyllax-pjp/controller/visit	[no test files]
+?   	scyllax-pjp/data/entity	[no test files]
+ok  	scyllax-pjp/data/request	0.363s
+?   	scyllax-pjp/data/response	[no test files]
+?   	scyllax-pjp/docs	[no test files]
+?   	scyllax-pjp/exception	[no test files]
+ok  	scyllax-pjp/helper	0.408s
+?   	scyllax-pjp/middleware	[no test files]
+?   	scyllax-pjp/model	[no test files]
+?   	scyllax-pjp/repository	[no test files]
+?   	scyllax-pjp/repository/arrival_report	[no test files]
+?   	scyllax-pjp/repository/attendance	[no test files]
+ok  	scyllax-pjp/repository/live_monitoring	0.399s
+?   	scyllax-pjp/repository/outlet_visit	[no test files]
+?   	scyllax-pjp/repository/outlet_visit_principle	[no test files]
+ok  	scyllax-pjp/repository/pjp	0.573s
+?   	scyllax-pjp/repository/pjp_principle	[no test files]
+?   	scyllax-pjp/repository/route	[no test files]
+?   	scyllax-pjp/repository/route_outlet	[no test files]
+?   	scyllax-pjp/repository/route_outlet_history	[no test files]
+?   	scyllax-pjp/repository/route_pop_daily	[no test files]
+?   	scyllax-pjp/repository/route_pop_permanent	[no test files]
+?   	scyllax-pjp/router	[no test files]
+?   	scyllax-pjp/service	[no test files]
+?   	scyllax-pjp/service/attendance	[no test files]
+?   	scyllax-pjp/service/geotaging	[no test files]
+ok  	scyllax-pjp/service/live_monitoring	0.588s
+ok  	scyllax-pjp/service/pjp	0.702s
+?   	scyllax-pjp/service/pjp_auto	[no test files]
+ok  	scyllax-pjp/service/pjp_enhance	0.819s
+ok  	scyllax-pjp/service/route	0.959s
+?   	scyllax-pjp/service/route_pop	[no test files]
+ok  	scyllax-pjp/service/third_party	1.087s
+?   	scyllax-pjp/service/visit	[no test files]
+?   	scyllax-pjp/utils	[no test files]
+
+## Summary: all 4 update-locations controller tests + full pjp suite PASS

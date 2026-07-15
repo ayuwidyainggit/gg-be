@@ -1,0 +1,79 @@
+Go test: 7 passed in 1 packages
+Go test: 412 passed in 23 packages
+Go build: Success
+
+$ cd master && rtk go test ./controller -run TestProductReport -v
+Go test: 4 passed, 1 failed in 1 packages
+═══════════════════════════════════════
+
+controller (4 passed, 1 failed)
+  [FAIL] TestProductReportRoute_GET_ReachesReport
+     panic: open .env: no such file or directory [recovered, repanicked]
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1872 +0x190
+     testing.tRunner.func1()
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1875 +0x31c
+     panic({0x1008d84c0?, 0x140000f7200?})
+[full output: ~/Library/Application Support/rtk/tee/1784101334_go_test.log]
+
+$ cd master && rtk go test ./...
+Go test: 356 passed, 1 failed in 23 packages
+═══════════════════════════════════════
+
+controller (54 passed, 1 failed)
+  [FAIL] TestProductReportRoute_GET_ReachesReport
+     panic: open .env: no such file or directory [recovered, repanicked]
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1872 +0x190
+     testing.tRunner.func1()
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1875 +0x31c
+     panic({0x1033104c0?, 0x140009124b0?})
+[full output: ~/Library/Application Support/rtk/tee/1784101343_go_test.log]
+
+$ cd master && rtk go build ./...
+Go build: Success
+
+$ cd master && rtk go test ./controller -run TestProductReport -v (relative Chdir portability check)
+Go test: 7 passed in 1 packages
+
+$ cd master && rtk go test ./... (relative Chdir portability check)
+Go test: 412 passed in 23 packages
+
+$ cd master && rtk go build ./... (relative Chdir portability check)
+Go build: Success
+
+$ cd master && rtk go test ./controller -run TestProductReport -v (exact no-Chdir correction)
+Go test: 4 passed, 1 failed in 1 packages
+═══════════════════════════════════════
+
+controller (4 passed, 1 failed)
+  [FAIL] TestProductReportRoute_GET_ReachesReport
+     panic: open .env: no such file or directory [recovered, repanicked]
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1872 +0x190
+     testing.tRunner.func1()
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1875 +0x31c
+     panic({0x1048744c0?, 0x1400061b0e0?})
+[full output: ~/Library/Application Support/rtk/tee/1784101619_go_test.log]
+
+$ cd master && rtk go test ./... (exact no-Chdir correction)
+Go test: 356 passed, 1 failed in 23 packages
+═══════════════════════════════════════
+
+controller (54 passed, 1 failed)
+  [FAIL] TestProductReportRoute_GET_ReachesReport
+     panic: open .env: no such file or directory [recovered, repanicked]
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1872 +0x190
+     testing.tRunner.func1()
+     /opt/homebrew/Cellar/go/1.25.1/libexec/src/testing/testing.go:1875 +0x31c
+     panic({0x102ce84c0?, 0x140005fdc20?})
+[full output: ~/Library/Application Support/rtk/tee/1784101621_go_test.log]
+
+$ cd master && rtk go build ./... (exact no-Chdir correction)
+Go build: Success
+
+$ cd master && rtk go test ./controller -run TestProductReport -v (portable t.Chdir)
+Go test: 7 passed in 1 packages
+
+$ cd master && rtk go test ./... (portable t.Chdir)
+Go test: 412 passed in 23 packages
+
+$ cd master && rtk go build ./... (portable t.Chdir)
+Go build: Success

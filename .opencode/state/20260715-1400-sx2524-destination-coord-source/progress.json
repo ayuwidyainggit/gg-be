@@ -1,0 +1,47 @@
+{
+  "task_id": "20260715-1400-sx2524-destination-coord-source",
+  "plan_path": ".opencode/plans/20260715-1400-sx2524-destination-coord-source.md",
+  "created": "2026-07-15T18:27:39.122665",
+  "tasks": [
+    {
+      "id": "B1",
+      "title": "Task B1",
+      "status": "in_progress",
+      "owner": "fixer",
+      "depends_on": [],
+      "started": "2026-07-15T18:28:08.320518",
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "B2",
+      "title": "Task B2",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "B3",
+      "title": "Task B3",
+      "status": "pending",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    },
+    {
+      "id": "Q1",
+      "title": "Task Q1",
+      "status": "pending",
+      "owner": "@quality-gate",
+      "depends_on": [],
+      "started": null,
+      "completed": null,
+      "evidence": []
+    }
+  ]
+}

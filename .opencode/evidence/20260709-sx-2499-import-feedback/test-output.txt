@@ -1,0 +1,23 @@
+Build: rtk go build ./... -> Success
+Service tests: rtk go test ./service/... -count=1 -timeout 240s -> 246 passed
+Focused remediation tests: rtk go test ./service/... -count=1 -run 'TestParseImportOrders_(Selects|Zero|Multiple|Blank|SalesmanCode)' -v -> 7 passed
+Controller tests: rtk go test ./controller/... -count=1 -> 39 passed
+
+New tests added (sales/service/order_service_test.go):
+- TestParseImportDate_Serial
+- TestParseImportDate_DDMMYYYY
+- TestParseImportDate_YYYYMMDD
+- TestParseImportDate_Apostrophe
+- TestParseImportDate_Invalid
+- TestExportTemplate_OneSheet
+- TestParseImportOrders_SelectsOrderTemplateOverBlankSheet1
+- TestParseImportOrders_ZeroMatchingSheets
+- TestParseImportOrders_MultipleMatchingSheets
+- TestParseImportOrders_BlankPromoDiscountPPNTolerated
+- TestParseImportOrders_BlankProCodeTolerated
+- TestParseImportOrders_SalesmanCodeTrimmed
+- TestParseImportOrders_SalesmanCodeNotFound
+
+Runtime/schema verification for blank ProCode -> ProId=0:
+- confirmed_repo: CreateOrderDetBody.ProId is int, not pointer
+- unverified: DB/FK acceptance of ProId=0 at persistence layer (no quick non-destructive local DB fixture available in this task context)

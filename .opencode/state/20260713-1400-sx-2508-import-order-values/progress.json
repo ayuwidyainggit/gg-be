@@ -1,0 +1,92 @@
+{
+  "task_id": "20260713-1400-sx-2508-import-order-values",
+  "plan_path": ".opencode/plans/20260713-1400-sx-2508-import-order-values.md",
+  "created": "2026-07-13T19:17:42.601866",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": "2026-07-13T19:19:17.782509",
+      "completed": "2026-07-13T19:42:19.711902",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A1-red.log"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": "2026-07-13T19:44:16.466887",
+      "completed": "2026-07-13T21:46:38.559593",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A2-parser.log",
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A6-runtime-remediation.md"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": "2026-07-13T19:57:08.395342",
+      "completed": "2026-07-13T20:19:27.184998",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A3-detail-stock.log"
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Task A4",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": [],
+      "started": "2026-07-13T20:08:42.605809",
+      "completed": "2026-07-13T20:19:27.224667",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A4-validation.md"
+      ]
+    },
+    {
+      "id": "A5",
+      "title": "Task A5",
+      "status": "completed",
+      "owner": "@quality-gate",
+      "depends_on": [],
+      "started": "2026-07-13T20:12:55.435325",
+      "completed": "2026-07-13T20:19:27.262644",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A5-quality-gate.md"
+      ]
+    },
+    {
+      "id": "A6",
+      "title": "Runtime remediation: invoice_no/invoice_date/qty_po",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": ["A5"],
+      "started": "2026-07-13T21:46:38.559593",
+      "completed": "2026-07-13T22:20:00.000000",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A6-runtime-remediation.md"
+      ]
+    },
+    {
+      "id": "A7",
+      "title": "Full sales suite green: fix DetailV2 promo-consult test fixtures",
+      "status": "completed",
+      "owner": "@backend",
+      "depends_on": ["A6"],
+      "started": "2026-07-13T22:20:00.000000",
+      "completed": "2026-07-13T22:45:00.000000",
+      "evidence": [
+        ".opencode/evidence/20260713-1400-sx-2508-import-order-values/A7-full-suite-remediation.md"
+      ]
+    }
+  ]
+}

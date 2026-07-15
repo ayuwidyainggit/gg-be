@@ -1,0 +1,102 @@
+# Scylla Backend - Inventory Service Rules
+
+This project follows a strict layered architecture pattern. All code must adhere to these rules.
+
+## Architecture Layers
+
+### 1. Controller Layer (`controller/`)
+- Handles HTTP requests/responses
+- Validates input using validator
+- Extracts JWT context (custId, parentCustId)
+- Calls service layer
+- Maps errors to HTTP status codes
+- See `.cursor/rules/controller-layer.md` for details
+
+### 2. Service Layer (`service/`)
+- Contains business logic
+- Manages transactions
+- Orchestrates repository calls
+- Handles data conversion
+- Manages stock updates
+- See `.cursor/rules/service-layer.md` for details
+
+### 3. Repository Layer (`repository/`)
+- Handles database operations
+- Uses GORM query builder
+- Supports transactions via context
+- Returns models, not entities
+- See `.cursor/rules/repository-layer.md` for details
+
+## File Structure
+
+- Follow naming conventions in `.cursor/rules/naming-conventions.md`
+- One domain per file (e.g., `gr_service.go`, `gr_repository.go`, `gr_controller.go`)
+- Keep related code together
+
+## Data Flow
+
+1. **Request** → Controller (parse, validate)
+2. **Controller** → Service (business logic)
+3. **Service** → Repository (data access)
+4. **Repository** → Database
+5. **Response** ← Controller (format, return)
+
+## Key Patterns
+
+### Transaction Management
+- Use `Transaction.WithinTransaction()` for multi-step operations
+- Pass `txCtx` to all repository calls within transaction
+- See service layer rules for details
+
+### Data Conversion
+- Use `structs.Automapper()` for entity ↔ model mapping
+- Use `conversion.QtyUnit` and `conversion.Qty` for quantity conversions
+- Format dates: `str.DateStrToRfc3339String()` (input), `.Format("2006-01-02")` (output)
+- See `.cursor/rules/data-conversion.md` for details
+
+### Error Handling
+- Return errors, don't ignore them
+- Use descriptive error messages
+- Map errors to appropriate HTTP status codes in controller
+- See `.cursor/rules/error-handling.md` for details
+
+### Naming Conventions
+- Follow Go naming conventions
+- Use consistent prefixes and suffixes
+- See `.cursor/rules/naming-conventions.md` for details
+
+## When Adding New Features
+
+1. **Create Entity** - Define request/response DTOs in `entity/`
+2. **Create Model** - Define database models in `model/`
+3. **Create Repository** - Implement data access in `repository/`
+4. **Create Service** - Implement business logic in `service/`
+5. **Create Controller** - Implement HTTP handlers in `controller/`
+6. **Register Routes** - Add routes in `main.go`
+
+## Code Quality
+
+- Follow general principles in `.cursor/rules/general-principles.md`
+- Write clean, readable code
+- Keep functions focused and small
+- Use dependency injection
+- Write testable code
+
+## Important Notes
+
+- **ALWAYS** use transactions for operations that modify data
+- **ALWAYS** validate input in controller
+- **ALWAYS** use `repo.model(ctx)` in repository for transaction support
+- **ALWAYS** return errors, never ignore them
+- **ALWAYS** follow the exact structure patterns defined in rules
+
+For detailed rules, see:
+- `.cursor/rules/service-layer.md`
+- `.cursor/rules/repository-layer.md`
+- `.cursor/rules/controller-layer.md`
+- `.cursor/rules/naming-conventions.md`
+- `.cursor/rules/error-handling.md`
+- `.cursor/rules/data-conversion.md`
+- `.cursor/rules/main-setup.md`
+- `.cursor/rules/general-principles.md`
+

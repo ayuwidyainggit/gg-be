@@ -1,0 +1,67 @@
+{
+  "task_id": "20260616-1740-sx-2234-sales-trend",
+  "issue": "SX-2234",
+  "type": "backend enhancement / calculation fix",
+  "created_at": "2026-06-16T17:40:45+07:00",
+  "artifacts": [
+    {
+      "path": ".opencode/evidence/20260616-1740-sx-2234-sales-trend/discovery.md",
+      "kind": "discovery",
+      "kept": true,
+      "reason": "Operational evidence for implementer: target files, reuse patterns, risks, and source strategy."
+    },
+    {
+      "path": ".opencode/plans/20260616-1740-sx-2234-sales-trend.md",
+      "kind": "primary-plan",
+      "kept": true,
+      "reason": "Source of truth for implementation."
+    },
+    {
+      "path": ".opencode/evidence/20260616-1740-sx-2234-sales-trend/implementation-validation.md",
+      "kind": "implementation-validation",
+      "kept": true,
+      "reason": "Records changed files, commands, results, runtime gap, and formula evidence."
+    },
+    {
+      "path": ".opencode/evidence/20260616-1740-sx-2234-sales-trend/quality-gate.md",
+      "kind": "quality-gate",
+      "kept": true,
+      "reason": "Records earlier gate verdict and residual risk."
+    },
+    {
+      "path": ".opencode/evidence/20260616-1740-sx-2234-sales-trend/runtime-validation.md",
+      "kind": "runtime-validation",
+      "kept": true,
+      "reason": "Closes runtime API/direct SQL risk with sanitized local evidence."
+    },
+    {
+      "path": ".opencode/evidence/20260616-1740-sx-2234-sales-trend/quality-gate-final.md",
+      "kind": "quality-gate-final",
+      "kept": true,
+      "reason": "Records final PASS after runtime validation."
+    }
+  ],
+  "decision_gate": {
+    "answered": true,
+    "answers": {
+      "total_discount_promo": "Use source-table order+return formula.",
+      "return_date_filter": "Use r.return_date.",
+      "module_scope": "Only sales; pjp-sales out of scope."
+    }
+  },
+  "sources": [
+    ".opencode/docs/index.md",
+    ".opencode/docs/ARCHITECTURE.md",
+    ".opencode/docs/QUALITY.md",
+    ".opencode/docs/SERVICE_MATRIX.md",
+    "/Volumes/External/Downloads/BrowserOS/sx2234_docs_export.txt",
+    "sales/controller/report_controller.go",
+    "sales/service/report_service.go",
+    "sales/repository/report_repository.go",
+    "sales/model/report.go",
+    "sales/entity/report.go",
+    "sales/repository/report_repository_test.go",
+    "sales/service/report_service_test.go",
+    "sales/controller/so_controller_test.go"
+  ]
+}

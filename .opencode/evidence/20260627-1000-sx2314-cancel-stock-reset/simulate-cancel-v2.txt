@@ -1,0 +1,43 @@
+=== BEFORE: inv.warehouse_stock ===
+  cust_id   | wh_id | pro_id | qty_before | qty_on_order_before 
+------------+-------+--------+------------+---------------------
+ C260020001 |   350 |  10838 |         14 |                  10
+(1 row)
+
+
+=== BEFORE: inv.stock projections ===
+     metric      | value 
+-----------------+-------
+ on_cust_before  |    10
+ wh_stock_before |     2
+(2 rows)
+
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+
+=== AFTER: inv.warehouse_stock ===
+  cust_id   | wh_id | pro_id | qty_after | qty_on_order_after 
+------------+-------+--------+-----------+--------------------
+ C260020001 |   350 |  10838 |        24 |                  0
+(1 row)
+
+
+=== AFTER: inv.stock projections ===
+     metric     | value 
+----------------+-------
+ on_cust_after  |     0
+ wh_stock_after |     2
+(2 rows)
+
+
+=== AFTER: new CO reversal rows ===
+  cust_id   | stock_id | tr_code |      tr_no      | wh_id | pro_id | qty_out_order | ref_det_id 
+------------+----------+---------+-----------------+-------+--------+---------------+------------
+ C260020001 |    26855 | CO      | SO2606260002-CO |   350 |  10838 |             4 |       7540
+ C260020001 |    26856 | CO      | SO2606260002-CO |   350 |  10838 |             6 |       7541
+(2 rows)
+
+ROLLBACK

@@ -1,0 +1,26 @@
+{
+  "task_id": "fix-product-report-get-route",
+  "mode": "maintenance-stability",
+  "status": "planning-complete",
+  "artifacts": [
+    {
+      "path": ".opencode/evidence/fix-product-report-get-route/discovery.md",
+      "purpose": "repo discovery, source strategy, confirmed-versus-assumed audit"
+    },
+    {
+      "path": ".opencode/plans/fix-product-report-get-route.md",
+      "purpose": "primary execution source of truth"
+    }
+  ],
+  "sources": [
+    "master/controller/product_controller.go:34-55",
+    "master/controller/product_report_controller_test.go:13-185",
+    "master/entity/product.go:37-44,1049-1054",
+    "master/service/product_service.go:27-30",
+    "master/pkg/middleware/jwt_middleware.go:15-32,35-52",
+    ".opencode/docs/PROJECT_STACK.md",
+    ".opencode/docs/PROJECT_COMMANDS.md",
+    ".opencode/docs/FRAMEWORK_PLAYBOOK.md"
+  ],
+  "runtime_evidence": "not-run; plan-only task"
+}

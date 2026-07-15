@@ -1,0 +1,104 @@
+{
+  "task_id": "20260706-1405-sx-2454-master-distributor-code-alphanumeric",
+  "plan_path": ".opencode/plans/20260706-1405-sx-2454-master-distributor-code-alphanumeric.md",
+  "created": "2026-07-06T14:13:12.775285",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:27:58.545291",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/build-A1.log"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:28:54.368366",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/build-A2.log"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:33:55.297507",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/test-entity-A3.log"
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Task A4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:33:55.584329",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/test-service-A4.log"
+      ]
+    },
+    {
+      "id": "A5",
+      "title": "Task A5",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:33:56.036401",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/test-full-A5.log"
+      ]
+    },
+    {
+      "id": "A6",
+      "title": "Task A6",
+      "status": "cancelled",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:37:18.798244",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/curl-pre-fix.log"
+      ]
+    },
+    {
+      "id": "A7",
+      "title": "Task A7",
+      "status": "cancelled",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-06T14:37:18.859158",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/staging-verify.md"
+      ]
+    },
+    {
+      "id": "A8",
+      "title": "Task A8",
+      "status": "in_progress",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": "2026-07-06T15:09:59.101105",
+      "completed": "2026-07-06T14:37:18.952770",
+      "evidence": [
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/curl-post-fix.log",
+        ".opencode/evidence/20260706-1405-sx-2454-master-distributor-code-alphanumeric/commit-a13133e.txt"
+      ]
+    }
+  ]
+}

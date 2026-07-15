@@ -1,0 +1,10 @@
+Command: rtk go test ./service -run 'TestSurveyService_Store|TestSurveyService_Update' -v
+Result: Go test: 29 passed in 1 packages
+
+Command: rtk go test ./...
+Result: Go test: 395 passed in 23 packages
+
+Notes:
+- Backend now accepts principal scope when distributor_id is empty and target_cust_id is provided, guarded by principal caller check.
+- Existing distributor flow and sentinel distributor_id:[0] flow preserved.
+- This does not fix FE cases that omit both distributor_id and target_cust_id.

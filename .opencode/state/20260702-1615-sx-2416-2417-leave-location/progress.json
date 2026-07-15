@@ -1,0 +1,91 @@
+{
+  "task_id": "20260702-1615-sx-2416-2417-leave-location",
+  "plan_path": ".opencode/plans/20260702-1615-sx-2416-2417-leave-location.md",
+  "created": "2026-07-02T14:59:36.143930",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:04:31.074194",
+      "evidence": [
+        ".opencode/evidence/20260702-1615-sx-2416-2417-leave-location/A1-build.log"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:05:27.273371",
+      "evidence": [
+        ".opencode/evidence/20260702-1615-sx-2416-2417-leave-location/A2-build.log"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:05:27.332081",
+      "evidence": [
+        ".opencode/evidence/20260702-1615-sx-2416-2417-leave-location/A3-build.log"
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Task A4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:09:24.345645",
+      "evidence": [
+        ".opencode/evidence/20260702-1615-sx-2416-2417-leave-location/A4-build.log"
+      ]
+    },
+    {
+      "id": "A5",
+      "title": "Task A5",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:09:24.511830",
+      "evidence": [
+        ".opencode/evidence/20260702-1615-sx-2416-2417-leave-location/A5-test.log"
+      ]
+    },
+    {
+      "id": "A6",
+      "title": "Task A6",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:11:01.866734",
+      "evidence": [
+        ".opencode/evidence/20260702-1615-sx-2416-2417-leave-location/A6-validate.log"
+      ]
+    },
+    {
+      "id": "A7",
+      "title": "Task A7",
+      "status": "completed",
+      "owner": "@orchestrator",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-02T15:11:02.016497",
+      "evidence": [
+        ".opencode/state/20260702-1615-sx-2416-2417-leave-location/progress.json"
+      ]
+    }
+  ]
+}

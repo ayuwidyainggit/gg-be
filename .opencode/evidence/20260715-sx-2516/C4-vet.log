@@ -1,0 +1,7 @@
+# C4 Vet
+
+```
+cd sales && rtk go vet ./...
+```
+
+Result: clean (no warnings)

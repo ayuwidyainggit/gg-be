@@ -1,0 +1,8 @@
+{
+  "task_id": "20260604-1024-sx-2154-order-type",
+  "jira": "SX-2154",
+  "primary_plan": ".opencode/plans/20260604-1024-sx-2154-order-type.md",
+  "evidence": [
+    ".opencode/evidence/20260604-1024-sx-2154-order-type/discovery.md"
+  ]
+}

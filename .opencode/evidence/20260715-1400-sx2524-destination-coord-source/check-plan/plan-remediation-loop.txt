@@ -1,0 +1,1 @@
+{"attempts": 1, "evidence": "/Users/ujang/Projects/Geekgarden/scylla-be/.opencode/evidence/20260715-1400-sx2524-destination-coord-source/plan-remediation.jsonl", "plan_path": "/Users/ujang/Projects/Geekgarden/scylla-be/.opencode/plans/20260715-1400-sx2524-destination-coord-source.md", "question_batch": {"audit_ok": true, "hard_stop": false, "ordinary": []}, "status": "PASS"}

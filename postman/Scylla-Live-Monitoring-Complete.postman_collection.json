@@ -1,0 +1,289 @@
+{
+  "info": {
+    "_postman_id": "live-monitoring-scylla-2024",
+    "name": "Scylla Live Monitoring API - Aligned with Docs",
+    "description": "Collection lengkap untuk Live Monitoring endpoints (Point 5, 6, 7 dari Monitoring Activity - BE.md). Semua endpoint sudah di-align dengan dokumentasi.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 1. Login (Get JWT Token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9001/v1/users/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9001",
+          "path": ["v1", "users", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"princ@idetama.id\",\n  \"password\": \"admin\"\n}"
+        },
+        "description": "Login untuk mendapatkan JWT token. Token akan digunakan untuk semua endpoint Live Monitoring."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9001/v1/users/login"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"message\": \"\",\n  \"data\": {\n    \"user_id\": 1,\n    \"user_name\": \"princ@idetama.id\",\n    \"user_fullname\": \"Admin Principal 1\",\n    \"token\": {\n      \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n    }\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "📍 2. Live Monitoring - Principal (Point 5)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9010/api/v1/live-monitoring-principal?date={{epoch_date}}&status[]=Approved&emp_id={{emp_id}}&region_id={{region_id}}&area_id={{area_id}}&distributor_id={{distributor_id}}&page=1&limit=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9010",
+          "path": ["api", "v1", "live-monitoring-principal"],
+          "query": [
+            {
+              "key": "date",
+              "value": "{{epoch_date}}",
+              "description": "Epoch timestamp (required). Contoh: 1769904000 = 2026-02-01"
+            },
+            {
+              "key": "status[]",
+              "value": "Approved",
+              "description": "Approval status filter (required). Sesuai docs FE kirim 'Approved'"
+            },
+            {
+              "key": "emp_id",
+              "value": "{{emp_id}}",
+              "description": "Employee IDs filter (optional). Array of int."
+            },
+            {
+              "key": "region_id",
+              "value": "{{region_id}}",
+              "description": "Region ID filter (optional). Default: 1"
+            },
+            {
+              "key": "area_id",
+              "value": "{{area_id}}",
+              "description": "Area ID filter (optional). Default: 1"
+            },
+            {
+              "key": "distributor_id",
+              "value": "{{distributor_id}}",
+              "description": "Distributor ID filter (optional). Default: 999"
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (optional). Default: 1"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Page limit (optional). Default: 10, Max: 9999"
+            }
+          ]
+        },
+        "description": "**Point 5 dari Docs - Location Monitoring (Principal)**\n\nURL: `{{url}}scylla-pjp/v1/live-monitoring-principal`\n\n**Changes yang sudah diimplementasikan:**\n1. ✅ Query menggunakan LEFT JOIN untuk m_distributor (data tetap muncul walau distributor null)\n2. ✅ Query join outlet_visit_list menggunakan `pjp.pjp_code = ovl.pjp_code` (bukan outlet_code)\n3. ✅ Response field `pjp_code` (bukan `pjp_id`)\n4. ✅ Response field `skip_reason` ditambahkan\n5. ✅ Filter region_id, area_id, distributor_id menjadi optional\n\n**Expected Response Structure:**\n```json\n{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"emp_id\": 9999,\n      \"emp_code\": \"SLS9999\",\n      \"emp_name\": \"Salesman Test\",\n      \"distributor_id\": 999,\n      \"area_id\": 1,\n      \"region_id\": 1,\n      \"pjp_data\": [\n        {\n          \"pjp_code\": 8888,\n          \"approval_status\": \"Approved\",\n          \"route_data\": [\n            {\n              \"route_code\": \"8888\",\n              \"route_name\": \"Route Test\",\n              \"destination_data\": [\n                {\n                  \"destination_id\": 1001,\n                  \"destination_code\": \"DEST001\",\n                  \"destination_type\": \"Outlet\",\n                  \"destination_name\": \"Toko Test\",\n                  \"longitude\": -6.17511,\n                  \"latitude\": 106.865036,\n                  \"arrive_at\": null,\n                  \"start\": 1769904000,\n                  \"finish\": 1769907600,\n                  \"skip_at\": null,\n                  \"skip_reason\": \"Toko Tutup\"\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"paging\": {\n    \"total_record\": 1,\n    \"page_current\": 1,\n    \"page_limit\": 10,\n    \"page_total\": 1\n  },\n  \"request_id\": \"xxx\"\n}\n```"
+      },
+      "response": []
+    },
+    {
+      "name": "📍 3. Live Monitoring - Distributor (Point 6)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9010/api/v1/live-monitoring-distributor?date={{epoch_date}}&status[]=Approved&emp_id={{emp_id}}&region_id={{region_id}}&area_id={{area_id}}&distributor_id={{distributor_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9010",
+          "path": ["api", "v1", "live-monitoring-distributor"],
+          "query": [
+            {
+              "key": "date",
+              "value": "{{epoch_date}}",
+              "description": "Epoch timestamp (required)"
+            },
+            {
+              "key": "status[]",
+              "value": "Approved",
+              "description": "Approval status filter (required)"
+            },
+            {
+              "key": "emp_id",
+              "value": "{{emp_id}}",
+              "description": "Employee IDs filter (optional)"
+            },
+            {
+              "key": "region_id",
+              "value": "{{region_id}}",
+              "description": "Region ID filter (optional)"
+            },
+            {
+              "key": "area_id",
+              "value": "{{area_id}}",
+              "description": "Area ID filter (optional)"
+            },
+            {
+              "key": "distributor_id",
+              "value": "{{distributor_id}}",
+              "description": "Distributor ID filter (optional)"
+            }
+          ]
+        },
+        "description": "**Point 6 dari Docs - Location Monitoring (Distributor)**\n\nURL: `{{url}}scylla-pjp/v1/live-monitoring-distributor`\n\n**Changes yang sudah diimplementasikan:**\n1. ✅ Query join outlet_visit_list menggunakan `ovl.route_code = ro.route_code` (bukan outlet_code)\n2. ✅ Response field `destination_type` hardcoded sebagai \"Outlet\"\n3. ✅ Filter menjadi optional\n\n**Perbedaan dengan Principal:**\n- Menggunakan tabel `pjp` (bukan `pjp_principles`)\n- Response menggunakan `pjp_id` (bukan `pjp_code`) - sesuai docs\n- destination_type selalu \"Outlet\"\n\n**Expected Response Structure:**\n```json\n{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"emp_id\": 9999,\n      \"emp_code\": \"SLS9999\",\n      \"emp_name\": \"Salesman Test\",\n      \"distributor_id\": 999,\n      \"area_id\": 1,\n      \"region_id\": 1,\n      \"pjp_data\": [\n        {\n          \"pjp_id\": 7777,\n          \"approval_status\": \"Approved\",\n          \"route_data\": [\n            {\n              \"route_code\": \"7777\",\n              \"route_name\": \"Route Test\",\n              \"destination_data\": [\n                {\n                  \"destination_id\": 2001,\n                  \"destination_code\": \"OTL001\",\n                  \"destination_type\": \"Outlet\",\n                  \"destination_name\": \"Toko Test\",\n                  \"longitude\": -6.17511,\n                  \"latitude\": 106.865036,\n                  \"arrive_at\": null,\n                  \"start\": 1769904000,\n                  \"finish\": 1769907600,\n                  \"skip_at\": null\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"paging\": {...}\n}\n```"
+      },
+      "response": []
+    },
+    {
+      "name": "📍 4. Monitoring Detail (Point 7)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9010/api/v1/monitoring_locations/details?emp_id={{emp_id}}&date={{date}}&distributor_id={{distributor_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9010",
+          "path": ["api", "v1", "monitoring_locations", "details"],
+          "query": [
+            {
+              "key": "emp_id",
+              "value": "{{emp_id}}",
+              "description": "Employee ID (required). Contoh: 9999"
+            },
+            {
+              "key": "date",
+              "value": "{{date}}",
+              "description": "Date in YYYY-MM-DD format (required). Contoh: 2026-02-01"
+            },
+            {
+              "key": "distributor_id",
+              "value": "{{distributor_id}}",
+              "description": "Distributor ID (optional). If NULL → Principal, If NOT NULL → Distributor. Note: Ini TIDAK untuk filter data, hanya untuk menentukan view (Principal/Distributor)"
+            }
+          ]
+        },
+        "description": "**Point 7 dari Docs - Location Monitoring Detail**\n\nURL: `{{url}}scylla-pjp/v1/monitoring_locations/details`\n\n**Changes yang sudah diimplementasikan:**\n1. ✅ Response field `status` ditambahkan pada data Shipment\n\n**Response Structure:**\n```json\n{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"visit_information\": {\n        \"activity_date\": \"2026-02-01\",\n        \"company_name\": \"PT Sukses Makmur\",\n        \"company_code\": \"SM001\",\n        \"level\": \"Distributor\",\n        \"emp_id\": 9999,\n        \"emp_code\": \"SLS9999\",\n        \"emp_name\": \"Salesman Test\",\n        \"activity_time\": \"2026-02-01 08:00:00\",\n        \"planned\": 1,\n        \"on_going\": 0,\n        \"extra_call\": 0,\n        \"visited\": 1,\n        \"skipped\": 0\n      },\n      \"sales\": [...],\n      \"return\": [...],\n      \"collection\": [],\n      \"expense\": [...],\n      \"shipment\": [\n        {\n          \"shipment_no\": \"SHP001\",\n          \"status\": \"Delivered\",\n          \"shipment_data\": [...]\n        }\n      ]\n    }\n  ],\n  \"request_id\": \"xxx\"\n}\n```"
+      },
+      "response": []
+    },
+    {
+      "name": "📋 5. Get Current User Info (Debug)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9001/v1/users/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9001",
+          "path": ["v1", "users", "me"]
+        },
+        "description": "Debug endpoint untuk melihat info user dari JWT token.\n\nBerguna untuk memastikan:\n- cust_id dari token\n- distributor_id dari token\n- emp_id dari token"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT Token dari endpoint login"
+    },
+    {
+      "key": "epoch_date",
+      "value": "1769904000",
+      "type": "string",
+      "description": "Epoch timestamp untuk 2026-02-01"
+    },
+    {
+      "key": "date",
+      "value": "2026-02-01",
+      "type": "string",
+      "description": "Date format YYYY-MM-DD untuk Detail endpoint"
+    },
+    {
+      "key": "emp_id",
+      "value": "9999",
+      "type": "string",
+      "description": "Employee ID untuk testing"
+    },
+    {
+      "key": "region_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "area_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "distributor_id",
+      "value": "999",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Convert date to epoch if needed",
+          "// 2026-02-01 = 1769904000",
+          ""
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+FAIL (46 issue(s)):
+  - delegation-log: [delegation.jsonl:1] [delegation.jsonl:1] missing required field: kind
+  - delegation-log: [delegation.jsonl:1] [delegation.jsonl:1] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:1] [delegation.jsonl:1] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:2] [delegation.jsonl:2] missing required field: kind
+  - delegation-log: [delegation.jsonl:2] [delegation.jsonl:2] missing required field: scope
+  - delegation-log: [delegation.jsonl:2] [delegation.jsonl:2] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:2] [delegation.jsonl:2] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:3] [delegation.jsonl:3] missing required field: kind
+  - delegation-log: [delegation.jsonl:3] [delegation.jsonl:3] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:3] [delegation.jsonl:3] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:4] [delegation.jsonl:4] missing required field: kind
+  - delegation-log: [delegation.jsonl:4] [delegation.jsonl:4] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:4] [delegation.jsonl:4] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:5] [delegation.jsonl:5] missing required field: kind
+  - delegation-log: [delegation.jsonl:5] [delegation.jsonl:5] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:5] [delegation.jsonl:5] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:6] [delegation.jsonl:6] missing required field: kind
+  - delegation-log: [delegation.jsonl:6] [delegation.jsonl:6] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:6] [delegation.jsonl:6] callee='@backend' not in lane allowlist
+  - delegation-log: [delegation.jsonl:7] [delegation.jsonl:7] missing required field: kind
+  - delegation-log: [delegation.jsonl:7] [delegation.jsonl:7] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:7] [delegation.jsonl:7] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:8] [delegation.jsonl:8] missing required field: kind
+  - delegation-log: [delegation.jsonl:8] [delegation.jsonl:8] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:8] [delegation.jsonl:8] callee='user' not in lane allowlist
+  - delegation-log: [delegation.jsonl:9] [delegation.jsonl:9] missing required field: kind
+  - delegation-log: [delegation.jsonl:9] [delegation.jsonl:9] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:9] [delegation.jsonl:9] callee='@backend' not in lane allowlist
+  - delegation-log: [delegation.jsonl:10] [delegation.jsonl:10] missing required field: kind
+  - delegation-log: [delegation.jsonl:10] [delegation.jsonl:10] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:10] [delegation.jsonl:10] callee='@backend' not in lane allowlist
+  - delegation-log: [delegation.jsonl:11] [delegation.jsonl:11] missing required field: kind
+  - delegation-log: [delegation.jsonl:11] [delegation.jsonl:11] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:11] [delegation.jsonl:11] callee='@backend' not in lane allowlist
+  - delegation-log: [delegation.jsonl:12] [delegation.jsonl:12] missing required field: task_id
+  - delegation-log: [delegation.jsonl:12] [delegation.jsonl:12] missing required field: kind
+  - delegation-log: [delegation.jsonl:12] [delegation.jsonl:12] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:12] [delegation.jsonl:12] callee='@backend' not in lane allowlist
+  - delegation-log: [delegation.jsonl:13] [delegation.jsonl:13] missing required field: task_id
+  - delegation-log: [delegation.jsonl:13] [delegation.jsonl:13] missing required field: kind
+  - delegation-log: [delegation.jsonl:13] [delegation.jsonl:13] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:13] [delegation.jsonl:13] callee='@fixer' not in lane allowlist
+  - delegation-log: [delegation.jsonl:14] [delegation.jsonl:14] missing required field: task_id
+  - delegation-log: [delegation.jsonl:14] [delegation.jsonl:14] missing required field: kind
+  - delegation-log: [delegation.jsonl:14] [delegation.jsonl:14] caller='@orchestrator' not in lane allowlist
+  - delegation-log: [delegation.jsonl:14] [delegation.jsonl:14] callee='@fixer' not in lane allowlist

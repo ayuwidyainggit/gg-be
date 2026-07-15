@@ -1,0 +1,11 @@
+# D2 Green (replace implementation)
+
+`importSecondarySales(ctx, custId, parentCustId, userId, parsed)` implemented:
+1. Collects distinct `(cust_id, ro_date)` scope from parsed orders
+2. `LockOrderByScope` — advisory lock + FOR UPDATE
+3. `DeleteOrderDetailByScope` — detail-first delete
+4. `DeleteOrderByScope` — header delete
+5. Loop parsed → build `model.Order` + `model.OrderDetail` → `Store` + `StoreDetail`
+6. All within single `WithinTransaction`
+
+Wired into `ImportOrders` replacing per-Store loop.

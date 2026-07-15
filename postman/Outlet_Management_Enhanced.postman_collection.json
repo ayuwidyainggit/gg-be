@@ -1,0 +1,451 @@
+{
+    "info": {
+        "_postman_id": "outlet-management-enhanced-2025",
+        "name": "Outlet Management Enhanced",
+        "description": "Collection untuk testing enhancement fitur Outlet Management sesuai dokumentasi Add Outlet & Manage Outlet_BE.md",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "12345"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const jsonData = pm.response.json();",
+                                    "    if (jsonData.data && jsonData.data.access_token) {",
+                                    "        pm.environment.set(\"access_token\", jsonData.data.access_token);",
+                                    "        console.log(\"Token saved:\", jsonData.data.access_token);",
+                                    "    }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"charles@gmail.com\",\n    \"password\": \"admin\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/v1/users/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "users",
+                                "login"
+                            ]
+                        },
+                        "description": "Login untuk mendapatkan access token yang akan digunakan di semua endpoint berikutnya"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoint untuk authentication"
+        },
+        {
+            "name": "Outlet Management",
+            "item": [
+                {
+                    "name": "Upload File",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/v1/files/uploads",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "files",
+                                "uploads"
+                            ]
+                        },
+                        "description": "Upload file untuk outlet (foto outlet). Response berisi URL yang akan digunakan di field file_url saat create outlet."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Outlet (With Photo)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"outlet_name\": \"Outlet Test dengan Foto\",\n    \"created_by\": 120,\n    \"address\": \"Jalan Nangka III Kecamatan Depok Maguwoharjo Kabupaten Sleman 55281\",\n    \"phone_no\": \"098977778888\",\n    \"building_own\": 1,\n    \"latitude\": \"-7.7671403\",\n    \"longitude\": \"110.4243715\",\n    \"file_url\": \"https://example.com/uploads/outlet-photo-123.jpg\",\n    \"details\": {\n        \"contact\": [\n            {\n                \"contact_name\": \"John Doe\",\n                \"job_title\": \"Outlet Manager\",\n                \"phone_no\": \"0878655666\",\n                \"wa_no\": \"0878655666\",\n                \"email\": \"john@gmail.com\",\n                \"identity_no\": null\n            }\n        ]\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/v1/m-outlets",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "m-outlets"
+                            ]
+                        },
+                        "description": "Create outlet baru dengan field file_url (URL foto outlet hasil upload). Field file_url bersifat OPTIONAL."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Outlet (Without Photo)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"outlet_name\": \"Outlet Test tanpa Foto\",\n    \"created_by\": 120,\n    \"address\": \"Jalan Test No 456\",\n    \"phone_no\": \"098977778888\",\n    \"building_own\": 1,\n    \"latitude\": \"-7.7671403\",\n    \"longitude\": \"110.4243715\",\n    \"details\": {\n        \"contact\": [\n            {\n                \"contact_name\": \"Jane Doe\",\n                \"job_title\": \"Manager\",\n                \"phone_no\": \"0878655666\",\n                \"wa_no\": \"0878655666\",\n                \"email\": \"jane@gmail.com\",\n                \"identity_no\": null\n            }\n        ]\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/v1/m-outlets",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "m-outlets"
+                            ]
+                        },
+                        "description": "Create outlet baru tanpa file_url (backward compatibility test). Sistem tetap berfungsi normal tanpa field file_url."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Outlet List (All Status)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/v1/outlet-list?page=1&limit=10&outlet_status=0&outlet_status=1&sort=outlet_code:asc",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "outlet-list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Halaman saat ini (default: 1)"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "description": "Jumlah data per halaman (default: 9999)"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "0",
+                                    "description": "Status outlet: 0=pending, 1=active (bisa multiple)"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "1",
+                                    "description": "Status outlet: 0=pending, 1=active (bisa multiple)"
+                                },
+                                {
+                                    "key": "q",
+                                    "value": "",
+                                    "description": "Search by outlet_name atau outlet_code",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "outlet_code:asc",
+                                    "description": "Sorting (default: outlet_code:asc). Available columns: outlet_id, outlet_code, outlet_name, outlet_status, address1, created_at"
+                                }
+                            ]
+                        },
+                        "description": "Get list outlet dengan filter outlet_status (array). Bisa filter multiple status sekaligus."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Outlet List (Pending Only)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/v1/outlet-list?page=1&limit=10&outlet_status=0",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "outlet-list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "0",
+                                    "description": "Filter hanya outlet pending (status=0)"
+                                }
+                            ]
+                        },
+                        "description": "Get list outlet dengan status pending saja (outlet_status=0)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Outlet List (Active Only)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/v1/outlet-list?page=1&limit=10&outlet_status=1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "outlet-list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "1",
+                                    "description": "Filter hanya outlet active (status=1)"
+                                }
+                            ]
+                        },
+                        "description": "Get list outlet dengan status active saja (outlet_status=1)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Outlet List (With Search)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/v1/outlet-list?page=1&limit=10&outlet_status=0&outlet_status=1&q=test",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "outlet-list"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "outlet_status",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "q",
+                                    "value": "test",
+                                    "description": "Search by outlet_name atau outlet_code"
+                                }
+                            ]
+                        },
+                        "description": "Get list outlet dengan search query (q parameter). Search akan mencari di outlet_name dan outlet_code."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Outlet",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "multipart/form-data",
+                                "description": "Sesuai dokumentasi: Accept multipart/form-data"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/v1/outlet-list/:outlet_id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "v1",
+                                "outlet-list",
+                                ":outlet_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "outlet_id",
+                                    "value": "1442",
+                                    "description": "ID outlet yang akan dihapus. Sesuai docs: outlet_id sebagai path variable"
+                                }
+                            ]
+                        },
+                        "description": "Soft delete outlet sesuai dokumentasi. Update fields: is_del=true, deleted_by, deleted_at. URL: {{url}}/mobile/v1/outlet-list/:outlet_id"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoint untuk management outlet (CRUD operations)"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:9008",
+            "type": "string"
+        },
+        {
+            "key": "access_token",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}

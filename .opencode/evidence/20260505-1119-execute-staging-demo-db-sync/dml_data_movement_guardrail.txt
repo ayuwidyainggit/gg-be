@@ -1,0 +1,32 @@
+236:   SELECT s.rule_type INTO v_any_rule
+247:   SELECT s.reward_type INTO v_any_reward
+301:   FOR UPDATE;
+304:   SELECT COUNT(*) INTO v_cnt
+807: CREATE TRIGGER trg_check_promotion_slabs BEFORE INSERT OR UPDATE ON promo.promotion_slabs FOR EACH ROW EXECUTE FUNCTION promo.fn_check_promotion_slabs();
+814: CREATE TRIGGER trg_limit_strata_to_five BEFORE INSERT ON promo.promotion_strata FOR EACH ROW EXECUTE FUNCTION promo.fn_limit_strata_to_five();
+822:     ADD CONSTRAINT promotion_coverage_distributors_promo_id_fkey FOREIGN KEY (promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+830:     ADD CONSTRAINT promotion_outlet_attribute_class_criteria_id_fkey FOREIGN KEY (criteria_id) REFERENCES promo.promotion_outlet_criteria(id) ON UPDATE CASCADE ON DELETE CASCADE;
+838:     ADD CONSTRAINT promotion_outlet_attribute_group_criteria_id_fkey FOREIGN KEY (criteria_id) REFERENCES promo.promotion_outlet_criteria(id) ON UPDATE CASCADE ON DELETE CASCADE;
+846:     ADD CONSTRAINT promotion_outlet_attribute_sales_team_criteria_id_fkey FOREIGN KEY (criteria_id) REFERENCES promo.promotion_outlet_criteria(id) ON UPDATE CASCADE ON DELETE CASCADE;
+854:     ADD CONSTRAINT promotion_outlet_attribute_type_criteria_id_fkey FOREIGN KEY (criteria_id) REFERENCES promo.promotion_outlet_criteria(id) ON UPDATE CASCADE ON DELETE CASCADE;
+862:     ADD CONSTRAINT promotion_outlet_criteria_promo_id_fkey FOREIGN KEY (promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+870:     ADD CONSTRAINT promotion_outlets_selected_criteria_id_fkey FOREIGN KEY (criteria_id) REFERENCES promo.promotion_outlet_criteria(id) ON UPDATE CASCADE ON DELETE CASCADE;
+878:     ADD CONSTRAINT promotion_product_criteria_promo_id_fkey FOREIGN KEY (promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+886:     ADD CONSTRAINT promotion_reward_products_promo_id_fkey FOREIGN KEY (promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+894:     ADD CONSTRAINT promotion_slabs_promo_id_fkey FOREIGN KEY (promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+902:     ADD CONSTRAINT promotion_strata_promo_id_fkey FOREIGN KEY (promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+910:     ADD CONSTRAINT promotions_existing_promo_id_fkey FOREIGN KEY (existing_promo_id) REFERENCES promo.promotions(promo_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+2057:     ADD CONSTRAINT fk_roa_customer FOREIGN KEY (cust_id) REFERENCES smc.m_customer(cust_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+2073:     ADD CONSTRAINT fk_distributor_replenishment_approval_setup FOREIGN KEY (dist_replenishment_setup_id) REFERENCES mst.distributor_replenishment_setup(id) ON DELETE CASCADE;
+2177:     ADD CONSTRAINT fk_destinations_additional_pjp_principles FOREIGN KEY (pjp_id) REFERENCES pjp_principles.permanent_journey_plans(id) ON UPDATE CASCADE ON DELETE CASCADE;
+2185:     ADD CONSTRAINT fk_destinations_additional_routes FOREIGN KEY (route_code) REFERENCES pjp_principles.routes(route_code) ON UPDATE CASCADE ON DELETE CASCADE;
+2193:     ADD CONSTRAINT fk_destinations_pjp_principles FOREIGN KEY (pjp_id) REFERENCES pjp_principles.permanent_journey_plans(id) ON UPDATE CASCADE ON DELETE CASCADE;
+2201:     ADD CONSTRAINT fk_destinations_routes FOREIGN KEY (route_code) REFERENCES pjp_principles.routes(route_code) ON UPDATE CASCADE ON DELETE CASCADE;
+2209:     ADD CONSTRAINT fk_route_pop_daily_pjp FOREIGN KEY (pjp_id) REFERENCES pjp_principles.permanent_journey_plans(id) ON UPDATE CASCADE ON DELETE CASCADE;
+2217:     ADD CONSTRAINT fk_route_pop_daily_route FOREIGN KEY (route_code) REFERENCES pjp_principles.routes(route_code) ON UPDATE CASCADE ON DELETE CASCADE;
+2323: CREATE OR REPLACE FUNCTION inv.generate_stock_opname_doc_no(p_cust_id character varying, p_schedule_date date) RETURNS character varying\nLANGUAGE plpgsql VOLATILE\nAS $function$\n\nDECLARE\n    v_sequence_name VARCHAR(1
+2324: CREATE OR REPLACE FUNCTION mst.update_route_outlet_from_outlet() RETURNS trigger\nLANGUAGE plpgsql VOLATILE\nAS $function$\n\r\nBEGIN\r\n    -- Gabungkan semua kondisi dalam satu IF\r\n    IF NEW.outlet_name IS DISTINCT 
+2325: CREATE OR REPLACE FUNCTION pjp.update_route_name_on_change() RETURNS trigger\nLANGUAGE plpgsql VOLATILE\nAS $function$\n\r\nBEGIN\r\n  -- Update route_outlet_history\r\n  UPDATE pjp.route_outlet_history\r\n  SET route_na
+2326: CREATE OR REPLACE FUNCTION promo.fn_check_promotion_slabs() RETURNS trigger\nLANGUAGE plpgsql VOLATILE\nAS $function$\n\nDECLARE\n  v_promo_type promo.promotion_type;\n\tv_prev_range_from NUMERIC(20,4);\n  v_multiplied b
+2327: CREATE OR REPLACE FUNCTION promo.fn_limit_strata_to_five() RETURNS trigger\nLANGUAGE plpgsql VOLATILE\nAS $function$\n\nDECLARE\n  v_cnt integer;\nBEGIN\n  -- Serialize writes per promo: lock the parent row\n  PERFORM 1\
+2329: CREATE OR REPLACE FUNCTION sls.generate_invoice_no(p_cust_id character varying, p_invoice_date date) RETURNS character varying\nLANGUAGE plpgsql VOLATILE\nAS $function$\n\nDECLARE\n    v_seq INTEGER;\n    v_existing_max_

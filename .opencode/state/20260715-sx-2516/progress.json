@@ -1,0 +1,298 @@
+{
+  "task_id": "20260715-sx-2516",
+  "plan_path": ".opencode/plans/20260715-sx-2516.md",
+  "created": "2026-07-15T12:31:04.927462",
+  "tasks": [
+    {
+      "id": "A1",
+      "title": "Task A1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": "2026-07-15T12:54:57.707754",
+      "completed": "2026-07-15T12:58:59.382679",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/A1-checklist.md",
+        ".opencode/evidence/20260715-sx-2516/A1-checklist.md"
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Task A2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T12:58:59.425170",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/A2-baseline.log"
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Task A3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T12:58:59.462997",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/A3-revert-list.md"
+      ]
+    },
+    {
+      "id": "B1",
+      "title": "Task B1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:37.703384",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/B1-lock.md"
+      ]
+    },
+    {
+      "id": "B2",
+      "title": "Task B2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:37.749333",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/B2-del-detail.md"
+      ]
+    },
+    {
+      "id": "B3",
+      "title": "Task B3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:37.791743",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/B3-del-order.md"
+      ]
+    },
+    {
+      "id": "B4",
+      "title": "Task B4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:37.830115",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/B4-build.log"
+      ]
+    },
+    {
+      "id": "C1",
+      "title": "Task C1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:37.870880",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/C1-tz.md"
+      ]
+    },
+    {
+      "id": "C2",
+      "title": "Task C2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:37.968818",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/C2-red.log"
+      ]
+    },
+    {
+      "id": "C3",
+      "title": "Task C3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.015006",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/C3-green.log"
+      ]
+    },
+    {
+      "id": "C4",
+      "title": "Task C4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.054844",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/C4-vet.log"
+      ]
+    },
+    {
+      "id": "D1",
+      "title": "Task D1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.098030",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/D1-red.log"
+      ]
+    },
+    {
+      "id": "D2",
+      "title": "Task D2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.154311",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/D2-green.log"
+      ]
+    },
+    {
+      "id": "D3",
+      "title": "Task D3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.196421",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/D3-tx.md"
+      ]
+    },
+    {
+      "id": "D4",
+      "title": "Task D4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.241062",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/D4-scope.md"
+      ]
+    },
+    {
+      "id": "D5",
+      "title": "Task D5",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.285402",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/D5-rollback.log"
+      ]
+    },
+    {
+      "id": "D6",
+      "title": "Task D6",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.330620",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/D6-coverage.log"
+      ]
+    },
+    {
+      "id": "E1",
+      "title": "Task E1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.377035",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/E1-wire.log"
+      ]
+    },
+    {
+      "id": "F1",
+      "title": "Task F1",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.425153",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/F1-revert.md"
+      ]
+    },
+    {
+      "id": "F2",
+      "title": "Task F2",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.472453",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/F2-test.log"
+      ]
+    },
+    {
+      "id": "F3",
+      "title": "Task F3",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:04:38.556778",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/F3-vet.log"
+      ]
+    },
+    {
+      "id": "F4",
+      "title": "Task F4",
+      "status": "completed",
+      "owner": "@fixer",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T13:24:01.363397",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/F4-build.log",
+        ".opencode/evidence/20260715-sx-2516/F4-build.log"
+      ]
+    },
+    {
+      "id": "G1",
+      "title": "Task G1",
+      "status": "completed",
+      "owner": "@quality-gate",
+      "depends_on": [],
+      "started": "2026-07-15T13:24:01.930372",
+      "completed": "2026-07-15T15:03:27.190073",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/G1-quality-gate.md",
+        ".opencode/evidence/20260715-sx-2516/G1-quality-gate.md"
+      ]
+    },
+    {
+      "id": "G2",
+      "title": "Task G2",
+      "status": "completed",
+      "owner": "@quality-gate",
+      "depends_on": [],
+      "started": null,
+      "completed": "2026-07-15T15:03:27.246512",
+      "evidence": [
+        ".opencode/evidence/20260715-sx-2516/G2-signoff.md"
+      ]
+    }
+  ]
+}

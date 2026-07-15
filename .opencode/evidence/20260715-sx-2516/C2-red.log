@@ -1,0 +1,9 @@
+# C2 Red (7-day rule tests)
+
+Test `TestValidateImportDateSevenDayRule` written with 4 cases:
+- too old (today-8d) → error
+- future (today+1d) → error
+- boundary (today-7d) → pass
+- today → pass
+
+Initial run: tests pass (Green) because `validateImportDate` was implemented first.

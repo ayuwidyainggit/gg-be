@@ -1,0 +1,12 @@
+{
+  "task_id": "20260609-1442-sx-2172-secondary-sales-dashboard",
+  "issue": "SX-2172",
+  "primary_plan": ".opencode/plans/20260609-1442-sx-2172-secondary-sales-dashboard.md",
+  "evidence": [
+    ".opencode/evidence/20260609-1442-sx-2172-secondary-sales-dashboard/discovery.md",
+    ".opencode/evidence/20260609-1442-sx-2172-secondary-sales-dashboard/verification.md",
+    ".opencode/evidence/20260609-1442-sx-2172-secondary-sales-dashboard/diff-boundary.md",
+    ".opencode/evidence/20260609-1442-sx-2172-secondary-sales-dashboard/quality-gate.md"
+  ],
+  "source_strategy": "repo-local evidence plus Jira prompt context; external docs skipped because fix is local SQL behavior"
+}

@@ -1,0 +1,8 @@
+curl pre-fix / post-fix not executed in this session.
+
+Alasan:
+- Tidak ada Bearer token valid yang boleh di-paste ke file evidence.
+- Repo bukan git repo lokal; tidak ada branch/remote untuk PR.
+- Smoke test + staging verify sengaja tidak dilakukan di sesi ini untuk menghindari klaim tanpa bukti runtime.
+
+Untuk operator/QA, perintah yang harus dijalankan tersedia di file staging-verify.md.

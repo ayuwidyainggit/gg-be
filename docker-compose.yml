@@ -1,0 +1,373 @@
+version: "3.8"
+
+name: scylla
+services:
+  # Redis (for services that need it)
+  redis:
+    image: redis:7-alpine
+    container_name: scylla-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # RabbitMQ with delayed-message-exchange plugin (required by sales export queue)
+  rabbitmq:
+    image: heidiks/rabbitmq-delayed-message-exchange:latest
+    container_name: scylla-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-admin}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    networks:
+      - scylla-network
+    restart: unless-stopped
+
+  # System Service
+  system:
+    image: golang:1.23.0-alpine
+    container_name: scylla-system
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9001
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9001:9001"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./system:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # Master Service
+  master:
+    image: golang:1.23.0-alpine
+    container_name: scylla-master
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9002
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9002:9002"
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./master:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # Inventory Service
+  inventory:
+    image: golang:1.23.0-alpine
+    container_name: scylla-inventory
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9003
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9003:9003"
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./inventory:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # Sales Service
+  sales:
+    image: golang:1.23.0-alpine
+    container_name: scylla-sales
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9004
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-admin}
+      REPORT_DELAY_SECONDS: ${REPORT_DELAY_SECONDS:-0}
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9004:9004"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./sales:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # Finance Service
+  finance:
+    image: golang:1.23.0-alpine
+    container_name: scylla-finance
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9005
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9005:9005"
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./finance:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # Mobile Service
+  mobile:
+    image: golang:1.23.0-alpine
+    container_name: scylla-mobile
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9008
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ""
+      OBS_HUAWEI_AK: ${OBS_HUAWEI_AK:-}
+      OBS_HUAWEI_SK: ${OBS_HUAWEI_SK:-}
+      OBS_HUAWEI_ENDPOINT: ${OBS_HUAWEI_ENDPOINT:-}
+      OBS_HUAWEI_BUCKET: ${OBS_HUAWEI_BUCKET:-}
+    ports:
+      - "9008:9008"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./mobile:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # PJP Service
+  pjp:
+    image: golang:1.23.0-alpine
+    container_name: scylla-pjp
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9010
+      PORT: "9010"
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ggn_scyllax
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      KONG_URL: http://scylla-master:9002
+    ports:
+      - "9010:9010"
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./pjp:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # Cronjob Service
+  cronjob:
+    image: golang:1.23.0-alpine
+    container_name: scylla-cronjob
+    environment:
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 9100
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      DB_MAX_CONNECTIONS: "15"
+      DB_MAX_IDLE_CONNECTIONS: "5"
+      DB_MAX_LIFETIME_CONNECTIONS: "1"
+      INTERVAL_RELOAD_JOBS_IN_SECOND: "30"
+    ports:
+      - "9100:9100"
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./cronjob:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+  # TMS Service
+  tms:
+    image: golang:1.23.0-alpine
+    container_name: scylla-tms
+    environment:
+      SERVER_HOST: 0.0.0.0
+      PORT: "9006"
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ggn_scyllax
+      DB_HOST: host.docker.internal
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ggn_scyllax
+      DB_DEBUG: "true"
+      BE_URL: http://scylla-master:9002
+      BE_URL_SALES: http://scylla-sales:9004
+      BE_URL_MOBILE: http://scylla-mobile:9008
+      ENVIRONMENT: production
+    ports:
+      - "9006:9006"
+    networks:
+      - scylla-network
+    working_dir: /app
+    volumes:
+      - ./tms:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - go_bin_cache:/go/bin
+    command: sh -c "export PATH=/go/bin:/usr/local/go/bin:$PATH; [ -x /go/bin/air ] && /go/bin/air -v 2>/dev/null | grep -Eq '(^|[[:space:]])v1\.52\.3($|[[:space:]])' || /usr/local/go/bin/go install github.com/air-verse/air@v1.52.3; exec /go/bin/air -c .air.toml"
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  go_mod_cache:
+    driver: local
+  go_build_cache:
+    driver: local
+  go_bin_cache:
+    driver: local
+
+networks:
+  scylla-network:
+    driver: bridge

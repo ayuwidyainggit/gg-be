@@ -1,0 +1,61 @@
+[
+  {
+    "entity_name": "task::20260702-1530-sx-2421-2422-arrival-photo",
+    "entity_type": "project_task_memory",
+    "summary": "Tambah field file_url di GET /scylla-pjp/v1/live-monitoring-distributor dan /live-monitoring-principal (SX-2421, SX-2422). Source: mobile.visits.file_url (visit terbaru per cust/emp/outlet/date). Distributor reuse pola GetDistributorLatestVisitCoordinates; principal tambah correlated subquery di select GetPrincipalMonitoring & GetPrincipalExtraCalls. Tipe *string, json tanpa omitempty.",
+    "task_id": "20260702-1530-sx-2421-2422-arrival-photo",
+    "claim_level": "done",
+    "decisions": [
+      "Pakai *string FileURL; NULLIF di select untuk normalisasi empty jadi null. Subquery SELECT (bukan window) untuk principal demi simplicity. subagent-handoff-check.py butuh fenced block JSON dengan key handoff: di root; YAML mini parser-nya overwrite nested map, jadi JSON lebih aman."
+    ],
+    "files": [
+      "pjp/model/live_monitoring.go pjp/data/response/live_monitoring_response.go pjp/repository/live_monitoring/get_distributor_repository.go pjp/repository/live_monitoring/get_principal_repository.go pjp/repository/live_monitoring/get_principal_extra_call_repository.go pjp/service/live_monitoring/get_distributor_service.go pjp/service/live_monitoring/get_principal_service.go pjp/service/live_monitoring/get_distributor_service_test.go pjp/service/live_monitoring/get_principal_service_test.go"
+    ],
+    "status": "archived",
+    "importance": "medium",
+    "created_at": "2026-07-02T04:41:59Z",
+    "updated_at": "2026-07-02T04:41:59Z",
+    "last_used_at": "2026-07-02T05:03:27Z",
+    "revision": 1,
+    "supersedes": null,
+    "archived_reason": "replaced_by_newer_task_memory"
+  },
+  {
+    "entity_name": "task::20260714-1315-sx-2513-product-secondary-sales-report",
+    "entity_type": "project_task_memory",
+    "summary": "SX-2513 product secondary sales report delivered: POST /master/v1/products/report added to master with parameter-bound count/data, composite parent join, closed sort allowlist, and full test/build PASS. Quality gate verdict PASS_WITH_RISKS: A3 parent-missing behavior remains open and runtime smoke is not-ready because compose is empty and no token available.",
+    "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+    "claim_level": "done",
+    "decisions": [
+      "Repository uses sqlx.In+Rebind for cust_id list; A1 fake service stub originally had stale 2-return signature and was synchronized to 4-return during A2 remediation; quality gate verified A1/A2/A3 evidence and diff boundary."
+    ],
+    "files": [],
+    "status": "archived",
+    "importance": "medium",
+    "created_at": "2026-07-14T07:47:54Z",
+    "updated_at": "2026-07-14T07:47:54Z",
+    "last_used_at": "2026-07-14T15:29:55Z",
+    "revision": 1,
+    "supersedes": null,
+    "archived_reason": "replaced_by_newer_task_memory"
+  },
+  {
+    "entity_name": "task::20260714-1315-sx-2513-product-secondary-sales-report",
+    "entity_type": "project_task_memory",
+    "summary": "SX-2513 remediation A4 closed: live ggn_scyllax revealed mst.m_distributor has 38 rows per cust_id, multiplying report join 38x (API 148846 vs actual 3917 for C22001, duplicate pro_id). Fixed by grouping md into BOOL_OR(COALESCE(allow_upload_secondary_sales,false)) derived relation before join. Live re-validated: API total 3917 == DB 3917, 0 duplicate pro_id in 100-row page; C260020004 mapping fixture (6 rows) parent-normalizes correctly against C26002. Quality gate re-reviewed and issued PASS (superseding prior PASS_WITH_RISKS).",
+    "task_id": "20260714-1315-sx-2513-product-secondary-sales-report",
+    "claim_level": "done",
+    "decisions": [
+      "mst.m_distributor is not unique per cust_id in this dataset; any join on cust_id must aggregate first. Chose BOOL_OR across all distributor rows per cust_id as the smallest compliant flag semantic; documented as open assumption pending product-owner confirmation only if disputed."
+    ],
+    "files": [],
+    "status": "archived",
+    "importance": "medium",
+    "created_at": "2026-07-14T15:29:55Z",
+    "updated_at": "2026-07-14T15:29:55Z",
+    "last_used_at": "2026-07-15T05:00:33Z",
+    "revision": 2,
+    "supersedes": "20260714-1315-sx-2513-product-secondary-sales-report",
+    "archived_reason": "replaced_by_newer_task_memory"
+  }
+]

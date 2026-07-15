@@ -1,0 +1,38 @@
+Actual parameterized query from pjp/repository/live_monitoring/update_locations_repository.go:
+
+
+SELECT type, latitude, longitude, destination_id, destination_type, destination_name, recorded_at
+FROM (
+ SELECT CASE WHEN a.type = 1 THEN 'clock_in' ELSE 'clock_out' END AS type,
+        COALESCE(a.latitude, 0)::double precision AS latitude,
+        COALESCE(a.longitude, 0)::double precision AS longitude,
+        NULL::bigint AS destination_id, NULL::text AS destination_type,
+        NULL::text AS destination_name, a.created_at AS recorded_at
+ FROM mobile.attendances a
+ JOIN mst.m_employee e ON e.emp_code = a.emp_code
+ WHERE e.emp_id = ? AND a.created_at >= (?::date AT TIME ZONE 'Asia/Jakarta') AND a.created_at < ((?::date + INTERVAL '1 day') AT TIME ZONE 'Asia/Jakarta')
+   AND e.cust_id IN (SELECT cust_id FROM smc.m_customer WHERE cust_id = ? OR parent_cust_id = ?)
+ UNION ALL
+ SELECT 'gps', COALESCE(ul.latitude, 0)::double precision, COALESCE(ul.longitude, 0)::double precision,
+        NULL::bigint, NULL::text, NULL::text, ul.created_at
+ FROM sys.user_location ul
+ WHERE ul.emp_id = ? AND ul.created_at >= (?::date AT TIME ZONE 'Asia/Jakarta') AND ul.created_at < ((?::date + INTERVAL '1 day') AT TIME ZONE 'Asia/Jakarta')
+   AND ul.cust_id IN (SELECT cust_id FROM smc.m_customer WHERE cust_id = ? OR parent_cust_id = ?)
+ UNION ALL
+ SELECT v.type, COALESCE(v.latitude, 0)::double precision, COALESCE(v.longitude, 0)::double precision,
+        v.outlet_id, v.destination_type, o.outlet_name, v.recorded_at
+ FROM (
+  SELECT 'arrive' AS type, ov.latitude, ov.longitude, ov.outlet_id, NULL::text AS destination_type, to_timestamp(ov.arrive_at) AS recorded_at, p.emp_id, ov.cust_id
+    FROM ` + branch + `.outlet_visit_list ov JOIN ` + branch + `.permanent_journey_plans p ON p.pjp_id = ov.pjp_id
+    WHERE ov.arrive_at IS NOT NULL
+    UNION ALL
+    SELECT 'leave', ov.leave_latitude, ov.leave_longitude, ov.outlet_id, NULL::text, to_timestamp(ov.leave_at), p.emp_id, ov.cust_id
+    FROM ` + branch + `.outlet_visit_list ov JOIN ` + branch + `.permanent_journey_plans p ON p.pjp_id = ov.pjp_id
+    WHERE ov.leave_at IS NOT NULL
+ ) v LEFT JOIN mst.m_outlet o ON o.outlet_id = v.outlet_id
+ WHERE v.emp_id = ? AND v.recorded_at >= (?::date AT TIME ZONE 'Asia/Jakarta') AND v.recorded_at < ((?::date + INTERVAL '1 day') AT TIME ZONE 'Asia/Jakarta')
+   AND v.cust_id IN (SELECT cust_id FROM smc.m_customer WHERE cust_id = ? OR parent_cust_id = ?)
+) timeline ORDER BY recorded_at ASC, type ASC, destination_id ASC
+
+Schema rationale:
+Confirmed pjp-principle/database/migrate/000008_outlet_visit_list_table.up.sql:1-26 has no destination_type. No verified relation maps principal visits to destinations*. Both pjp and pjp_principles outlet-visit branches therefore emit NULL::text AS destination_type. All arrive_at and leave_at predicates remain IS NOT NULL.

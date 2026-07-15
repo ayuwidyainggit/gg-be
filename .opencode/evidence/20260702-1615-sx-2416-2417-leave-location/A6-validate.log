@@ -1,0 +1,8 @@
+go test ./service/live_monitoring/... ./repository/live_monitoring/... ./model/... ./data/response/...
+ok  	scyllax-pjp/service/live_monitoring	0.502s
+ok  	scyllax-pjp/repository/live_monitoring	0.930s
+?   	scyllax-pjp/model	[no test files]
+?   	scyllax-pjp/data/response	[no test files]
+
+go build ./...
+exit 0

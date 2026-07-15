@@ -1,0 +1,5 @@
+ total_legacy_rows | distinct_tenants | distinct_tr_nos | most_recent 
+-------------------+------------------+-----------------+-------------
+               118 |                4 |              92 |  1782264090
+(1 row)
+

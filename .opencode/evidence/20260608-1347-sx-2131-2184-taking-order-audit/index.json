@@ -1,0 +1,82 @@
+{
+  "task_id": "20260608-1347-sx-2131-2184-taking-order-audit",
+  "created_at": "2026-06-08T13:47:07+07:00",
+  "updated_at": "2026-06-08T14:13:58+07:00",
+  "mode": "Maintenance Stability Mode",
+  "branch": "dev",
+  "commit": "53d68b3",
+  "sources_used": [
+    "AGENTS.md",
+    ".opencode/docs/ARCHITECTURE.md",
+    ".opencode/docs/AGENT_ROUTING.md",
+    ".opencode/docs/QUALITY.md",
+    ".opencode/plans/20260608-1118-sx-2184-order-type-o-stock.md",
+    ".opencode/evidence/20260608-1118-sx-2184-order-type-o-stock/implementation.md",
+    "sales/controller/order_controller.go",
+    "sales/service/order_service.go",
+    "sales/service/validate_order_service.go",
+    "sales/service/order_type_helper.go",
+    "sales/entity/order.go",
+    "sales/model/order.go",
+    "sales/model/order_detail.go",
+    "sales/migration/sls.order/add_order_type_and_original_qty_po_fields.sql",
+    "sales/migration/sls.order/rollback_add_order_type_and_original_qty_po_fields.sql"
+  ],
+  "artifacts": [
+    ".opencode/plans/20260608-1347-sx-2131-2184-taking-order-audit.md",
+    ".opencode/evidence/20260608-1347-sx-2131-2184-taking-order-audit/discovery.md",
+    ".opencode/evidence/20260608-1347-sx-2131-2184-taking-order-audit/execution.md",
+    ".opencode/evidence/20260608-1347-sx-2131-2184-taking-order-audit/index.json"
+  ],
+  "validation": [
+    {
+      "command": "git status --short && git branch --show-current && git rev-parse --short HEAD",
+      "workdir": "sales",
+      "result": "clean working tree, branch dev, commit 53d68b3"
+    },
+    {
+      "command": "rtk go test ./service -run 'Test.*SX2184|Test.*OrderType|Test.*TakingOrder'",
+      "workdir": "sales",
+      "result": "Go test: 5 passed in 1 packages"
+    },
+    {
+      "command": "rtk go test ./controller -run 'Test.*SX2184|Test.*Create.*OrderType'",
+      "workdir": "sales",
+      "result": "Go test: 5 passed in 1 packages"
+    },
+    {
+      "command": "rtk go test ./...",
+      "workdir": "sales",
+      "result": "Go test: 219 passed in 22 packages"
+    },
+    {
+      "command": "POST http://localhost:9004/v1/orders with order_type=O",
+      "workdir": "repo root",
+      "result": "HTTP 201 ro_no SO2606080002; order_type O; opr_type O; validate_stok false; validate_stok_message NULL; no inv.stock row; warehouse_stock unchanged"
+    }
+  ],
+  "runtime_smoke": {
+    "status": "passed",
+    "ro_no": "SO2606080002",
+    "marker": "sx2184-smoke-1780902798",
+    "stock_fixture": {
+      "cust_id": "C220010001",
+      "wh_id": 241,
+      "pro_id": 472,
+      "qty_before": 0,
+      "qty_on_order_before": 108,
+      "qty_after": 0,
+      "qty_on_order_after": 108
+    },
+    "inv_stock_rows_for_order": 0
+  },
+  "quality_gate": {
+    "status": "PASS",
+    "notes": [
+      "Plan T1-T5 terpenuhi berdasarkan bukti lokal",
+      "Live smoke terbaru hanya dilakukan untuk order_type O; non-O runtime regression tetap test-level",
+      "Smoke menulis satu order lokal SO2606080002 di DB lokal ggn_scyllax"
+    ]
+  },
+  "status": "complete"
+}

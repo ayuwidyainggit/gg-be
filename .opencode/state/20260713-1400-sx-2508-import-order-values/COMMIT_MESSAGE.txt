@@ -1,0 +1,25 @@
+fix(sales): SX-2508 persist import slot fields and remap DetailV2 quantity orientation
+
+Imported sales orders now persist the slot promo fields (PromoSo1,
+PromoFinal1) and the secondary/tertiary system prices derived from the
+parent SellPrice3, while keeping QtyPo explicit-nil.  DetailV2 respects
+the new is_sales_mapping flag: mapped orders keep the stored
+{Qty1,Qty2,Qty3} / {Qty1Final,Qty2Final,Qty3Final} without re-running
+the global converter; non-mapped orders still use ConvToQtyConversion
+but the converter output is now remapped to the API orientation
+Large/Middle/Small (Qty1=qtyConversion.Qty3, Qty2=qtyConversion.Qty2,
+Qty3=qtyConversion.Qty1).
+
+The global converter at sales/pkg/conversion/quantity.go is unchanged.
+sales/service/order_stock_helper.go is unchanged.
+
+Tests:
+- A1: red regression captured for parser, DetailV2, stock fixtures.
+- A2: parser/mapping green.
+- A3: mapped and non-mapped DetailV2 + stock green; placeholder t.Fatalf
+  removed.
+- A4: go build . pass; go test ./... = 359 pass, 2 pre-existing red
+  (promotion consult, unrelated), 1 skipped; pre-gate smoke pass.
+
+Evidence: .opencode/evidence/20260713-1400-sx-2508-import-order-values/
+Plan: .opencode/plans/20260713-1400-sx-2508-import-order-values.md

@@ -1,0 +1,19 @@
+{
+  "task_id": "20260617-1236-sx-2214-final-invoice-total",
+  "created_at": "2026-06-17T12:36:06+07:00",
+  "mode": "Maintenance Stability Mode",
+  "evidence_files": [
+    ".opencode/evidence/20260617-1236-sx-2214-final-invoice-total/discovery.md"
+  ],
+  "validation": [
+    {
+      "command": "rtk go test ./service -run 'TestInvoice'",
+      "workdir": "sales",
+      "result": "8 passed in 1 packages"
+    }
+  ],
+  "notes": [
+    "Repository local is not a git worktree; git status failed with fatal not a git repository.",
+    "PDF/download route not found in sales; require runtime/source trace before PDF fixed claim."
+  ]
+}

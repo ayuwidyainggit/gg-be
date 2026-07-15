@@ -1,0 +1,122 @@
+# B5 — Local Migration Apply
+## target
+localhost:5432 / ggn_scyllax (local confirmed in A2)
+## forward apply: sales_update_temp
+BEGIN
+CREATE TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE INDEX
+CREATE INDEX
+COMMIT
+exit: 0
+## forward apply: import_history ALTER
+BEGIN
+ALTER TABLE
+COMMENT
+COMMENT
+COMMIT
+exit: 0
+## staging schema verification
+                                                                                 Table "import.sales_update_temp"
+      Column       |            Type             | Collation | Nullable |           Default            | Storage  | Compression | Stats target |                    Description                    
+-------------------+-----------------------------+-----------+----------+------------------------------+----------+-------------+--------------+---------------------------------------------------
+ id                | bigint                      |           | not null | generated always as identity | plain    |             |              | 
+ history_id        | bigint                      |           | not null |                              | plain    |             |              | FK to import.import_history.history_id
+ cust_id           | character varying(10)       |           | not null |                              | extended |             |              | 
+ document_no       | character varying(30)       |           | not null |                              | extended |             |              | 
+ document_date     | date                        |           | not null |                              | plain    |             |              | 
+ outlet_code       | character varying(50)       |           | not null |                              | extended |             |              | 
+ outlet_name       | character varying(255)      |           | not null |                              | extended |             |              | 
+ salesman_code     | character varying(50)       |           | not null |                              | extended |             |              | 
+ salesman_name     | character varying(255)      |           | not null |                              | extended |             |              | 
+ pro_code          | character varying(50)       |           | not null |                              | extended |             |              | 
+ pro_name          | character varying(255)      |           | not null |                              | extended |             |              | 
+ price             | numeric(20,4)               |           | not null | 0                            | main     |             |              | 
+ unit              | character varying(5)        |           | not null |                              | extended |             |              | 
+ qty               | real                        |           | not null | 0                            | plain    |             |              | 
+ gross_sales       | numeric(20,4)               |           | not null | 0                            | main     |             |              | 
+ promo             | numeric(20,4)               |           | not null | 0                            | main     |             |              | 
+ discount          | numeric(20,4)               |           | not null | 0                            | main     |             |              | 
+ ppn               | numeric(20,4)               |           | not null | 0                            | main     |             |              | 
+ net_sales_inc_ppn | numeric(20,4)               |           | not null | 0                            | main     |             |              | 
+ status_insert     | character varying(20)       |           | not null | 'SUCCESS'::character varying | extended |             |              | Validation status: SUCCESS or FAILED
+ error_message     | text                        |           |          |                              | extended |             |              | Validation error detail when status_insert=FAILED
+ created_at        | timestamp without time zone |           | not null | now()                        | plain    |             |              | 
+Indexes:
+    "sales_update_temp_pkey" PRIMARY KEY, btree (id)
+    "idx_sales_update_temp_cust_id" btree (cust_id)
+    "idx_sales_update_temp_history_id" btree (history_id)
+Not-null constraints:
+    "sales_update_temp_id_not_null" NOT NULL "id"
+    "sales_update_temp_history_id_not_null" NOT NULL "history_id"
+    "sales_update_temp_cust_id_not_null" NOT NULL "cust_id"
+    "sales_update_temp_document_no_not_null" NOT NULL "document_no"
+    "sales_update_temp_document_date_not_null" NOT NULL "document_date"
+    "sales_update_temp_outlet_code_not_null" NOT NULL "outlet_code"
+    "sales_update_temp_outlet_name_not_null" NOT NULL "outlet_name"
+    "sales_update_temp_salesman_code_not_null" NOT NULL "salesman_code"
+    "sales_update_temp_salesman_name_not_null" NOT NULL "salesman_name"
+    "sales_update_temp_pro_code_not_null" NOT NULL "pro_code"
+    "sales_update_temp_pro_name_not_null" NOT NULL "pro_name"
+    "sales_update_temp_price_not_null" NOT NULL "price"
+    "sales_update_temp_unit_not_null" NOT NULL "unit"
+    "sales_update_temp_qty_not_null" NOT NULL "qty"
+    "sales_update_temp_gross_sales_not_null" NOT NULL "gross_sales"
+    "sales_update_temp_promo_not_null" NOT NULL "promo"
+    "sales_update_temp_discount_not_null" NOT NULL "discount"
+    "sales_update_temp_ppn_not_null" NOT NULL "ppn"
+    "sales_update_temp_net_sales_inc_ppn_not_null" NOT NULL "net_sales_inc_ppn"
+    "sales_update_temp_status_insert_not_null" NOT NULL "status_insert"
+    "sales_update_temp_created_at_not_null" NOT NULL "created_at"
+Access method: heap
+
+exit: 0
+## history schema verification
+                                                                                               Table "import.import_history"
+      Column      |            Type             | Collation | Nullable |                          Default                          | Storage  | Compression | Stats target |                  Description                   
+------------------+-----------------------------+-----------+----------+-----------------------------------------------------------+----------+-------------+--------------+------------------------------------------------
+ history_id       | bigint                      |           | not null | nextval('import.import_history_history_id_seq'::regclass) | plain    |             |              | 
+ file_name        | character varying(255)      |           | not null |                                                           | extended |             |              | 
+ uploaded_by      | bigint                      |           | not null |                                                           | plain    |             |              | 
+ upload_date      | timestamp without time zone |           | not null | now()                                                     | plain    |             |              | 
+ successful_data  | integer                     |           | not null | 0                                                         | plain    |             |              | 
+ failed_data      | integer                     |           | not null | 0                                                         | plain    |             |              | 
+ total_data       | integer                     |           | not null | 0                                                         | plain    |             |              | 
+ status           | character varying(50)       |           | not null | 'COMPLETE'::character varying                             | extended |             |              | 
+ status_reupload  | boolean                     |           |          | false                                                     | plain    |             |              | 
+ upload_type      | character varying(50)       |           |          |                                                           | extended |             |              | 
+ cust_id          | character varying           |           |          |                                                           | extended |             |              | 
+ error_message    | text                        |           |          |                                                           | extended |             |              | Error detail when status=FAILED
+ uploaded_by_name | character varying(255)      |           |          |                                                           | extended |             |              | Display name of the user who uploaded the file
+Indexes:
+    "import_history_pkey" PRIMARY KEY, btree (history_id)
+Not-null constraints:
+    "import_history_history_id_not_null" NOT NULL "history_id"
+    "import_history_file_name_not_null" NOT NULL "file_name"
+    "import_history_uploaded_by_not_null" NOT NULL "uploaded_by"
+    "import_history_upload_date_not_null" NOT NULL "upload_date"
+    "import_history_successful_data_not_null" NOT NULL "successful_data"
+    "import_history_failed_data_not_null" NOT NULL "failed_data"
+    "import_history_total_data_not_null" NOT NULL "total_data"
+    "import_history_status_not_null" NOT NULL "status"
+Access method: heap
+
+exit: 0
+## staging empty check
+ staging_row_count 
+-------------------
+                 0
+(1 row)
+
+exit: 0
+## verdict
+PASS
+## command log
+psql -v ON_ERROR_STOP=1 -h localhost -p 5432 -U postgres -d ggn_scyllax -f sales/migration/20260715_add_sales_update_temp.sql
+psql -v ON_ERROR_STOP=1 -h localhost -p 5432 -U postgres -d ggn_scyllax -f sales/migration/20260715_alter_import_history.sql
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c "\\d+ import.sales_update_temp"
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c "\\d+ import.import_history"
+psql -h localhost -p 5432 -U postgres -d ggn_scyllax -c "SELECT count(*) AS staging_row_count FROM import.sales_update_temp;"
